@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>eMeeting</title>
+    {% load static %}
+
+
+<!--    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/themes/base/jquery-ui.css" rel="stylesheet" />-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{baseURL}}static/css/style-forms.css"/>
+    <link rel="stylesheet" href="{{baseURL}}static/css/login.css"/>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!--    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+
+<body style="background:url('{{baseURL}}static/images/bg-login.jpg') !important;">
+    <form id="login-form" method="POST"  autocomplete="off">
+        {% csrf_token %}
+        <div class="container">
+            <div style="text-align: center">
+                <div class="card card-container" style="background-color:white">
+
+                        <span style="color:#569AEB;font-size:XX-Large;">eMeeting</span>
+                    <div style="padding-top: 22px;">
+                        <div class="form-group input-group">
+                            <input id="txtUserName" class="form-control_dd"  autocomplete="on" placeholder="User Name" required="required" type="text" />
+                        </div>
+                        <div class="form-group input-group">
+                            <input id="YourSomeValue" class="form-control_dd"  autocomplete="off" placeholder="Password" type="Password" required="required" type="text" />
+<!--                            <input style="display: none" type="password" value="**********" id="Password">-->
+                        </div>
+                        <div class="input-prepend" title="Captcha" id="captcha-blk">
+<!--                            <img src="static/images/Captcha.aspx" id="img_capctha" alt="Captcha" />-->
+<!--                            <img src="{{baseURL}}static/images/captcha_image.png" id="img_capctha" alt="Captcha" />-->
+							
+							  <input name="captcha-text" type="text" maxlength="4" id="captcha-text" class="form-control_dd" autocomplete="off"
+                              value="{{captcha_text}}"   style="width:80px;background:#dce5fa;color:#000099;font-size:20px;border:none;
+                            text-decoration: line-through;" disabled/>
+
+                            <span class="add-on"><i class="glyphicon glyphicon-lock"></i></span>
+                            <input name="TextBox1" type="text" maxlength="4" id="TextBox1" class="form-control_dd" autocomplete="off" placeholder="Captcha" style="width:100px;" />
+                        </div>
+                        <div class="form-group input-group">
+                            <span id="FailureText" style="color:Red;"></span>
+                        </div>
+
+                        <div class="form-group input-group">
+
+                            <input id="LoginButton" type="button" value="Login" class="btn btn-primary default" onclick="login()" />
+                            <br />
+                            <input id="captcha-text1" type="hidden" name="HDusername" id="HDusername" value="{{captcha_text}}"/>
+<!--                            <input type="hidden" name="HDPassword" id="HDPassword" />-->
+                        </div>
+
+                        <div class="form-group input-group">
+                            <a href="http://www.mobitrail.co/" target="_blank">
+                                <img src="{{baseURL}}static/images/mobitraillogo1.png" width="100" /></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+
+<script>
+   
+   function login(){
+
+            var userName = document.getElementById('txtUserName').value.toString();
+            var password = document.getElementById('YourSomeValue').value.toString();
+            var usercaptcha = document.getElementById("TextBox1").value.toString();
+            var captcha_text = document.getElementById("captcha-text").value.toString();
+            console.log(usercaptcha,captcha_text)
+            var userflag = true;
+            var passflag = true;
+
+           if(userName.length != 0 && password.length != 0){
+
+                //patt = /^( )*$/
+                userpatt = /^\w+( \w+)*$/
+                var result = userpatt.test(userName)
+                if(!result){
+                            $('#FailureText').html('Invalid User Name');
+                            userflag = false;
+                        }
+
+<!--                var result = patt.test(password)-->
+<!--                if(result){-->
+<!--                            $('#FailureText').html('Invalid Password');-->
+<!--                            passflag = false-->
+<!--                        }-->
+
+
+                if(userflag && passflag){
+
+                           $.ajax({
+                           type:'POST',
+                           url:'{{baseURL}}login',
+                           data:{
+                                'userName':userName,
+                                'password':password,
+                                 'usercaptcha':usercaptcha,
+                                 'captcha_text':captcha_text,
+                               'csrfmiddlewaretoken': '{{ csrf_token }}'
+                           },
+                           success:function(data){
+                                 console.log(data)
+
+                                 if(data.message == 'Invalid User Name or Password'){
+                                          console.log("new captcha: "+ data.captcha_text)
+                                           $('#FailureText').html(data.message);
+                                           document.getElementById("TextBox1").value = '';
+                                           document.getElementById("captcha-text").value = data.captcha_text;
+
+                                      }
+                                 else{
+                                        if(data.message == 'Invalid Captcha')
+                                        {
+                                             console.log("new captcha: "+ data.captcha_text)
+                                             $('#FailureText').html(data.message);
+                                           document.getElementById("TextBox1").value = '';
+                                           document.getElementById("captcha-text").value = data.captcha_text;
+
+                                        }
+                                        else{
+                                                if( data.message == 'You account is locked, Kindly contact Secretarial Team.'){
+                                                    $('#FailureText').html('You account is locked, Kindly contact Secretarial Team.');
+                                                    document.getElementById("TextBox1").value = '';
+                                                    document.getElementById("captcha-text").value = data.captcha_text;
+                                                }
+
+                                                 else{
+                                                    console.log(data,typeof(data));
+                                                    window.location = "https://mgenius.in/emeetingadmin/manageMeeting/"
+                                                    window.location = "/manageMeeting/"
+                                                 }
+                                        }
+                                     }
+                           },
+                           complete:function(){},
+                           error:function(xhr,textStatus,thrownError){}
+
+                       });
+                     //}
+               }
+<!--               else{-->
+<!--                    if(usercaptcha.length == 0){-->
+<!--                            $('#FailureText').html("Please enter Captcha");-->
+<!--                    }-->
+<!--               }-->
+       }
+       else{
+         $('#FailureText').html("Please enter User Name and Password");
+       }
+    }
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!-- chat/templates/chat/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Chat Rooms</title>
+</head>
+<body>
+    What chat room would you like to enter?<br>
+    <input id="room-name-input" type="text" size="100"><br>
+    <input id="room-name-submit" type="button" value="Enter">
+
+    <script>
+        document.querySelector('#room-name-input').focus();
+        document.querySelector('#room-name-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#room-name-submit').click();
+            }
+        };
+
+        document.querySelector('#room-name-submit').onclick = function(e) {
+            var roomName = document.querySelector('#room-name-input').value;
+            window.location.pathname = '/chat/' + roomName + '/';
+        };
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Socket Thing1</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    Client1-->
+<!--    <button onclick="sendMsg()">Send Msg</button>-->
+<!--</body>-->
+<!--<script>-->
+<!--    // Create WebSocket connection.-->
+<!--    const socket = new WebSocket('wss://df5a83e44d68.ngrok.io');-->
+
+<!--    // Connection opened-->
+<!--    socket.addEventListener('open', function (event) {-->
+<!--        console.log('Connected to the WS Server!')-->
+<!--    });-->
+
+<!--    // Connection closed-->
+<!--    socket.addEventListener('close', function (event) {-->
+<!--        console.log('Disconnected from the WS Server!')-->
+<!--    });-->
+
+<!--    // Listen for messages-->
+<!--    socket.addEventListener('message', function (event) {-->
+<!--        console.log('Message from server ', event.data);-->
+<!--    });-->
+<!--    // Send a msg to the websocket-->
+<!--    const sendMsg = () => {-->
+<!--        socket.send('Hello from Client1!');-->
+<!--    }-->
+<!--</script>-->
+<!--</html>-->

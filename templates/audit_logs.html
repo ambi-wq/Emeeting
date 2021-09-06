@@ -1,0 +1,437 @@
+{% include "header.html" %}
+
+{% if messages %}
+	{% for message in messages %}
+	   <script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<style>
+#ui-datepicker-div{
+    display:none;
+}
+select ,input[type='text'],input[type='date']{
+
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+}
+    .te {
+    background-image: url({{baseURL}}static/images/png);
+    background-repeat: no-repeat;
+    background-position: right;
+    background-origin: content-box;
+    background-size: 12%;
+    background-position-x: 98%;
+}
+.eventcount {
+    font-size: 45px;
+}
+.eventcss {
+    margin: 5px 5px 5px 5px;
+    padding-top: 50px;
+    height: 250px;
+    color: white;
+    font-size: 20px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.t1 {
+    background-image: url({{baseURL}}static/images/back.png);
+    background-position: 9px;
+    background-repeat: no-repeat;
+    background-size: 9px;
+    padding-left: 20px;
+    padding-top: 7px;
+}
+.right-inner-addon {
+  position: relative;
+}
+
+.right-inner-addon input {
+  padding-right: 30px;
+}
+
+.right-inner-addon i {
+  position: absolute;
+  right: 0px;
+  padding: 10px 12px;
+  pointer-events: none;
+}
+.same-width{
+    width:135px;
+}
+.sub2button{
+	padding: 5px 10px;
+	<!--width : 100px;-->
+}
+</style>
+<div id="content_manageuser" style="min-height: 792px;">
+   <div style="margin-left:15px;">
+    <div class="event">
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="submit" name="Button1" value="Back" id="backButton1" onclick="location.href='{{baseURL}}showAudit';"
+                               class="sub2button t1 " style="width:130%;">
+                    </td>
+                    <td style="padding-left:30px">
+                        <span id="username_label" style="font-size:15px;font-weight:bold;">User Name :</span>
+                    </td>
+                    <td style="display:none;">
+                        <span id="userid" style="font-size:18px;">{{userlist.0}}</span>
+                    </td>
+                    <td style="padding-right:30px">
+                        <span id="username" style="font-size:15px;">{{userlist.1}}</span>
+                    </td>
+
+                    <td style="text-align:left">
+                        <span id="startDate_Label">From Date :</span>
+                    </td>
+                    <td style="padding-top:0%">
+                        <div class="right-inner-addon">
+                           <i class="fa fa-calendar-alt" aria-hidden="true"></i>
+                             <input name="from_date" type="text" id="from_date" value="{{userlist.2}}" class="te" autocomplete="off"
+                               onkeyup="return false" onkeydown="return false" onpaste="return false" >
+                        </div>
+                    </td>
+
+                    <td>&nbsp;&nbsp;
+
+                        <span id="endDate_Label">To Date :</span>
+                    </td>
+                    <td style="padding-top:0%">
+                        <div class="right-inner-addon">
+                           <i class="fa fa-calendar-alt" aria-hidden="true"></i>
+                            <input name="to_date" type="text" id="to_date" value="{{userlist.3}}" class="te" autocomplete="off"
+                               onkeyup="return false" onkeydown="return false" onpaste="return false" >
+                        </div>
+                    </td>
+
+                    <td>
+                        &nbsp;&nbsp;
+
+                        <input type="submit" name="Button1" value="Search" onclick="searchByDate()" id="searchByDate" class="sub2button">
+                    </td>
+
+                    <td style="text-align:left"></td>
+                    <td>
+                        &nbsp;&nbsp;
+
+                        <input type="submit" name="clear" value="Clear" id="clearBtn" onclick="ClearFields()" class="sub2button">
+                    </td>
+                </tr>
+                <tr class="temp1">
+                     <td>&nbsp;</td>
+                     <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                      <td>
+                        <span id="search_RequiredFieldValidator1" class="temp1" style="color:Red;visibility:hidden;">Select Start Date</span>
+                    </td>
+                     <td>
+                         &nbsp;
+                     </td>
+                     <td>
+                        <span id="search_RequiredFieldValidator2" class="temp1" style="color:Red;visibility:hidden;">Select End Date</span>
+                    </td>
+
+                 </tr>
+
+                </tbody>
+        </table>
+
+    </div>
+
+    <div style="float: left;">
+        <h3  style="text-align:center;font-size: 15px;font-weight:bold;line-height: 15px;">Event Details Count</h3>
+        <div style="width:350px;overflow-y: auto;height:600px">
+            {% if lenDetailCount > 0%}
+            <div id="eveCountDetails">
+                {% for dc,li in detailsCount1 %}
+                <div style="border: 1px solid #c0c0c0;background-color:#303338;color:white;padding:10px 5px 5px 10px;">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td style="width: 260px">
+                                                <span id="ctl00_ContentPlaceHolder1_Repeater1_ctl00_Label2" style="display:inline-block;font-size:Large;font-weight:bold;width:100%;">{{dc.0}}</span>
+                                                <br>
+                                                <span id="ctl00_ContentPlaceHolder1_Repeater1_ctl00_Label3" style="color:#848991;">First On :</span>
+                                                <span id="ctl00_ContentPlaceHolder1_Repeater1_ctl00_Label4" style="color:#848991;">{{dc.2 |date:"d/m/Y h:i A"}}</span><br>
+                                                <span id="ctl00_ContentPlaceHolder1_Repeater1_ctl00_Label5" style="color:#7E848F;">Last On :</span>
+                                                <span id="ctl00_ContentPlaceHolder1_Repeater1_ctl00_Label8" style="color:#7E848F;">{{li.0 |date:"d/m/Y h:i A"}}</span><br>
+                                            </td>
+                                            <td style=" text-align: center">
+                                                <span id="ctl00_ContentPlaceHolder1_Repeater1_ctl00_Label15" style="font-size:X-Large;">{{dc.1}}</span><br>
+                                                <span id="ctl00_ContentPlaceHolder1_Repeater1_ctl00_Label14" style="color:#686F75;">Times</span>
+                                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                </div>
+
+
+            {% endfor %}
+                <div style="margin-top:9px"></div>
+            </div>
+            {% else %}
+            <div style="margin-left:90px" id="eveCount">
+                <span id="eveCount1" class="temp1 " style="color:Red;">-- No Data Found --</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div style="margin-left:350px; padding:5px;">
+                <h3 style="text-align:center;font-size: 15px;font-weight:bold;line-height: 15px;">Event Details By Dates</h3>
+                {% if lengthTotal > 0%}
+                <div id="eveDateDetails">
+                    {% for t in total %}
+                        
+                            <div class="table table-bordered setdate">
+                                <span id="ctl00_ContentPlaceHolder1_Repeater2_ctl00_Date" style="color:Black;font-size:20px;font-weight:bold;"> {{ t.2 | date:"l,F d,Y"}}</span>
+
+                            </div>
+
+
+
+
+                            <div id="ctl00_ContentPlaceHolder1_Repeater2_ctl00_temp">
+
+                            <div id="" style="max-height: 200px; padding:10px; width: 70%;overflow-y: auto;">
+                                 <table class="table  table-hover" id="Table1" style="text-align:center;background-color:white">
+
+
+                                            <tbody>
+                                             {% for dd in detailsDates %}
+
+                                             {% if t.1 == dd.5 %}
+                                            <tr>
+                                                <td style="width:100px;">
+                                                    <span id="ctl00_ContentPlaceHolder1_Repeater2_ctl00_InsideRepeater_ctl00_Time" style="font-size:18px;font-weight:bold;">{{dd.3|date:"h:i A"}}</span>
+                                                </td>
+                                                <td colspan="2" style="font-weight:bold;text-align:left">
+                                                    <span id="ctl00_ContentPlaceHolder1_Repeater2_ctl00_InsideRepeater_ctl00_EventName" style="font-size:18px;font-weight:bold;">{{ dd.0}}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+
+                                                </td>
+
+                                                <td style="text-align:left;">
+
+                                                    <span id="ctl00_ContentPlaceHolder1_Repeater2_ctl00_InsideRepeater_ctl00_deviceinfo" style="font-size:14px;">{{dd.1}}</span>
+                                                </td>
+
+                                                <td>
+                                                </td>
+                                            </tr>
+                                             {% endif %}
+                                               {% endfor %}
+                                            </tbody>
+                                 </table>
+                            </div>
+                            </div>
+
+
+                    <div>
+
+                    </div>
+                    <br>
+{% endfor %}
+
+{% if datalength < 11 %}
+<div class="pagination" style="display:none;">
+{% else %}
+    <div class="pagination" style="">
+{% endif %}
+     <ul class="pagination">
+                  <li class="page-item">
+                     {% if total.number != 1 %}
+                     <a class="page-link" href="?userid={{userlist.0}}&ename={{userlist.1}}&sdate={{userlist.2}}&edate={{userlist.3}}&page=1">First</a>
+                     {% endif %}
+                  </li>
+                  <li class="page-item">
+                     {% if total.has_previous %}
+                     <a class="page-link" href="?userid={{userlist.0}}&ename={{userlist.1}}&sdate={{userlist.2}}&edate={{userlist.3}}&page={{ total.previous_page_number }}" aria-label="Previous">
+                     <span aria-hidden="true">&laquo;</span>
+                     </a>
+                     {% endif %}
+                  </li>
+                  {% for num in total.paginator.page_range %}
+                  {% if total.number == num %}
+                  <li class="page-item "><a class="page-link current" href="?userid={{userlist.0}}&ename={{userlist.1}}&sdate={{userlist.2}}&edate={{userlist.3}}&page={{ num }}">{{ num }}</a></li>
+                  {% elif num > total.number|add:-3 and num < total.number|add:3  %}
+                  <li class="page-item"><a class="page-link" href="?userid={{userlist.0}}&ename={{userlist.1}}&sdate={{userlist.2}}&edate={{userlist.3}}&page={{ num }}">{{ num }}</a></li>
+                  {% endif %}
+                  {% endfor %}
+                  <li class="page-item">
+                     {% if total.has_next %}
+                     <a class="page-link" href="?userid={{userlist.0}}&ename={{userlist.1}}&sdate={{userlist.2}}&edate={{userlist.3}}&page={{ total.next_page_number }}" aria-label="Next">
+                     <span aria-hidden="true">&raquo;</span>
+                     </a>
+                     {% endif %}
+                  </li>
+                  </li>
+                  <li class="page-item">
+                     {% if total.number != total.paginator.num_pages %}
+                     <a class="page-link" href="?userid={{userlist.0}}&ename={{userlist.1}}&sdate={{userlist.2}}&edate={{userlist.3}}&page={{ total.paginator.num_pages }}">Last</a>
+                     {% endif %}
+                  </li>
+               </ul>
+</div>
+
+                        <div style="overflow: hidden; margin-top: 0;display:none;">
+                        <table style="width: 600px;">
+                            <tbody><tr>
+                                <td>
+                                    <a id="ctl00_ContentPlaceHolder1_lbFirst" disabled="disabled">First</a>
+                                </td>
+                                <td>
+                                    <a id="ctl00_ContentPlaceHolder1_lbPrevious" disabled="disabled">Previous</a>
+                                </td>
+                                <td>
+                                    <table id="ctl00_ContentPlaceHolder1_rptPaging" style="border-collapse:collapse;" cellspacing="0" border="0">
+		<tbody><tr>
+			<td>
+                                            <a id="ctl00_ContentPlaceHolder1_rptPaging_ctl00_lbPaging" disabled="disabled" class="repeaterpageCss" style="display:inline-block;background-color:#a7a3a3;width:20px;">1</a>
+                                        </td>
+		</tr>
+	</tbody></table>
+                                </td>
+                                <td>
+                                    <a id="ctl00_ContentPlaceHolder1_lbNext" disabled="disabled">Next</a>
+                                </td>
+                                <td>
+                                    <a id="ctl00_ContentPlaceHolder1_lbLast" disabled="disabled">Last</a>
+                                </td>
+                                <td>
+                                    <span id="ctl00_ContentPlaceHolder1_lblpage">Page 1 of 1</span>
+                                </td>
+                            </tr>
+                        </tbody></table>
+
+
+                    </div>
+
+
+
+</div>
+                        <div style="margin:15px 0 0 380px">
+
+                        </div>
+        </div>
+
+                {% else %}
+                <div style="margin:15px 0 0 380px" id="eveDate">
+                           <span id="eveDate1" class="temp1" style="color:Red;">-- No Data Found --</span>
+                </div>
+
+                {% endif %}
+</div>
+  </div>
+</div>
+<script>
+$(document).ready(function () {
+    var sd = document.getElementById('from_date').value;
+    var ed = document.getElementById('to_date').value;
+
+    console.log("######sd===>"+sd+"######ed==>"+ed);
+    if(sd != "" && ed != ""){
+    var date2 = new Date(sd);
+    var date3 = new Date(ed);
+
+    $('#from_date').datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', date2);
+     $('#to_date').datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', date3);
+     }
+
+});
+
+$( "#from_date,#to_date" ).datepicker({
+        dateFormat: 'dd/mm/yy'
+    });
+
+
+function searchByDate(){
+        var userid = document.getElementById('userid').innerText;
+        var username = document.getElementById('username').innerText;
+        var sd = document.getElementById('from_date').value;
+        var ed = document.getElementById('to_date').value;
+        console.log("userid===>"+userid);
+        console.log("sd==>"+sd + " | ed===>"+ed);
+        var valid = true;
+
+        var sdate,edate;
+
+        if(sd == "" || sd == null){
+            document.getElementById('search_RequiredFieldValidator1').style.visibility = 'visible';
+            valid = false;
+        }else{
+            document.getElementById('search_RequiredFieldValidator1').style.visibility = 'hidden';
+
+        }
+        if(ed == "" || ed == null){
+            document.getElementById('search_RequiredFieldValidator2').style.visibility = 'visible';
+            valid = false;
+        }else{
+            document.getElementById('search_RequiredFieldValidator2').style.visibility = 'hidden';
+        }
+
+        if(sd != "" && ed != ""){
+            var d1 = sd.split('/');
+            d1 = new Date(d1.pop(), d1.pop() - 1, d1.pop());
+
+
+            var d2 = ed.split('/');
+            d2 = new Date(d2.pop(), d2.pop() - 1, d2.pop());
+
+            console.log("d2===>"+d2+" | d1==="+d1);
+            if (d2 <= d1) {
+             alert("End date must be greater than start date");
+             valid=false;
+            }else{
+                var sdp=$.datepicker.parseDate("dd/mm/yy", sd);
+                sdate = $.datepicker.formatDate( "yy-mm-dd", new Date( sdp ) );
+                console.log("datepicker==>"+sdate);
+
+                 var edp=$.datepicker.parseDate("dd/mm/yy", ed);
+                 edate = $.datepicker.formatDate( "yy-mm-dd", new Date( edp ) );
+                console.log("datepicker==>"+edate);
+
+
+            }
+        }
+
+
+
+
+
+        if(valid){
+            $.ajax({
+                type:'GET',
+                url:'{{baseURL}}showAuditLogs',
+                data:{
+                    'userid':userid,
+                    'ename':username,
+                    'sdate':sdate,
+                    'edate':edate,
+
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success:function(data){
+                     window.location.href = '{{baseURL}}showAuditLogs?userid='+userid+'&ename='+username+'&sdate='+sdate+'&edate='+edate;
+                },
+                complete:function(){},
+                error:function (xhr, textStatus, thrownError){}
+            });
+
+        }
+    }
+
+
+function ClearFields() {
+
+     document.getElementById("from_date").value = "";
+     document.getElementById("to_date").value = "";
+}
+</script></div>

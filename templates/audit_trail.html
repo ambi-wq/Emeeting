@@ -1,0 +1,442 @@
+{% include "header.html" %}
+
+{% if messages %}
+	{% for message in messages %}
+	   <script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<style>
+
+select ,input[type='text'],input[type='date']{
+
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+}
+    .te {
+    background-image: url({{baseURL}}static/images/calendar.png);
+    background-repeat: no-repeat;
+    background-position: right;
+    background-origin: content-box;
+    background-size: 12%;
+    background-position-x: 98%;
+}
+.eventcount {
+    font-size: 45px;
+}
+.eventcss {
+    margin: 5px 5px 5px 5px;
+    padding-top: 50px;
+    height: 250px;
+    color: white;
+    font-size: 20px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.te1 {
+    background-size: 75px;
+    background-image: url({{baseURL}}static/images/1.png);
+    background-repeat: no-repeat;
+    background-position: center 28px;
+}
+.te2 {
+    background-size: 72px;
+    background-image: url({{baseURL}}static/images/2.png);
+    background-repeat: no-repeat;
+    background-position: center 28px;
+}
+.te3 {
+    background-size: 70px;
+    background-image: url({{baseURL}}static/images/3.png);
+    background-repeat: no-repeat;
+    background-position: center 28px;
+}
+.te4 {
+    background-size: 70px;
+    background-image: url({{baseURL}}static/images/4.png);
+    background-repeat: no-repeat;
+    background-position: center 28px;
+}
+.te5 {
+    background-size: 70px;
+    background-image: url({{baseURL}}static/images/5.png);
+    background-repeat: no-repeat;
+    background-position: center 28px;
+}
+.te6 {
+    background-size: 70px;
+    background-image: url({{baseURL}}static/images/6.png);
+    background-repeat: no-repeat;
+    background-position: center 28px;
+}
+.right-inner-addon {
+  position: relative;
+}
+
+.right-inner-addon input {
+  padding-right: 30px;
+}
+
+.right-inner-addon i {
+  position: absolute;
+  right: 0px;
+  padding: 10px 12px;
+  pointer-events: none;
+}
+.same-width{
+    width:165px;
+}
+.sub2button{
+	padding: 5px 10px;
+}
+</style>
+<div id="content_manageuser" style="min-height: 792px;">
+    <div class="event" style="margin:0 0 10px 10px;">
+        <table>
+            <tbody>
+                <tr>
+                    <td style="text-align:left">
+                        <span id="startDate_Label">From Date : </span>
+                    </td>
+                    <td style="padding-top:0%">
+                        <div class="right-inner-addon">
+                           <i class="fa fa-calendar-alt" aria-hidden="true"></i>
+                                <input name="from_date" type="text" id="from_date" class="te same-width"  autocomplete="off" onkeyup="return false"
+                               onkeydown="return false" onpaste="return false" >
+                        </div>
+                    </td>
+
+                    <td>&nbsp;&nbsp;
+
+                        <span id="endDate_Label">To Date : </span>
+                    </td>
+                    <td style="padding-top:0%">
+                        <div class="right-inner-addon">
+                           <i class="fa fa-calendar-alt" aria-hidden="true"></i>
+                           <input name="to_date" type="text" id="to_date" class="te same-width"  autocomplete="off" onkeyup="return false"
+                               onkeydown="return false" onpaste="return false" >
+                        </div>
+                    </td>
+
+                    <td>
+                        &nbsp;&nbsp;
+
+                        <input type="submit" name="Button1" value="Submit" onclick="searchByDate()" id="searchByDate" class="sub2button">
+                    </td>
+
+                    <td style="text-align:left"></td>
+
+                    <td style="padding-left:80px">
+                        <select name="UserList" id="user_list" style="width:178px;">
+                            <option selected="selected" value="01"> Search User Wise  </option>
+                            {% for user in userlist %}
+                                <option value="{{user.ename}}">{{user.uid}}</option>
+                            {% endfor %}
+                        </select>
+
+                    </td>
+
+                    <td>
+                        &nbsp;&nbsp;
+
+                        <input type="submit" name="Search" value="Search" onclick="searchByUser()" id="searchByUser" class="sub2button">
+                    </td>
+
+                    <td>
+                        &nbsp;&nbsp;
+
+                        <input type="submit" name="clear" value="Clear" id="clearBtn" onclick="ClearFields()" class="sub2button">
+                    </td>
+                </tr>
+                <tr class="temp1">
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        <span id="search_RequiredFieldValidator1" class="temp1" style="color:Red;visibility:hidden;">Select Start Date</span>
+                    </td>
+                    <td></td>
+                    <td>
+                        <span id="search_RequiredFieldValidator2" class="temp1" style="color:Red;visibility:hidden;">Select End Date</span>
+                    </td>
+                    <td colspan="3" style="text-align:right">
+                        <span id="search_RequiredFieldValidator3" class="temp1" style="color:Red;visibility:hidden;">Select User</span>
+                    </td>
+                </tr>
+                </tbody>
+        </table>
+    </div>
+
+
+    <div class="box span11 topmargin">
+        <table style="margin:10px 0 10px 50px">
+            <tbody>
+            {% if data %}
+                <tr style="text-align:center;">
+                    <td>
+                        <div style="background-color:#22A7F0;width:300px;" class="eventcss te1">
+                            <div style="padding-top:55px">
+                                <span id="Total_User_Label" style="font-size:19px;">Total Users</span><br><br>
+
+                                    <!--<span id="Total_User_Count" class="eventcount">{{data.0}}</span>-->
+                                <p id="Total_User_Count" class="eventcount">{{data.0}}</p>
+
+                            </div>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div style="background-color:#87D37C;width:300px" class="eventcss te2">
+                            <div style="padding-top:55px">
+                                <span id="Login_Success_Label" style="font-size:19px;">Login Success</span><br><br>
+
+                                    <!--<span id="Login_Success_Count" class="eventcount">{{data.1}}</span>-->
+                                <p id="Login_Success_Count" class="eventcount">{{data.1}}</p>
+
+                            </div>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div style="background-color:#ff6666;width:300px" class="eventcss te3">
+                            <div style="padding-top:55px">
+                                <span id="Login_Failed_Label" style="font-size:19px;">Login Failed</span><br><br>
+
+                                    <!--<span id="Login_Failed_Count" class="eventcount">{{data.2}}</span>-->
+                                    <p id="Login_Failed_Count" class="eventcount">{{data.2}}</p>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr style="text-align:center">
+                    <td>
+                        <div style="background-color:#6666ff;width:300px" class="eventcss te4">
+                            <div style="padding-top:55px">
+                                <span id="Meeting_Document_Accessed_Label" style="font-size:19px;">Meeting Document Accessed</span><br><br>
+
+                                    <!--<span id="Meeting_Document_Accessed_Count" class="eventcount">{{data.3}}</span>-->
+                                <p id="Meeting_Document_Accessed_Count" class="eventcount">{{data.3}}</p>
+
+                            </div>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div style="background-color:#ff9933;width:300px" class="eventcss te5">
+                            <div style="padding-top:55px">
+                                <span id="Total_Mails_Sent_Label" style="font-size:19px;">Total Mails Sent</span><br><br>
+
+                                    <!--<span id="Total_Mails_Sent_Count" class="eventcount">{{data.4}}</span>-->
+                                <p id="Total_Mails_Sent_Count" class="eventcount">{{data.4}}</p>
+
+                            </div>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div style="background-color:#ffcc00;width:300px" class="eventcss te6">
+                            <div style="padding-top:55px">
+                                <span id="Documents_Notes_created_Label" style="font-size:19px;">Documents/Notes created</span><br><br>
+
+                                    <!--<span id="Documents_Notes_created_Count" class="eventcount">{{data.5}}</span>-->
+                                <p id="Documents_Notes_created_Count" class="eventcount">{{data.5}}</p>
+
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+{% endif %}
+                </tbody>
+                </table>
+             </div>
+
+</div>
+<script>
+ $(document).ready(function () {
+  $( "#from_date,#to_date" ).datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+ });
+    function searchByDate(){
+        var sd = document.getElementById('from_date').value;
+        var ed = document.getElementById('to_date').value;
+        console.log("sd==>"+sd + " | ed===>"+ed);
+        var valid = true;
+
+        var sdate,edate;
+
+        if(sd == "" || sd == null){
+            document.getElementById('search_RequiredFieldValidator1').style.visibility = 'visible';
+            valid = false;
+        }else{
+            document.getElementById('search_RequiredFieldValidator1').style.visibility = 'hidden';
+
+        }
+        if(ed == "" || ed == null){
+            document.getElementById('search_RequiredFieldValidator2').style.visibility = 'visible';
+            valid = false;
+        }else{
+            document.getElementById('search_RequiredFieldValidator2').style.visibility = 'hidden';
+        }
+
+        if(sd != "" && ed != ""){
+            var d1 = sd.split('/');
+            d1 = new Date(d1.pop(), d1.pop() - 1, d1.pop());
+
+
+            var d2 = ed.split('/');
+            d2 = new Date(d2.pop(), d2.pop() - 1, d2.pop());
+
+            console.log("d2===>"+d2+" | d1==="+d1);
+            if (d2 <= d1) {
+             alert("End date must be greater than start date");
+             valid=false;
+            }else{
+                    var sdp=$.datepicker.parseDate("dd/mm/yy", sd);
+                    sdate = $.datepicker.formatDate( "yy-mm-dd", new Date( sdp ) );
+                    console.log("datepicker==>"+sdate);
+
+                     var edp=$.datepicker.parseDate("dd/mm/yy", ed);
+                     edate = $.datepicker.formatDate( "yy-mm-dd", new Date( edp ) );
+                    console.log("datepicker==>"+edate);
+
+            }
+        }
+
+
+
+
+        if(valid){
+            $.ajax({
+                type:'GET',
+                url:'{{baseURL}}showAudit',
+                data:{
+                    'sd':sdate,
+                    'ed':edate,
+
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success:function(response){
+                    var array = response.data;
+                    console.log(array);
+                    document.getElementById("Total_User_Count").innerHTML = array[0];
+                    document.getElementById("Login_Success_Count").innerHTML = array[1];
+                    document.getElementById("Login_Failed_Count").innerHTML = array[2];
+                    document.getElementById("Meeting_Document_Accessed_Count").innerHTML = array[3];
+                    document.getElementById("Total_Mails_Sent_Count").innerHTML = array[4];
+                    document.getElementById("Documents_Notes_created_Count").innerHTML = array[5];
+
+
+                },
+                complete:function(){},
+                error:function (xhr, textStatus, thrownError){}
+            });
+
+        }
+    }
+
+
+</script>
+<script>
+
+
+    $('#user_list').change(function(e) {
+        var user_list = document.getElementById('user_list').value;
+        console.log("user_list=======>"+user_list);
+        var userid= $('#user_list option:selected').text();
+        console.log("userid==>"+userid);
+
+        $.ajax({
+                type:'GET',
+                url:'{{baseURL}}showAudit',
+                data:{
+
+                    'user':userid,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success:function(response){
+
+                    var array = response.data;
+                    console.log(array);
+                    document.getElementById("Total_User_Count").innerHTML = array[0];
+                    document.getElementById("Login_Success_Count").innerHTML = array[1];
+                    document.getElementById("Login_Failed_Count").innerHTML = array[2];
+                    document.getElementById("Meeting_Document_Accessed_Count").innerHTML = array[3];
+                    document.getElementById("Total_Mails_Sent_Count").innerHTML = array[4];
+                    document.getElementById("Documents_Notes_created_Count").innerHTML = array[5];
+
+
+                },
+                complete:function(){},
+                error:function (xhr, textStatus, thrownError){}
+            });
+
+    });
+    </script>
+
+<script>
+    function searchByUser(){
+         var user_list = document.getElementById('user_list').value;
+        console.log("user_list ############=======>"+user_list);
+        var userid= $('#user_list option:selected').text();
+        console.log("userid ############==>"+userid);
+
+        var sd = document.getElementById('from_date').value;
+        var ed = document.getElementById('to_date').value;
+        console.log("sd==>"+sd + " | ed===>"+ed);
+
+        var sdate,edate;
+
+        var valid = true;
+        if(user_list == "01" || user_list == ""){
+            document.getElementById('search_RequiredFieldValidator3').style.visibility = 'visible';
+            document.getElementById('search_RequiredFieldValidator1').style.visibility = 'hidden';
+            document.getElementById('search_RequiredFieldValidator2').style.visibility = 'hidden';
+            valid = false;
+        }
+         else{
+            document.getElementById('search_RequiredFieldValidator3').style.visibility = 'hidden';
+            document.getElementById('search_RequiredFieldValidator1').style.visibility = 'hidden';
+            document.getElementById('search_RequiredFieldValidator2').style.visibility = 'hidden';
+        }
+
+        if(sd != "" && ed != ""){
+            var sdp=$.datepicker.parseDate("dd/mm/yy", sd);
+             sdate = $.datepicker.formatDate( "yy-mm-dd", new Date( sdp ) );
+            console.log("datepicker==>"+sdate);
+
+             var edp=$.datepicker.parseDate("dd/mm/yy", ed);
+             edate = $.datepicker.formatDate( "yy-mm-dd", new Date( edp ) );
+            console.log("datepicker==>"+edate);
+        }
+        else{
+               sdate=" ";
+               edate=" ";
+               console.log("sdate==="+sdate+"edate==="+edate);
+        }
+
+        if(valid){
+            $.ajax({
+                type:'GET',
+                url:'{{baseURL}}showAuditLogs',
+                data:{
+                     'userid':userid,
+                     'ename':user_list,
+                     'sdate':sdate,
+                     'edate':edate,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success:function(data){
+                    window.location.href = '{{baseURL}}showAuditLogs?userid='+userid+'&ename='+user_list+'&sdate='+sdate+'&edate='+edate;
+                },
+                complete:function(){},
+                error:function (xhr, textStatus, thrownError){}
+            });
+        }
+    }
+
+    function ClearFields() {
+
+         document.getElementById("from_date").value = "";
+         document.getElementById("to_date").value = "";
+    }
+</script>

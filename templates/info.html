@@ -1,0 +1,3993 @@
+{% include "header.html" %}
+
+<script>
+//alert("{{ agenda_sr }}")
+</script>
+{% if messages %}
+	{% for message in messages %}
+	   <script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<style>
+
+table.style1{
+    width:100%;
+}
+
+  #draggable table, #draggable td, #draggable th {
+  border: 1px solid black;
+}
+
+#draggable1 table, #draggable1 td, #draggable1 th {
+  border: 1px solid black;
+}
+
+#draggable2 table, #draggable2 td, #draggable2 th {
+  border: 1px solid black;
+}
+
+
+td{
+  padding:5px;
+  }
+
+/*   notice of meeting */
+
+.editor
+        {
+			border:solid 1px #ccc;
+			padding: 0px;
+			height:100px;
+        }
+#editor2
+        {
+			border:solid 1px #ccc;
+			padding-top: 20px;
+			height:180px;
+            overflow-y: scroll;
+        }
+.sample-toolbar
+        {
+            background-color: #F0F0F0;
+            padding: 2px;
+            border: 1px solid #c2c2c2;
+            overflow: auto;
+            border-bottom: none;
+        }
+.sample-toolbar > span
+        {
+			cursor:pointer;
+		}
+
+.sample-toolbar > span:hover
+        {
+			text-decoration:underline;
+		}
+
+
+
+</style>
+
+<div id="content_manageuser" style="min-height: 792px;">
+
+<div class="committee" style="height:fit-content;">
+    <div style="width:90%;float:left">
+       <i class='fa fa-briefcase' style='font-size:15px;color:grey;margin-left:15px;margin-top: 14px;'></i>
+       <span style="margin-left: 24px;font-size: initial;">{{forum.fname}}</span>
+       <hr style="margin-top:10px;">
+
+
+        <div style="margin-left: 20px;">
+            <div style="width:45%;float:left;">
+                Title<span style="color:red;font-size:larger;">*</span><span style="margin-left: 12px;">:</span>
+
+                <input type="text" id="meet_title" name="mtitle" placeholder="Title" style="height:30px;width:60%;">
+                <span id="meetingTitleValidator" style="color:Red;visibility:hidden;"></span></div>
+            <div style="width:45%;float:left">
+                Expiry Date<span style="color:red;font-size:larger;">*</span><span style="margin-left: 12px;">:</span>
+
+                <input type="date" id="exp_date" name="edate" placeholder="" style="height:30px;width:40%;">
+                <span id="ExDateValidator" style="color:Red;visibility:hidden;"></span></div>
+    </div>
+        <div style="margin-left: 20px;margin-top:60px">
+         <div style="width:45%;float:left;">
+             Date<span style="color:red;font-size:larger;">*</span><span style="margin-left: 9px;">:</span>
+             <input type="date" id="a_date" name="adate" placeholder="" style="height:30px;width:40%;"></div>
+
+
+        <div style="width:45%;float:left">
+               Time<span style="color:red;font-size:larger;">*</span><span style="margin-left: 52px;">:</span>
+    <select id="hrs" style="width: 80px;height: 30px;font-size: 14px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;color: #555555;">
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+    </select>
+        <select id="mins" style="width: 80px;height: 30px;font-size: 14px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;color: #555555;">
+                <option value="00">00</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+                <option value="31">31</option>
+                <option value="32">32</option>
+                <option value="33">33</option>
+                <option value="34">34</option>
+                <option value="35">35</option>
+                <option value="36">36</option>
+                <option value="37">37</option>
+                <option value="38">38</option>
+                <option value="39">39</option>
+                <option value="40">40</option>
+                <option value="41">41</option>
+                <option value="42">42</option>
+                <option value="43">43</option>
+                <option value="44">44</option>
+                <option value="45">45</option>
+                <option value="46">46</option>
+                <option value="47">47</option>
+                <option value="48">48</option>
+                <option value="49">49</option>
+                <option value="50">50</option>
+                <option value="51">51</option>
+                <option value="52">52</option>
+                <option value="53">53</option>
+                <option value="54">54</option>
+                <option value="55">55</option>
+                <option value="56">56</option>
+                <option value="57">57</option>
+                <option value="58">58</option>
+                <option value="59">59</option>
+
+            </select>
+        <select id="meridian" style="width: 80px;height: 30px;font-size: 14px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;color: #555555;">
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+
+
+            </select>
+
+
+        </div>
+
+
+
+    </div>
+    </div>
+
+        <input type="button" class="sub2button" value="Update" onclick="UpdateboardcommiteeForm('{{info.id}}')" style="font-size:15px;margin-top:100px">
+
+
+<p id="meetingformvalidator" style="color:Red;visibility:hidden;padding-left:20px;padding-bottom:10px;"></p>
+</div>
+
+<div class="committee1">
+    <i class='fa fa-briefcase' style='font-size:15px;color:grey;margin-left:15px;margin-top: 14px;'></i>
+    <span style="margin-left: 24px;font-size: initial;">{{forum.fname}} Agenda(s) ( {{info.Title}} )</span>
+
+<div style="margin-left:50px;    margin-top: 21px;">
+
+    {% if flag == 'False' %}
+     <input type="button" class="sub2button" value="Upload Zip" data-toggle="modal" data-target="#myModal10"
+                       style="font-size:15px;">
+{% endif %}
+
+    <input type="button" class="sub2button" value="Quick Upload" data-toggle="modal" data-target="#myModal3"
+                       style="font-size:15px;">
+
+                 <input type="button" class="sub2button" value="Add Agenda Item"
+                        data-toggle="modal" data-target="#myModal1" style="font-size:15px;">
+<!--                onclick="addAgenda('{{info.id}}')"-->
+
+                 <input type="button" class="sub2button" value="Add MOM" onclick="" style="font-size:15px;" data-target="#addMOM"
+                        data-toggle="modal">
+
+                <input type="button" class="sub2button" value="Notify" data-toggle="modal" data-target="#myModal2"
+                       style="font-size:15px;">
+
+                <input type="button" class="sub2button" value="Notice of Meeting" onclick="notice({{info.id}})"
+                       style="font-size:15px;" data-target="#noticeModal" data-toggle="modal">
+
+     <!--<input type="button" class="sub2button" value="Reorder" data-toggle="modal" data-target="#reorderModal" onclick="" style="font-size:15px;">-->
+     <input type="button" class="sub2button" value="Reorder" onclick="reorder({{info.id}})" style="font-size:15px;">
+
+</div>
+
+    <hr style="margin-top:15px;">
+
+
+
+
+<div style="border:1px solid #ddd;width: fit-content;margin-left: 50px;">
+
+     {% for agen in agenda_response %}
+      <ul style="list-style-type:none;    margin-left: -40px;">
+        <li style="border-top:1px solid #ddd;    padding: 7px;">
+        {% for key, value in agen.items %}
+
+                <b>{{value.ag_title}}</b>
+            {% if value.ag_doc %}
+
+                    <!--<span>(<a href="{{baseURL}}attachment/{{forum.fid}}/{{info.id}}/{{value.ag_doc}}" target="_blank" class="links">{{value.ag_doc}}</a>)</span>-->
+                    <span>(<a href="{{baseURL}}static/resources/{{forum.fname}}/{{info.id}}/{{value.ag_doc}}" target="_blank" class="links">{{value.ag_doc}}</a>)</span>
+
+                     <!--<span> (<a href="{{baseURL}}attachment/{{forum.fid}}/{{info.id}}/{{value.ag_doc}}" target="_blank" class="links">Print</a>)</span>-->
+                    <span> (<a href="{{baseURL}}static/resources/{{forum.fname}}/{{info.id}}/{{value.ag_doc}}" target="_blank" class="links">Print</a>)</span>
+            <span> (<a class="links" onclick="findAttachmentAgid('{{value.ag_id}}','{{info.id}}','subagenda')"
+                                   data-toggle="modal" data-target="#myModal5">Add Attachment</a>)</span>
+
+                                   <span> (<a class="links" onclick="findSubAgendaDetails('{{value.ag_id}}','{{info.id}}','subagenda')"
+                                   data-toggle="modal" data-target="#myModal6">Add Sub Agenda</a>)</span>
+
+                  <span> (<a href="javascript:descmo({{value.ag_id}},0)" class="links">Desc</a>)</span>
+                  <span> (<a href="javascript:fetchd({{value.ag_id}},0)" class="links">Edit</a>)</span>
+                  <span> (<a href="javascript:del({{value.ag_id}},0)" class="links">Delete</a>)</span>
+                  <span> (<a href="javascript:accessmo({{value.ag_id}},'{{value.ag_title}}')"  class="links">Remove Access</a>)</span>
+                   <span> (<a href="javascript:reorder1({{value.ag_id}})" class="links">Reorder</a>)</span>
+                {% elif value.ag_doc == '' %}
+
+                  <span> (<a class="links" onclick="findaid('{{value.ag_id}}','{{info.id}}','subagenda')"
+                                             data-toggle="modal" data-target="#myModal4">Quick Upload</a>)</span>
+
+                                  <span> (<a class="links" onclick="findAttachmentAgid('{{value.ag_id}}','{{info.id}}','subagenda')"
+                                   data-toggle="modal" data-target="#myModal5">Add Attachment</a>)</span>
+
+                                  <span> (<a class="links" onclick="findSubAgendaDetails('{{value.ag_id}}','{{info.id}}','subagenda')"
+                                   data-toggle="modal" data-target="#myModal6">Add Sub Agenda</a>)</span>
+                  <span> (<a href="javascript:descmo({{value.ag_id}},0)" class="links">Desc</a>)</span>
+                  <span> (<a href="javascript:fetchd({{value.ag_id}},0)" class="links">Edit</a>)</span>
+                   <span>(<a href="javascript:del({{value.ag_id}},0)" class="links">Delete</a>)</span>
+                   <span>(<a href="javascript:accessmo({{value.ag_id}},'{{value.ag_title}}')"  class="links">Remove Access</a>)</span>
+                   <span> (<a href="javascript:reorder1({{value.ag_id}})" class="links">Reorder</a>)</span>
+            {% endif %}
+
+            {% if key == 'sub_agenda' %}
+    <br>
+
+               {% for sag in value %}
+
+
+                    <span class="tab">{{sag.sag_title}}</span>
+                    {% if sag.sag_doc %}
+                         <!--<span class="">(<a href="{{baseURL}}attachment/{{forum.fid}}/{{info.id}}/{{sag.sag_doc}}" target="_blank" class="links">{{sag.sag_doc}}</a>)</span>-->
+                        <span class="">(<a href="{{baseURL}}static/resources/{{forum.fname}}/{{info.id}}/{{sag.sag_doc}}" target="_blank" class="links">{{sag.sag_doc}}</a>)</span>
+
+                    <!--<span>(<a href="{{baseURL}}attachment/{{forum.fid}}/{{info.id}}/{{sag.sag_doc}}" target="_blank" class="links">Print</a>)</span>-->
+                    <span>(<a href="{{baseURL}}static/resources/{{forum.fname}}/{{info.id}}/{{sag.sag_doc}}" target="_blank" class="links">Print</a>)</span>
+
+            <span>(<a class="links" onclick="findAttachmentAgid('{{sag.sag_id}}','{{info.id}}','sub-subagenda')"
+                                   data-toggle="modal" data-target="#myModal8">Add Attachment</a>)</span>
+
+                   <span>(<a class="links" onclick="findSubAgendaDetails('{{sag.sag_id}}','{{info.id}}','sub-subagenda')"
+                                   data-toggle="modal" data-target="#myModal7">Add Sub Sub Agenda</a>)</span>
+   <span>(<a href="javascript:descmo({{sag.sag_id}},1)" class="links">Desc</a>)</span>
+   <span>(<a href="javascript:fetchd({{sag.sag_id}},1)" class="links">Edit</a>)</span>
+   <span>(<a href="javascript:del({{sag.sag_id}},1)" class="links">Delete</a>)</span>
+    <span> (<a href="javascript:reorder2({{sag.sag_id}})" class="links">Reorder</a>)</span>
+ {% else %}
+    <span> (<a class="links" onclick="findaid('{{sag.sag_id}}','{{info.id}}','sub-subagenda')"
+                              data-toggle="modal" data-target="#myModal4">Quick Upload</a>)</span>
+
+                   <span> (<a class="links" onclick="findAttachmentAgid('{{sag.sag_id}}','{{info.id}}','sub-subagenda')"
+                                   data-toggle="modal" data-target="#myModal8">Add Attachment</a>)</span>
+
+                   <span> (<a class="links" onclick="findSubAgendaDetails('{{sag.sag_id}}','{{info.id}}','sub-subagenda')"
+                                   data-toggle="modal" data-target="#myModal7">Add Sub Sub Agenda</a>)</span>
+   <span> (<a href="javascript:descmo({{sag.sag_id}},1)" class="links">Desc</a>)</span>
+   <span>(<a href="javascript:fetchd({{sag.sag_id}},1)" class="links">Edit</a>)</span>
+   <span>(<a href="javascript:del({{sag.sag_id}},1)" class="links">Delete</a>)</span>
+   <span> (<a href="javascript:reorder2({{sag.sag_id}})" class="links">Reorder</a>)</span>
+                    {% endif %}
+
+                {% if sag.subsubagenda %}
+                {% for ssag in sag.subsubagenda %}
+                <br>
+                <span class="tab2">{{ssag.ssag_title}}</span>
+                {% if ssag.ssag_doc %}
+                    <!--<span class="">(<a href="{{baseURL}}attachment/{{forum.fid}}/{{info.id}}/{{ssag.ssag_doc}}" target="_blank" class="links">{{ssag.ssag_doc}}</a>)</span>-->
+                    <span class="">(<a href="{{baseURL}}static/resources/{{forum.fname}}/{{info.id}}/{{ssag.ssag_doc}}" target="_blank" class="links">{{ssag.ssag_doc}}</a>)</span>
+
+                    <!--<span>(<a href="{{baseURL}}attachment/{{forum.fid}}/{{info.id}}/{{ssag.ssag_doc}}" target="_blank" class="links">Print</a>)</span>-->
+                    <span>(<a href="{{baseURL}}static/resources/{{forum.fname}}/{{info.id}}/{{ssag.ssag_doc}}" target="_blank" class="links">Print</a>)</span>
+
+                <span>(<a href="javascript:descmo({{ssag.ssag_id}},2)" class="links">Desc</a>)</span>
+                    <span>(<a href="javascript:fetchd({{ssag.ssag_id}},2)" class="links">Edit</a>)</span>
+                    <span>(<a href="javascript:del({{ssag.ssag_id}},2)" class="links">Delete</a>)</span>
+                {% else %}
+                    <span>(<a href="javascript:descmo({{ssag.ssag_id}},2)" class="links">Desc</a>)</span>
+                    <span>(<a href="javascript:fetchd({{ssag.ssag_id}},2)" class="links">Edit</a>)</span>
+                    <span>(<a href="javascript:del({{ssag.ssag_id}},2)" class="links">Delete</a>)</span>
+            {% endif %}
+            {% endfor %}
+    {% endif %}
+    <br>
+            {% endfor %}
+            {% endif %}
+
+
+            {% endfor %}
+           </li>
+</ul>
+     {% endfor %}
+</div>
+
+    <div>
+       <input type="button" class="sub2button" value="Download MOM Format"
+               onclick="location.href='{{baseURL}}downloadMOM/{{ info.id }}';" style="font-size:15px;margin-left:50px;">
+        <span><b>Note</b>:It will download MOM in HTML format.Open it in MS word and make the necessary changes.
+            </span>
+</div>
+<!--    location.href='{{baseURL}}DownloadMeeting?fname={{forum.fname}}&id={{info.id}}'-->
+    <div><input type="button" class="sub2button" value="Download Meeting" onclick="location.href='{{baseURL}}DownloadMeeting/{{info.id}}/{{forum.fname}}';" style="font-size:15px;margin-left:50px;"></div>
+</div>
+</div>
+
+
+<div class="modal" id="reorderModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" style="float: left;">Reorder Agenda</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.reload();">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          <table id="draggable" style="width:100%">
+              <thead><tr><th  class="text-center" style="width:20%" >Id</th><th  class="text-center" style="width:60%">Title</th><th  class="text-center" style="width:20%" >Order</th></tr></thead>
+
+              <tbody id="tbbb">
+
+
+              </tbody>
+
+
+          </table>
+
+
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" onclick="reorderag('{{info.id}}')" class="sub2button">Submit</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal" id="reordersagModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" style="float: left;">Reorder Sub Agenda</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.reload();">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          <table id="draggable1" style="width:100%">
+              <thead><tr><th  class="text-center" style="width:20%" >Id</th><th  class="text-center" style="width:60%">Title</th><th  class="text-center" style="width:20%" >Order</th></tr></thead>
+
+              <tbody id="tbbb1">
+
+
+              </tbody>
+
+
+          </table>
+          <div id="draggable1er"></div>
+
+      </div>
+      <div class="modal-footer">
+
+        <button id="draggable1button" type="button" onclick="reordersag('{{info.id}}')" class="sub2button">Submit</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="reorderssagModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" style="float: left;">Reorder Sub Sub Agenda</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.reload();">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          <table id="draggable2" style="width:100%">
+              <thead><tr><th  class="text-center" style="width:20%" >Id</th><th  class="text-center" style="width:60%">Title</th><th  class="text-center" style="width:20%" >Order</th></tr></thead>
+
+              <tbody id="tbbb2">
+
+
+              </tbody>
+
+
+          </table>
+
+ <div id="draggable2er"></div>
+      </div>
+      <div class="modal-footer">
+
+        <button id="draggable2button" type="button" onclick="reorderssag('{{info.id}}')" class="sub2button">Submit</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="descriptionModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" style="float: left;">Description</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.reload();">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+<textarea name="txtDesc" rows="5" cols="20" id="txtDesc" style="height:167px;width:100%;resize:none;"></textarea>
+                  <button  type="button" id="descsub" style="margin-left: 45%;" onclick="" class="sub2button">Submit</button>
+
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal" id="accessModel" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" style="float: left;">Remove Access</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.reload();">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div>
+              <span><b>Agenda Title : </b></span>
+              <span id="title_ag"></span>
+
+          </div>
+<div style="margin-top:15px;">
+Note - Mark the users whom you want to restrict from viewing this Agenda item
+</div>
+
+
+          <div class="multiple_select_checkbox" style="margin-top:15px;">
+<div class="multiple_select_checkbox11" style="margin:15px;height: 180px;">
+
+
+</div>
+
+      <div  style="margin:15px;">
+
+</div>
+
+</div>
+            <button  type="button" id="restrictacc" onclick="removeaccess('{{info.id}}')" class="sub2button1">Submit</button>
+              <button  type="button" data-dismiss="modal" aria-label="Close"  class="sub2button1">Cancel</button>
+</div>
+  </div>
+  </div>
+</div>
+
+<!-- Add agenda item-->
+<div id="myModal1" class="modal fade" role="dialog">
+             <div class="modal-dialog">
+        <!-- Modal content-->
+                <div class="modal-content" >
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" onclick="location.reload();">&times;</button>
+                    <h4 class="modal-title">Agenda Item</h4>
+                  </div>
+
+
+                  <div class="modal-body">
+
+                    <form method="POST" id="addAgendaForm" autocomplete="off" class="form-horizontal" role="form"
+                    enctype="multipart/form-data" >
+<!--                        onsubmit="addAgenda('{{info.id}}')"-->
+                        {% csrf_token %}
+
+                    <p id="formvalidator" style="color:Red;visibility:hidden;"></p>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">ID<span style="color:red;font-size:larger;">*</span> :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+                            <input type="text" style="" class="form-control agenda-data"  id="agenda_id"  name="agenda_id"  value="{{agenda_sr}}" disabled>
+<!--                            <span id="CustomValidator1" style="color:Red;visibility:hidden;">Text contains invalid characters</span>-->
+                        </div>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Title<span style="color:red;font-size:larger;">*</span> :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+                            <input type="text" style="" class="form-control agenda-data" id="agenda_title"  name="agenda_title" required>
+                        </div>
+                         <span id="agendaTitleValidator" style="color:Red;visibility:hidden;">Title contains invalid characters</span>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Description:</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+                            <input type="text" style="" class="form-control agenda-data" id="agenda_desc"  name="agenda_desc">
+                        </div>
+                         <span id="agendaDescValidator" style="color:Red;visibility:hidden;">Description contains invalid characters</span>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Item Type :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+
+                                  <select  style="" id="item_type" name="item_type" class="form-control agenda-data"  >
+                                       <option value="">Select</option>
+                                       <option value="Approval">Approval</option>
+                                       <option value="Information">Information</option>
+                                       <option value="Discussion">Discussion</option>
+                                       <option value="Presentation">Presentation</option>
+                                       <option value="Noting">Noting</option>
+                                       <option value="Consideration">Consideration</option>
+                                       <option value="Ratification">Ratification</option>
+                                       <option value="Other">Other</option>
+
+                                  </select>
+                        </div>
+                    </div>
+
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Note:</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" >
+                            <input type="file" style="" class="form-control uploader filebtn" id="file_btn"  name="file_btn"
+                                   accept=".doc,.docx,.pdf,.txt,.ppt,.xls" >
+                        </div>
+                        <span id="filenameValidator" style="color:Red;visibility:hidden;margin:165px;">Filename contains invalid characters</span>
+
+                    </div>
+
+                        <div style="display:flex;justify-content:center;">
+                            <input type="button" class="sub2button" value="Submit" onclick="addAgenda('{{info.id}}')">
+                        </div>
+
+                    </form>
+
+                  </div>
+                </div>
+             </div>
+</div>
+
+<!--            ###################   Notify   #################################  -->
+<div id="myModal2" class="modal fade" role="dialog">
+             <div class="modal-dialog">
+        <!-- Modal content-->
+                <div class="modal-content"style="width:750px;">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" onclick="location.reload();">&times;</button>
+                    <h4 class="modal-title"><span id="Label4" style="font-size:Large;font-weight:bold;">Kindly send an email notification to all the Directors on any changes for the below</span>
+                    </h4>
+                  </div>
+
+
+               <div class="modal-body">
+                <div class="radio-menu">
+
+                    <div>
+                        <input id="RadioButtonList1_0" type="radio" name="RadioButtonList1" value="Venue of Meeting" onclick="">
+                        <label for="RadioButtonList1_0" style="font-weight: 100;" >Venue of  Meeting</label>
+                    </div>
+
+                    <div>
+                        <input id="RadioButtonList1_1" type="radio" name="RadioButtonList1" value="Date of Meeting" onclick="">
+                        <label for="RadioButtonList1_1" style="font-weight: 100;">Date of Meeting</label>
+                    </div>
+
+                    <div>
+                        <input id="RadioButtonList1_2" type="radio" name="RadioButtonList1" value="Time of Meeting" onclick="">
+                        <label for="RadioButtonList1_2" style="font-weight: 100;">Time of Meeting</label>
+                    </div>
+
+                    <div>
+                        <input id="RadioButtonList1_3" type="radio" name="RadioButtonList1" value="Confirmation of Agenda" onclick="">
+                        <label for="RadioButtonList1_3" style="font-weight: 100;">Confirmation of Agenda</label>
+                    </div>
+
+                    <div>
+                        <input id="RadioButtonList1_4" type="radio" name="RadioButtonList1" value="Minutes of Meeting" onclick="">
+                        <label for="RadioButtonList1_4" style="font-weight: 100;">Minutes of Meeting</label>
+                    </div>
+
+                </div>
+                   <br>
+
+<!--                  ############################ venue ############################################                  -->
+                   <div style="height:250px;">
+                      <div id="Venue of Meeting" style="display:none;" >
+                          <div style="text-align: center">
+                              <span id="venue-label" style="font-size:Large;">Venue Change for the Meeting</span>
+                          </div><br>
+
+                          <div>
+                               <div class="notify-leftblk">
+                                   <span id="Label1">From</span>
+                                   <input name="venue-from" type="text" value="{{venue}}" readonly="readonly" id="venue-from">
+                               </div>
+
+                              <div class="notify-rightblk">
+                                  <span id="Label2">To<span style="color:red;font-size:larger;">*</span></span>
+                                  <input name="venue-to" type="text" maxlength="250" id="venue-to" placeholder="Select Venue" required>
+                                  <span id="notifyVenueValidator" style="color:Red;visibility:hidden;font-size:larger;">*</span>
+                              </div>
+                          </div><br><br>
+
+                            <div colspan="4" style="text-align: center;margin-top:10px;">
+                                    <input type="submit" name="Button2" value="Submit" id="submit-venue" class="sub2button"
+                                           onclick="changeMeetingData('venue','{{info.id}}')">
+                            </div><br>
+
+                             <div id="venue-mail-confirmation" style="visibility:hidden;text-align: center" >
+                                    <div class="style2" colspan="4" style="text-align: center;" >
+                                        <span id="Label3" style="color:Red;">Do you want to send confirmation mail to all Directors ?</span></div>
+                             </div>
+
+                             <div id="venue-mail-confirmation1" style="visibility:hidden;" >
+                                    <div colspan="4" style="text-align: center;">
+                                     <input type="submit" name="venue-mail" value="Yes" id="venue-yes"
+                                              class="sub2button" onclick="sendEmail1('venue','{{info.id}}','{{venue}}')">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="submit" name="venue-mail" value="No" id="venue-no" class="removebutton" style="margin-left:0;"
+                                               onclick="location.reload()">
+                                    </div>
+                             </div>
+
+                      </div>
+<!--                  ############################ date ############################################                  -->
+                        <div id="Date of Meeting" style="display:none;" >
+                            <div style="text-align: center">
+                              <span id="Label6" style="font-size:Large;">Date Change for the Meeting</span>
+                          </div><br>
+
+                          <div>
+                               <div class="notify-leftblk">
+                                   <span id="Label7">From</span>
+                                   <input name="date-from" type="text" value="{{date}}" readonly="readonly" id="date-from">
+                               </div>
+
+                              <div class="notify-rightblk">
+                                  <span id="Label8">To<span style="color:red;font-size:larger;">*</span></span>
+                                  <input name="date-to" type="date" maxlength="250" id="date-to" style="padding:4px;" placeholder="Select Date">
+                                  <span id="notifyDateValidator" style="color:Red;visibility:hidden;">*</span>
+                              </div>
+                          </div><br><br>
+
+                            <div colspan="4" style="text-align: center;margin-top:10px;">
+                                    <input type="submit" name="Button2" value="Submit" id="submit-date" class="sub2button"
+                                       onclick="changeMeetingData('date','{{info.id}}')">
+                            </div><br>
+
+                             <div id="date-mail-confirmation" style="visibility:hidden;text-align: center" >
+                                    <div class="style2" colspan="4" style="text-align: center;" >
+                                        <span id="Label11" style="color:Red;">Do you want to send confirmation mail to all Directors ?</span></div>
+                             </div>
+
+                             <div id="date-mail-confirmation1" style="visibility:hidden;" >
+                                    <div colspan="4" style="text-align: center;">
+                                    <input type="submit" name="venue-mail" value="Yes" id="date-yes" class="sub2button"
+                                        onclick="sendEmail1('date','{{info.id}}','{{date}}')">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="submit" name="venue-mail" value="No" id="date-no" class="removebutton"
+                                           style="margin-left:0;"    onclick="location.reload()">
+                                    </div>
+                             </div>
+
+                      </div>
+<!--                  ############################ time ############################################                  -->
+                       <div id="Time of Meeting" style="display:none;" >
+
+                         <div style="text-align: center">
+                             <span id="Label5" style="font-size:Large;">Time Change for the Meeting</span>
+                          </div><br>
+
+                          <div>
+                               <div class="notify-leftblk">
+                                   <span id="Label9">From</span>
+                                  <input name="from-time" type="text" value="{{time}}" readonly="readonly" id="from-time">
+                               </div>
+
+                              <div class="notify-rightblk">
+                                  <span id="Label10">To<span style="color:red;font-size:larger;">*</span></span>
+                                   <select name="ddlhh" id="ddlhh" class="input-mini">
+                                            <option selected="selected" value="01">01</option>
+                                            <option value="02">02</option>
+                                            <option value="03">03</option>
+                                            <option value="04">04</option>
+                                            <option value="05">05</option>
+                                            <option value="06">06</option>
+                                            <option value="07">07</option>
+                                            <option value="08">08</option>
+                                            <option value="09">09</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                        </select>&nbsp;
+
+                                        <select name="ddlmm" id="ddlmm" class="input-mini">
+                                            <option selected="selected" value="00">00</option>
+                                            <option value="01">01</option>
+                                            <option value="02">02</option>
+                                            <option value="03">03</option>
+                                            <option value="04">04</option>
+                                            <option value="06">06</option>
+                                            <option value="07">07</option>
+                                            <option value="08">08</option>
+                                            <option value="09">09</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                            <option value="13">13</option>
+                                            <option value="14">14</option>
+                                            <option value="15">15</option>
+                                            <option value="16">16</option>
+                                            <option value="17">17</option>
+                                            <option value="18">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
+                                            <option value="23">23</option>
+                                            <option value="24">24</option>
+                                            <option value="25">25</option>
+                                            <option value="26">26</option>
+                                            <option value="27">27</option>
+                                            <option value="28">28</option>
+                                            <option value="29">29</option>
+                                            <option value="30">30</option>
+                                            <option value="31">31</option>
+                                            <option value="32">32</option>
+                                            <option value="33">33</option>
+                                            <option value="34">34</option>
+                                            <option value="35">35</option>
+                                            <option value="36">36</option>
+                                            <option value="37">37</option>
+                                            <option value="38">38</option>
+                                            <option value="39">39</option>
+                                            <option value="40">40</option>
+                                            <option value="41">41</option>
+                                            <option value="42">42</option>
+                                            <option value="43">43</option>
+                                            <option value="44">44</option>
+                                            <option value="45">45</option>
+                                            <option value="46">46</option>
+                                            <option value="47">47</option>
+                                            <option value="48">48</option>
+                                            <option value="49">49</option>
+                                            <option value="50">50</option>
+                                            <option value="51">51</option>
+                                            <option value="52">52</option>
+                                            <option value="53">53</option>
+                                            <option value="54">54</option>
+                                            <option value="55">55</option>
+                                            <option value="56">56</option>
+                                            <option value="57">57</option>
+                                            <option value="58">58</option>
+                                            <option value="59">59</option>
+
+                                        </select>&nbsp;
+
+                                        <select name="ddlam" id="ddlam" class="input-mini">
+                                                <option selected="selected" value="AM">AM</option>
+                                                <option value="PM">PM</option>
+
+                                            </select>&nbsp;
+
+                                <span id="notifyTimeValidator" style="color:Red;visibility:hidden;">*</span>
+                              </div>
+                          </div><br><br>
+
+                            <div colspan="4" style="text-align: center;margin-top:10px;">
+                                    <input type="submit" name="Button2" value="Submit" id="submit-time" class="sub2button"
+                                         onclick="changeMeetingData('time','{{info.id}}')" >
+                            </div><br>
+
+                             <div id="time-mail-confirmation" style="visibility:hidden;text-align: center" >
+                                    <div class="style2" colspan="4" style="text-align: center;" >
+                                        <span id="Label12" style="color:Red;">Do you want to send confirmation mail to all Directors ?</span></div>
+                             </div>
+
+                             <div id="time-mail-confirmation1" style="visibility:hidden;" >
+                                    <div colspan="4" style="text-align: center;">
+                                    <input type="submit" name="venue-mail" value="Yes" id="time-yes" class="sub2button"
+                                        onclick="sendEmail1('time','{{info.id}}','{{time}}')">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="submit" name="venue-mail" value="No" id="time-no" class="removebutton" style="margin-left:0;"
+                                               onclick="location.reload()">
+                                    </div>
+                             </div>
+
+                      </div>
+<!--                  ############################ agenda ############################################                  -->
+                       <div id="Confirmation of Agenda" style="display:none;" >
+
+                          <div style="text-align: center">
+                            <span id="agenda-label" style="font-size:Large;">Confirmation of agenda for the Meeting</span>
+                          </div><br><br>
+
+                           <div id="agenda-mail-confirmation" style="text-align: center" >
+                                    <div class="style2" colspan="4" style="text-align: center;" >
+                                        <span id="Label13" style="color:Red;">Do you want to send confirmation mail to all Directors ?</span></div>
+                                    </div>
+
+                             <div id="agenda-mail-confirmation1" style="" >
+                                    <div colspan="4" style="text-align: center;">
+                                   <input type="submit" name="venue-mail" value="Yes" id="agenda-yes" class="sub2button"
+                                        onclick="sendEmail1('agenda','{{info.id}}',''  )" />
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="submit" name="venue-mail" value="No" id="agenda-no" class="removebutton" style="margin-left:0;"
+                                               onclick="location.reload()">
+                                    </div>
+                             </div>
+                       </div>
+<!--                  ############################ mom ############################################                  -->
+                       <div id="Minutes of Meeting" style="display:none;" >
+                           <div style="text-align: center">
+                            <span id="minute-label" style="font-size:Large;">Confirmation of Minutes of Meeting</span>
+                          </div><br><br>
+
+                           <div id="minute-mail-confirmation" style="text-align: center" >
+                                    <div class="style2" colspan="4" style="text-align: center;" >
+                                        <span id="Label14" style="color:Red;">Do you want to send confirmation mail to all Directors ?</span></div>
+                                    </div>
+
+                             <div id="minute-mail-confirmation1" style="" >
+                                    <div colspan="4" style="text-align: center;">
+                                   <input type="submit" name="venue-mail" value="Yes" id="minute-yes" class="sub2button"
+                                        onclick="sendEmail1('minute','{{info.id}}','')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                        <input type="submit" name="venue-mail" value="No" id="minute-no" class="removebutton" style="margin-left:0;"
+                                               onclick="location.reload()">
+
+                                    </div>
+                             </div>
+                       </div>
+
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+    
+
+
+
+                
+
+<!--Quick upload-->
+<div id="myModal3" class="modal fade" role="dialog">
+             <div class="modal-dialog">
+        <!-- Modal content-->
+                <div class="modal-content" >
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" onclick="location.reload();">&times;</button>
+                    <h4 class="modal-title">Upload Zip</h4>
+                  </div>
+
+
+                  <div class="modal-body">
+
+                    <form method="POST" autocomplete="on" class="form-horizontal" role="form"
+                    enctype="multipart/form-data" >
+<!--                        onsubmit="addAgenda('{{info.id}}')"-->
+                        {% csrf_token %}
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;width:110px;">Upload Zip<span style="color:red;font-size: larger;">*</span><span style="margin-left: 57px;">:</span></label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:300px;margin-left:-25px;">
+                            <input type="file" accept=".zip" id="uploadzip_btn" name="file_btn" style="padding-top:5px;">
+                        </div>
+                         <span ><div style="margin-top:5px;"><a href="{{baseURL}}static/sample_zip/QuickSample.zip">Sample.zip</a></div></span>
+
+
+
+                     </div>
+
+                        <p class="zipformvalidator" style="color:Red;visibility:hidden;"></p>
+
+                        <div style="text-align:center;">
+                        <input type="button" class="sub2button" value="Submit" onclick="uploadAgendaZip('','{{info.id}}','agenda')">
+                        </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+</div>
+
+<!--Quick upload for sub agenda & sub-sub agenda-->
+<div id="myModal4" class="modal fade" role="dialog">
+             <div class="modal-dialog">
+        <!-- Modal content-->
+                <div class="modal-content" >
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" onclick="location.reload();">&times;</button>
+                    <h4 class="modal-title">Upload Zip</h4>
+                  </div>
+
+
+                  <div class="modal-body">
+
+                    <form method="POST" autocomplete="on" class="form-horizontal" role="form"
+                    enctype="multipart/form-data" >
+<!--                        onsubmit="addAgenda('{{info.id}}')"-->
+                        {% csrf_token %}
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;width:110px;">Upload Zip:</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:300px;margin-left:-25px;">
+                            <input type="file" accept=".zip" id="subag_uploadzip_btn"  name="file_btn"
+                                   style="padding-top:5px;">
+                        </div>
+                         <span ><div style="margin-top:5px;"><a href="{{baseURL}}static/sample_zip/QuickSample.zip">Sample.zip</a></div></span>
+
+                     </div>
+
+                        <p class="zipformvalidator1" style="color:Red;visibility:hidden;"></p>
+
+                        <div style="text-align:center;">
+                        <input type="button" id="zipbtn" class="sub2button" value="Submit"
+                               onclick="uploadAgendaZip()">
+                        </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+</div>
+
+<!-- Add attchment for subagenda item-->
+<div id="myModal5" class="modal fade" role="dialog">
+             <div class="modal-dialog">
+        <!-- Modal content-->
+                <div class="modal-content" >
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" onclick="location.reload();">&times;</button>
+                    <h4 class="modal-title">Add Attachment</h4>
+                  </div>
+
+
+                  <div class="modal-body">
+
+                    <form method="POST" id="addSubAgendaForm" autocomplete="on" class="form-horizontal" role="form"
+                    enctype="multipart/form-data" >
+<!--                        onsubmit="addAgenda('{{info.id}}')"-->
+                        {% csrf_token %}
+
+
+                    <div class="form-group" style="display:none;">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">ID :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+                            <input type="text" style="" class="form-control agenda-data"  id="agenda_agid"  name=""  value="" disabled>
+<!--                            <span id="CustomValidator1" style="color:Red;visibility:hidden;">Text contains invalid characters</span>-->
+                        </div>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Title :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+                            <input type="text" style="" class="form-control agenda-data" id="subagenda_title"  name="agenda_title" required>
+                        </div>
+                         <span id="subagendaTitleValidator" style="color:Red;visibility:hidden;">Title contains invalid characters</span>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Description<span style="color:red;font-size:larger;">*</span> :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+                            <input type="text" style="" class="form-control agenda-data" id="subagenda_desc"  name="agenda_desc">
+                        </div>
+                         <span id="subagendaDescValidator" style="color:Red;visibility:hidden;"></span>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Item Type :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+
+                                  <select  style="" id="subitem_type" name="subitem_type" class="form-control agenda-data"  >
+                                       <option value="">Select</option>
+                                       <option value="Approval">Approval</option>
+                                       <option value="Information">Information</option>
+                                       <option value="Discussion">Discussion</option>
+                                       <option value="Presentation">Presentation</option>
+                                       <option value="Noting">Noting</option>
+                                       <option value="Consideration">Consideration</option>
+                                       <option value="Ratification">Ratification</option>
+                                       <option value="Other">Other</option>
+
+                                  </select>
+                        </div>
+                    </div>
+
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Note<span style="color:red;font-size:larger;">*</span> :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" >
+                            <input type="file" style="margin-top:2px; " class="" id="subagfile_btn"  name="file_btn"
+                                   accept=".doc,.docx,.pdf,.txt,.ppt,.xls" >
+                        </div>
+                        <span id="subfilenameValidator" style="color:Red;visibility:hidden;margin:15px;"></span>
+
+                    </div>
+
+                        <div style="text-align:center;">
+                        <input type="button" class="sub2button" value="Submit"
+                               onclick="addSubAgendaAttachment('{{info.id}}','subag_attachment')">
+                        </div>
+
+                    </form>
+                      <p id="subagformvalidator" style="color:Red;visibility:hidden;"></p>
+                  </div>
+                </div>
+              </div>
+</div>
+
+<!-- Add sub agenda item-->
+<div id="myModal6" class="modal fade" role="dialog">
+             <div class="modal-dialog">
+        <!-- Modal content-->
+                <div class="modal-content" >
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" onclick="location.reload();">&times;</button>
+                    <h4 class="modal-title">Add Sub Agenda Item</h4>
+                  </div>
+
+
+                  <div class="modal-body">
+
+                    <form method="POST" id="addsubAgendaItemForm" autocomplete="off" class="form-horizontal" role="form"
+                    enctype="multipart/form-data" >
+<!--                        onsubmit="addAgenda('{{info.id}}')"-->
+                        {% csrf_token %}
+
+                    <p id="subagitformvalidator" style="color:Red;visibility:hidden;"></p>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Item Type :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+
+                                  <select  style="" id="sub_it_agendaname" name="sub_it_agendaname" class="form-control agenda-data" disabled >
+<!--                                       <option value="">Select</option>-->
+                                  </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">ID<span style="color:red;font-size:larger;">*</span> :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+                            <input type="text" style="" class="form-control agenda-data"  id="sub_it_agenda_id"  name="agenda_id"  value="" disabled>
+<!--                            <span id="CustomValidator1" style="color:Red;visibility:hidden;">Text contains invalid characters</span>-->
+                        </div>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Title<span style="color:red;font-size:larger;">*</span> :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+                            <input type="text" style="" class="form-control agenda-data" id="sub_it_agenda_title"  name="agenda_title" required>
+                        </div>
+                         <span id="subitagendaTitleValidator" style="color:Red;visibility:hidden;">Title contains invalid characters</span>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Description:</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+                            <input type="text" style="" class="form-control agenda-data" id="sub_it_agenda_desc"  name="agenda_desc">
+                        </div>
+                         <span id="subitagendaDescValidator" style="color:Red;visibility:hidden;">Description contains invalid characters</span>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Item Type :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+
+                                  <select  style="" id="sub_it_item_type" name="sub_it_item_type" class="form-control agenda-data"  >
+                                       <option value="">Select</option>
+                                       <option value="Approval">Approval</option>
+                                       <option value="Information">Information</option>
+                                       <option value="Discussion">Discussion</option>
+                                       <option value="Presentation">Presentation</option>
+                                       <option value="Noting">Noting</option>
+                                       <option value="Consideration">Consideration</option>
+                                       <option value="Ratification">Ratification</option>
+                                       <option value="Other">Other</option>
+
+                                  </select>
+                        </div>
+                    </div>
+
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Note:</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" >
+                            <input type="file" style="" class="form-control uploader filebtn" id="sub_it_file_btn"  name="file_btn"
+                                   accept=".doc,.docx,.pdf,.txt,.ppt,.xls" >
+                        </div>
+                        <span id="subitfilenameValidator" style="color:Red;visibility:hidden;margin:165px;">Filename contains invalid characters</span>
+
+                    </div>
+
+                        <div style="text-align:center;">
+                        <input type="button" class="sub2button" value="Submit" onclick="addSubAgenda('{{info.id}}','subagenda')">
+                        </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+</div>
+
+<!-- Add sub sub agenda item-->
+<div id="myModal7" class="modal fade" role="dialog">
+             <div class="modal-dialog">
+        <!-- Modal content-->
+                <div class="modal-content" >
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" onclick="location.reload();">&times;</button>
+                    <h4 class="modal-title">Sub Sub Agenda Item</h4>
+                  </div>
+
+
+                  <div class="modal-body">
+
+                    <form method="POST" id="sub-sub-addAgendaForm" autocomplete="off" class="form-horizontal" role="form"
+                    enctype="multipart/form-data" >
+<!--                        onsubmit="addAgenda('{{info.id}}')"-->
+                        {% csrf_token %}
+
+                    <p id="sub-sub-formvalidator" style="color:Red;visibility:hidden;"></p>
+                        <div class="form-group" style="display:none;">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">parent ID :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+                            <input type="text" style="" class="form-control agenda-data"  id="sub-sub-parent_agid"  name=""  value="" disabled>
+<!--                            <span id="CustomValidator1" style="color:Red;visibility:hidden;">Text contains invalid characters</span>-->
+                        </div>
+                    </div>
+                        <div class="form-group" style="display:none;">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">agenda count :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+                            <input type="text" style="" class="form-control agenda-data"  id="sub-sub-agendacount"  name=""  value="" disabled>
+<!--                            <span id="CustomValidator1" style="color:Red;visibility:hidden;">Text contains invalid characters</span>-->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">ID<span style="color:red;font-size:larger;">*</span> :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+                            <input type="text" style="" class="form-control agenda-data"  id="sub-sub-agenda_id"  name="agenda_id"  value="{{agenda_sr}}" disabled>
+<!--                            <span id="CustomValidator1" style="color:Red;visibility:hidden;">Text contains invalid characters</span>-->
+                        </div>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Title<span style="color:red;font-size:larger;">*</span> :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+                            <input type="text" style="" class="form-control agenda-data" id="sub-sub-agenda_title"  name="agenda_title" required>
+                        </div>
+                         <span id="sub-sub-agendaTitleValidator" style="color:Red;visibility:hidden;">Title contains invalid characters</span>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Description:</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+                            <input type="text" style="" class="form-control agenda-data" id="sub-sub-agenda_desc"  name="agenda_desc">
+                        </div>
+                         <span id="sub-sub-agendaDescValidator" style="color:Red;visibility:hidden;">Description contains invalid characters</span>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Item Type :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+
+                                  <select  style="" id="sub-sub-item_type" name="sub-sub-item_type" class="form-control agenda-data"  >
+                                       <option value="">Select</option>
+                                       <option value="Approval">Approval</option>
+                                       <option value="Information">Information</option>
+                                       <option value="Discussion">Discussion</option>
+                                       <option value="Presentation">Presentation</option>
+                                       <option value="Noting">Noting</option>
+                                       <option value="Consideration">Consideration</option>
+                                       <option value="Ratification">Ratification</option>
+                                       <option value="Other">Other</option>
+
+                                  </select>
+                        </div>
+                    </div>
+
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Note:</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" >
+                            <input type="file" style="" class="form-control uploader filebtn" id="sub-sub-file_btn"  name="file_btn"
+                                   accept=".doc,.docx,.pdf,.txt,.ppt,.xls" >
+                        </div>
+                        <span id="sub-sub-filenameValidator" style="color:Red;visibility:hidden;margin:165px;">Filename contains invalid characters</span>
+
+                    </div>
+
+                        <div style="text-align:center;">
+                        <input type="button" class="sub2button" value="Submit" onclick="addSubSubAgenda('{{info.id}}','sub-subagenda')">
+                        </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+</div>
+
+<!-- Add attchment for sub subagenda item-->
+<div id="myModal8" class="modal fade" role="dialog">
+             <div class="modal-dialog">
+        <!-- Modal content-->
+                <div class="modal-content" >
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" onclick="location.reload();">&times;</button>
+                    <h4 class="modal-title">Add Attachment</h4>
+                  </div>
+
+
+                  <div class="modal-body">
+
+                    <form method="POST" id="addSubSubAgendaForm" autocomplete="on" class="form-horizontal" role="form"
+                    enctype="multipart/form-data" >
+<!--                        onsubmit="addAgenda('{{info.id}}')"-->
+                        {% csrf_token %}
+
+
+                    <div class="form-group" style="display:none;">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">ID :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+                            <input type="text" style="" class="form-control agenda-data"  id="sub_agenda_agid"  name=""  value="" disabled>
+<!--                            <span id="CustomValidator1" style="color:Red;visibility:hidden;">Text contains invalid characters</span>-->
+                        </div>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Title :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+                            <input type="text" style="" class="form-control agenda-data" id="sub_subagenda_title"  name="agenda_title" required>
+                        </div>
+                         <span id="sub_subagendaTitleValidator" style="color:Red;visibility:hidden;">Title contains invalid characters</span>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Description<span style="color:red;font-size:larger;">*</span> :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+                            <input type="text" style="" class="form-control agenda-data" id="sub_subagenda_desc"  name="agenda_desc">
+                        </div>
+                         <span id="sub_subagendaDescValidator" style="color:Red;visibility:hidden;"></span>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Item Type :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;">
+
+                                  <select  style="" id="sub_subitem_type" name="sub_subitem_type" class="form-control agenda-data"  >
+                                       <option value="">Select</option>
+                                       <option value="Approval">Approval</option>
+                                       <option value="Information">Information</option>
+                                       <option value="Discussion">Discussion</option>
+                                       <option value="Presentation">Presentation</option>
+                                       <option value="Noting">Noting</option>
+                                       <option value="Consideration">Consideration</option>
+                                       <option value="Ratification">Ratification</option>
+                                       <option value="Other">Other</option>
+
+                                  </select>
+                        </div>
+                    </div>
+
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Note<span style="color:red;font-size:larger;">*</span> :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" >
+                            <input type="file" style="margin-top:2px; " class="" id="sub_subagfile_btn"  name="file_btn"
+                                   accept=".doc,.docx,.pdf,.txt,.ppt,.xls" >
+                        </div>
+                        <span id="sub_subfilenameValidator" style="color:Red;visibility:hidden;margin:15px;"></span>
+
+                    </div>
+
+                        <div style="text-align:center;">
+                        <input type="button" class="sub2button" value="Submit"
+                               onclick="addSubSubAgendaAttachment('{{info.id}}','sub_subag_attachment')">
+                        </div>
+
+                    </form>
+                      <p id="sub_subagformvalidator" style="color:Red;visibility:hidden;"></p>
+                  </div>
+                </div>
+              </div>
+</div>
+
+
+<div id="myModal9" class="modal fade" role="dialog">
+             <div class="modal-dialog">
+        <!-- Modal content-->
+                <div class="modal-content" >
+                  <div class="modal-header">
+                    <button type="button" class="close" onclick="javascript:window.location.reload()" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Update Agenda Item</h4>
+                  </div>
+
+
+                  <div class="modal-body">
+
+                    <form method="POST" id="updateagenda" autocomplete="on" class="form-horizontal" role="form"
+                    enctype="multipart/form-data" >
+<!--                        onsubmit="addAgenda('{{info.id}}')"-->
+                        {% csrf_token %}
+
+
+                    <div class="form-group" style="">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">ID<span style="color:red;font-size:medium;">*</span> :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:330px;">
+                            <input type="text" style="" class="form-control agenda-data"  id="agid"  name=""  value="" disabled>
+<!--                            <span id="CustomValidator1" style="color:Red;visibility:hidden;">Text contains invalid characters</span>-->
+                        </div>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Title<span style="color:red;font-size:medium;">*</span> :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:330px;">
+                            <input type="text" style="" class="form-control agenda-data" id="title"  name="agenda_title" required>
+                        </div>
+                         <span id="TitleValidator" style="color:Red;visibility:hidden;">Title contains invalid characters</span>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Description:</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:330px;">
+                            <input type="text" style="" class="form-control agenda-data" id="desc"  name="agenda_desc">
+                        </div>
+                         <span id="DescValidator" style="color:Red;visibility:hidden;">Description contains invalid characters</span>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Item Type :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:330px;">
+
+                                  <select  style="" id="i_type" name="sub_subitem_type" class="form-control agenda-data"  >
+                                       <option value="0">Select</option>
+                                       <option value="1">Approval</option>
+                                       <option value="2">Information</option>
+                                       <option value="3">Discussion</option>
+                                       <option value="4">Presentation</option>
+                                       <option value="5">Noting</option>
+                                       <option value="6">Consideration</option>
+                                       <option value="7">Ratification</option>
+                                       <option value="8">Other</option>
+
+                                  </select>
+                        </div>
+                    </div>
+
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;">Note:</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" >
+                            <input type="file" style="margin-top:2px; " class="box11" id="fileu_btn"  name="file_btn"
+                                   accept=".doc,.docx,.pdf,.txt,.ppt,.xls" >
+                        </div>
+                        <span id="filenameValidator1" style="color:Red;visibility:hidden;margin:165px;"></span>
+
+                    </div>
+                        <div  style="text-align:center;">
+
+                        <input type="button" class="sub2button" value="Update" id="updateagendabtn"
+                               onclick="">
+                        <input type="button" class="sub2button" value="Cancel" onclick="javascript:window.location.reload()"  class="close" data-dismiss="modal">
+
+                         <input type="button" class="sub2button1" style="display:none;" value="Remove File" id="removebtn"
+                               onclick="">
+                         </div>
+
+                    </form>
+                      <p id="formvalidator1" style="color:Red;visibility:hidden;"></p>
+                  </div>
+                </div>
+              </div>
+</div>
+
+<div id="myModal10" class="modal fade" role="dialog">
+             <div class="modal-dialog">
+        <!-- Modal content-->
+                <div class="modal-content" >
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" onclick="location.reload();">&times;</button>
+                    <h4 class="modal-title">Upload Zip</h4>
+                  </div>
+
+
+                  <div class="modal-body">
+
+                    <form method="POST" autocomplete="on" class="form-horizontal" role="form"
+                    enctype="multipart/form-data" >
+<!--                        onsubmit="addAgenda('{{info.id}}')"-->
+                        {% csrf_token %}
+
+                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight:100;width:110px;">Upload Zip<span style="color:red;font-size: larger;">*</span>:</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:300px;margin-left:-25px;">
+                            <input type="file" accept=".zip" id="uploadzip11" name="file_btn1" style="padding-top:5px;">
+                        </div>
+                        <span>
+                            <div style="margin-top:5px;"><a href="{{baseURL}}static/sample_zip/BulkAgendaSample.zip">Sample.zip</a></div></span>
+
+                     </div>
+
+                        <p class="zipformvalidator" style="color:Red;visibility:hidden;"></p>
+
+                        <input type="button" class="sub2button" value="Submit" style="margin-left: 44%;" onclick="uploadZip('{{info.id}}')">
+
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+</div>
+
+<!--  ++++++++++++++++++++++++addMOM Modal start +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+<div class="modal" id="addMOM" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" style="float: left;">Minutes of Meeting</h4>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.reload();">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <!--action="{{baseURL}}uploadMOM" -->
+        <form method="POST"   id="myForm1" enctype="multipart/form-data" class="form-horizontal">
+                        {% csrf_token %}
+
+
+           <h4 id="hd">
+                   Browse the document and click on submit to upload
+           </h4>
+
+             <div class="form-group" style="margin-top:20px;" >
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight: 100;width:80px;">MOM<span style="color:red;font-size:larger;">*</span> :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:200px;margin-left:-15px;">
+                            <input type="file"    name="filepdf" id="filepdf" accept="application/pdf"  style="padding-top:8px;" >
+<!--                            <span id="CustomValidator1" style="color:Red;visibility:hidden;">Text contains invalid characters</span>-->
+                        </div>
+             </div>
+
+            <div style="text-align:center;margin-top:20px;">
+               <input type="button" name="Button1" value="Submit" id="Button1" class="sub2button" onclick="addMOM('{{info.id}}')">
+            </div>
+
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--  ++++++++++++++++++++++++addMOM Modal End +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+
+<!--  ++++++++++++++++++++++++noticeModal start +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+<div class="modal" id="noticeModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="width:1000px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" style="float: left;"><b>Notice Of the Meeting</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.reload();">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+      <div id="noticeofmeeting" ></div>
+          <div style="display: none;">
+              <td>fid : <input type="text" id="fid" value=""></td>
+          </div>
+
+        <div class="email-subject">
+            <div class="subject-leftblk">
+                <p style="margin-top:70px;">Email Subject :</p>
+            </div>
+            <div class="subject-rightblk">
+                    <div class="sample-toolbar">
+						<a href="javascript:void(0)" onclick="format('undo')"><span class="fa fa-undo fa-fw"></span></a>
+						<a href="javascript:void(0)" onclick="format('redo')"><span class="fa fa-repeat fa-fw"></span></a>
+						<a href="javascript:void(0)" onclick="format('bold')"><span class="fa fa-bold fa-fw"></span></a>
+						<a href="javascript:void(0)" onclick="format('italic')"><span class="fa fa-italic fa-fw"></span></a>
+
+						<a href="javascript:void(0)" onclick="format('underline')"><span class="fa fa-underline fa-fw"></span></a>
+						<a href="javascript:void(0)" onclick="format('justifyLeft')"><span class="fa fa-align-left fa-fw"></span></a>
+						<a href="javascript:void(0)" onclick="format('justify')"><span class="fa fa-align-justify fa-fw"></span></a>
+
+						<a href="javascript:void(0)" onclick="format('insertOrderedList')"><span class="fa fa-list-ol fa-fw"></span></a>
+						<a href="javascript:void(0)" onclick="format('insertunorderedlist')"><span class="fa fa-list fa-fw"></span></a>
+						<a href="javascript:void(0)" onclick="format('formatBlock')"><span class="fa fa-eraser fa-fw"></span></a>
+						<span><b>Font</b></span>
+						<select id="input-font" class="input"  onchange="changeFont (this);">
+							<option value="Arial">Arial</option>
+							<option value="Helvetica">Helvetica</option>
+							<option value="Times New Roman">Times New Roman</option>
+							<option value="Sans serif">Sans serif</option>
+							<option value="Courier New">Courier New</option>
+							<option value="Verdana">Verdana</option>
+							<option value="Georgia">Georgia</option>
+							<option value="Palatino">Palatino</option>
+							<option value="Garamond">Garamond</option>
+							<option value="Comic Sans MS">Comic Sans MS</option>
+							<option value="Arial Black">Arial Black</option>
+							<option value="Tahoma">Tahoma</option>
+							<option value="Comic Sans MS">Comic Sans MS</option>
+						  </select>
+
+						<span>Size</span>
+						<select id="fontSize" onclick="changeSize()">
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+
+						  </select>
+
+                    <!--<a href="javascript:void(0)" onclick="document.execCommand('insertHTML', false, '&#009');"><span class="fa fa-eraser fa-fw"></span></a>
+					--></div>
+                    <div class="editor" id="editor1" contenteditable="true"></div>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+
+
+          <div class="email-subject">
+            <div class="subject-leftblk">
+                <p style="margin-top:115px;">Email Body and Signature :</p>
+            </div>
+            <div class="subject-rightblk">
+                  <div class="sample-toolbar">
+						<a href="javascript:void(0)" onclick="format('undo')"><span class="fa fa-undo fa-fw"></span></a>
+						<a href="javascript:void(0)" onclick="format('redo')"><span class="fa fa-repeat fa-fw"></span></a>
+						<a href="javascript:void(0)" onclick="format('bold')"><span class="fa fa-bold fa-fw"></span></a>
+						<a href="javascript:void(0)" onclick="format('italic')"><span class="fa fa-italic fa-fw"></span></a>
+
+						<a href="javascript:void(0)" onclick="format('underline')"><span class="fa fa-underline fa-fw"></span></a>
+						<a href="javascript:void(0)" onclick="format('justifyLeft')"><span class="fa fa-align-left fa-fw"></span></a>
+						<a href="javascript:void(0)" onclick="format('justify')"><span class="fa fa-align-justify fa-fw"></span></a>
+
+						<a href="javascript:void(0)" onclick="format('insertOrderedList')"><span class="fa fa-list-ol fa-fw"></span></a>
+						<a href="javascript:void(0)" onclick="format('insertunorderedlist')"><span class="fa fa-list fa-fw"></span></a>
+						<a href="javascript:void(0)" onclick="format('formatBlock')"><span class="fa fa-eraser fa-fw"></span></a>
+						<span><b>Font</b></span>
+						<select id="input-font1" class="input"  onchange="changeFont (this);">
+							<option value="Arial">Arial</option>
+							<option value="Helvetica">Helvetica</option>
+							<option value="Times New Roman">Times New Roman</option>
+							<option value="Sans serif">Sans serif</option>
+							<option value="Courier New">Courier New</option>
+							<option value="Verdana">Verdana</option>
+							<option value="Georgia">Georgia</option>
+							<option value="Palatino">Palatino</option>
+							<option value="Garamond">Garamond</option>
+							<option value="Comic Sans MS">Comic Sans MS</option>
+							<option value="Arial Black">Arial Black</option>
+							<option value="Tahoma">Tahoma</option>
+							<option value="Comic Sans MS">Comic Sans MS</option>
+						  </select>
+
+						<span>Size</span>
+						<select id="fontSize1" onclick="changeSize()">
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+
+						  </select>
+                       <!--<a href="javascript:void(0)" onclick="document.execCommand('insertHTML', false, '&#009');"><span class="fa fa-eraser fa-fw"></span></a>
+-->
+					</div>
+                  <div class="editor" id="editor2" contenteditable="true"></div>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+
+        <div id="Label31" style="color:Red;text-align:center;margin-top:10px;">Do you want to send this notice mail to all Directors ?</div>
+        <div colspan="4" style="text-align: center">
+                    <input type="submit" name="Button3" value="Yes" id="Button3" class="sub2button" onclick="sendEmail()">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="submit" name="Button4" value="No" id="Button4" class="removebutton" data-dismiss="modal" style="margin-left:0;">
+        </div>
+
+      </div>
+      <!--<div class="modal-footer">
+
+       &lt;!&ndash; <button type="button" class="sub2button">Submit</button>&ndash;&gt;
+
+      </div>-->
+    </div>
+  </div>
+</div>
+<!-- ++++++++++++++++++++++++++++++++++++noticeModal end ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+{% if ErrorMessage == "TrueError" %}
+<div class="modal" id="myModalComment" style="backdrop-filter: blur(6px);">
+  <div class="modal-dialog" style="  margin:auto;margin-top:125px;  width:1016px;">
+    <div class="modal-content" >
+      <div class="modal-header">
+         <button type="button" class="close" onclick="location.reload();">&times;</button>
+      </div>
+      <div class="modal-body">
+          <table class="table table-striped bootstrap-datatable datatable dataTable" cellspacing = "0" cellpadding = "4" style="font-size:12pt;border-collapse:collapse;border: 1px solid lightgray;width: 98%;margin-left: 7px;">
+					<thead class="thead-dark">
+					</thead>
+					<tbody>
+                    <p style="font-size: large;text-align: center;">Error Occured While Downloading the Meeting File</p>
+					</tbody>
+		  </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+
+<script>
+var modal1 = document.getElementById("myModalComment");
+modal1.style.display = "block";
+
+function closecommentmodel()
+{
+    modal1.style.display = "none";
+    window.history.back();
+}
+
+</script>
+
+
+
+<script>
+function checkAll(ele) {
+     var checkboxes = document.getElementsByName('chk[]');
+     if (ele.checked) {
+         for (var i = 0; i < checkboxes.length; i++) {
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = true;
+             }
+         }
+     } else {
+         for (var i = 0; i < checkboxes.length; i++) {
+             console.log(i)
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = false;
+             }
+         }
+     }
+ }
+
+$( document ).ready(function() {
+
+$('#meet_title').val('{{info.Title}}')
+ document.getElementById("exp_date").value = "{{info.duration}}";
+
+ document.getElementById("a_date").value = "{{info.date}}";
+document.getElementById('hrs').value="{{info.hrs}}";
+document.getElementById('mins').value="{{info.mins}}";
+document.getElementById('meridian').value="{{info.Meridian}}";
+});
+
+
+function reorderag(id){
+aglist = []
+$('.agg').each(function() {
+
+ aglist.push($('#'+this.id).text());
+});
+ailist = []
+$('.aii').each(function() {
+    ailist.push($('#'+this.id).text());
+});
+
+
+
+ $.ajax({
+        type: 'POST',
+        url:'{{baseURL}}reorderag/',
+        data: { 'id':id,
+               'aglist[]':aglist,
+               'ailist[]':ailist,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success:function(response)
+        {
+           //alert("Updated succesfully.")
+            location.reload();
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+
+
+
+
+}
+
+
+function reordersag(id){
+saglist = []
+$('.sagg').each(function() {
+
+ saglist.push($('#'+this.id).text());
+});
+sailist = []
+$('.saii').each(function() {
+    sailist.push($('#'+this.id).text());
+});
+
+
+ $.ajax({
+        type: 'POST',
+        url:'{{baseURL}}reordersag/',
+        data: { 'id':id,
+               'saglist[]':saglist,
+               'sailist[]':sailist,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success:function(response)
+        {
+           //alert("Updated succesfully.")
+            location.reload();
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+
+
+
+
+}
+
+function reorderssag(id){
+ssaglist = []
+$('.ssagg').each(function() {
+
+ ssaglist.push($('#'+this.id).text());
+});
+ssailist = []
+$('.ssaii').each(function() {
+    ssailist.push($('#'+this.id).text());
+});
+
+
+
+ $.ajax({
+        type: 'POST',
+        url:'{{baseURL}}reorderssag/',
+        data: { 'id':id,
+               'ssaglist[]':ssaglist,
+               'ssailist[]':ssailist,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success:function(response)
+        {
+           //alert("Updated succesfully.")
+            location.reload();
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+
+
+
+
+}
+
+function UpdateboardcommiteeForm(id)
+{
+
+   var Title = document.getElementById("meet_title").value;
+   var Expiry_date = document.getElementById("exp_date").value;
+   var datee = document.getElementById("a_date").value;
+   var hrs = document.getElementById("hrs").value;
+   var mins = document.getElementById("mins").value;
+   var meridian = document.getElementById("meridian").value;
+
+   var titleflag , dateflag;
+    if (Title == '')
+        {
+
+			$('#meetingformvalidator').text("Please Provide Title.");
+			document.getElementById('meetingformvalidator').style.visibility = 'visible';
+			titleflag = false;
+		}
+	else {
+
+			var testdata = /^[\x00-\x7F]+$/.test(Title)
+			if (!testdata) {
+			    $('#meetingformvalidator').text('title contains invalid characters');
+				document.getElementById('meetingformvalidator').style.visibility = 'visible';
+				titleflag = false;
+			}
+			else {
+				if (Title != '') {
+					console.log('Title: ' + Title)
+					patt = /^[a-zA-Z0-9&()-.,]+(\s{0,1}[a-zA-Z0-9&()-., ,])*$/
+					var result = patt.test(Title)
+					if (!result) {
+						$('#meetingTitleValidator').text('Invalid title');
+						document.getElementById('meetingTitleValidator').style.visibility = 'visible';
+						document.getElementById('meetingformvalidator').style.visibility = 'hidden';
+						titleflag = false;
+					} else {
+						document.getElementById('meetingTitleValidator').style.visibility = 'hidden';
+						document.getElementById('meetingformvalidator').style.visibility = 'hidden';
+						titleflag = true;
+
+					}
+				}
+		    }
+	}
+    if(datee > Expiry_date){
+            $('#ExDateValidator').text('Incorrect dates');
+			document.getElementById('ExDateValidator').style.visibility = 'visible';
+			dateflag = false;
+    }
+    else{
+        document.getElementById('ExDateValidator').style.visibility = 'hidden';
+		dateflag = true;
+    }
+
+
+   if(titleflag && dateflag) {
+       $.ajax({
+            type: 'POST',
+            url:'{{baseURL}}updateinfo/',
+            data: { 'id':id,
+                    'Title':Title,
+                    'datee':datee,
+                    'Expiry_date':Expiry_date,
+                    'hrs':hrs,
+                    'mins': mins,
+                    'meridian': meridian,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'},
+            success:function(response)
+            {
+               alert("Meeting updated succesfully.")
+
+            },
+            complete:function(){},
+            error:function (xhr, textStatus, thrownError){}
+          });
+   }
+}
+
+function descmo(id,l){
+$.ajax({
+        type: 'POST',
+        url:'{{baseURL}}getdesc/',
+        data: {
+                    'ag_id':id,
+                     'l':l,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success:function(response)
+        {
+
+var listu=response.descr;
+$('#txtDesc').val(listu)
+
+
+
+$('#descsub').attr('onclick', 'updatedesc('+id+','+l+')');
+
+$('#descriptionModal').modal('show');
+
+
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+
+}
+
+
+
+
+
+function fetchd(id,l){
+$.ajax({
+        type: 'POST',
+        url:'{{baseURL}}fetchagenda/',
+        data: {
+                    'ag_id':id,
+                     'l':l,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success:function(response)
+        {
+
+
+
+$('#agid').val(response.aid)
+$('#title').val(response.title)
+$('#desc').val(response.descr)
+
+$("#i_type").val(response.ColorId).prop("selected", true);
+$('#updateagendabtn').attr('onclick', 'updateagendas('+id+','+l+',"'+response.aid+'")');
+if (response.doc != ''){
+
+$('#removebtn').css('display','initial');
+$('#removebtn').attr('onclick', 'removefile('+id+','+l+',"'+response.aid+'","'+response.doc+'")');
+}else{
+$('#removebtn').css('display','none');
+}
+
+$('#myModal9').modal('show');
+
+
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+
+}
+
+
+
+
+function removefile(id,l,aid,f){
+
+var result = confirm("Are you sure you want to delete this file?");
+if (result) {
+
+
+$.ajax({
+        type: 'POST',
+        url:'{{baseURL}}removefile/',
+        data: {
+        'id':id,
+        'l':l,
+         'commitee':'{{forum.fname}}',
+         'mid':'{{info.id}}',
+         'aid':aid,
+         'f':f,
+          'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+
+        success:function(response)
+        {
+
+$('#removebtn').css('display','none');
+
+
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+}
+}
+
+
+
+
+
+
+
+
+function del(id,l){
+var result = confirm("Do you want to delete?");
+if (result) {
+   $.ajax({
+        type: 'POST',
+        url:'{{baseURL}}deleteagendas/',
+        data: {
+                    'ag_id':id,
+                     'l':l,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success:function(response)
+        {
+            location.reload();
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+}
+
+
+
+}
+
+function updateagendas(id,l,aid){
+    var form_data = new FormData();
+
+    var title = document.getElementById('title').value;
+    var desc = document.getElementById('desc').value;
+    var itype =  $('select[id="i_type"]').val()
+   //alert(itype)
+    var titleflag = true;
+    var descflag = true;
+    var docflag = true ;
+     var fileflag = true;
+
+    if (title == '')
+    {
+
+            $('#TitleValidator').text("Please Provide Title.");
+            document.getElementById('TitleValidator').style.visibility = 'visible';
+            titleflag = false;
+    }
+    else{
+
+            var testdata = /^[\x00-\x7F]+$/.test(title)
+            if(!testdata){
+                document.getElementById('TitleValidator').style.visibility = 'visible';
+                titleflag = false;
+            }
+
+           else{
+                    if(title != ''){
+                         console.log('title: '+title)
+                         patt = /^[a-zA-Z0-9&()-.,]+(\s{0,1}[a-zA-Z0-9&()-., ,])*$/
+                         var result = patt.test(title)
+                         if(!result){
+                                    $('#TitleValidator').text('Invalid title');
+                                    document.getElementById('TitleValidator').style.visibility = 'visible';
+                                    titleflag=false;
+                         }
+                         else{
+                            document.getElementById('TitleValidator').style.visibility = 'hidden';
+                            titleflag = true;
+
+                         }
+                    }
+           }
+    }
+
+    if(desc != ''){
+            var testdata = /^[\x00-\x7F]+$/.test(desc)
+            if(!testdata){
+                document.getElementById('DescValidator').style.visibility = 'visible';
+                descflag = false;
+            }
+           else{
+                    if(desc != ''){
+                         console.log('desc: '+desc)
+                         patt = /^[a-zA-Z0-9&()-.,]+(\s{0,1}[a-zA-Z0-9&()-., ,])*$/
+                         var result = patt.test(desc)
+                         if(!result){
+                                    $('#DescValidator').text('Invalid desciption');
+                                    document.getElementById('DescValidator').style.visibility = 'visible';
+                                    descflag=false;
+                         }
+                         else{
+                            document.getElementById('DescValidator').style.visibility = 'hidden';
+                            descflag = true;
+
+                         }
+                    }
+           }
+    }
+
+
+    var fileInput = $("#fileu_btn")[0].files[0];
+    if(fileInput)
+    {
+        form_data.append('file', fileInput);
+        var file_extension = (fileInput.name).split('.')[1]
+        var file_name = (fileInput.name).split('.')[0]
+
+        var extensions = ['pdf','xls','doc','txt','ppt','docx']
+            if(extensions.includes(file_extension))
+            {
+                docflag = true;
+            }
+            else
+            {
+                console.log("ext:"+file_extension)
+                alert("Only Pdf/Document/Excel/PPT files are allowed")
+                docflag = false;
+
+            }
+        console.log('docflag: '+docflag)
+
+            patt= /^[a-z\d\_\s]+$/i
+            var result = file_name.match(patt)
+            if(result){
+                    fname = result[0]
+                    fileflag = true;
+                }
+
+                else{
+                    alert("Filename contains invalid characters")
+                    fileflag = false;
+                }
+
+        console.log('fileflag:'+fileflag)
+    }
+
+ postdata = JSON.stringify(
+                    {
+                        'title' : title,
+                        'desc' :desc,
+                        'itype' : itype,
+                        'id':id,
+                        'l':l,
+                        'commitee':'{{forum.fname}}',
+                        'mid':'{{info.id}}',
+                        'aid':aid
+
+                    })
+    form_data.append('requestData', postdata);
+    form_data.append( 'csrfmiddlewaretoken','{{ csrf_token }}')
+
+
+var flag;
+    if(titleflag){
+       if((titleflag && descflag) | (titleflag && fileflag) | (titleflag && docflag))
+           {
+           if(titleflag && descflag && fileflag && docflag){
+                flag = true
+           }
+           }
+
+       else{
+                 flag = false
+           }
+
+       }
+
+   if(flag){
+        $.ajax({
+                type: 'POST',
+                url:'{{baseURL}}updateagendas/',
+                data: form_data,
+                contentType: false,
+                processData: false,
+                success:function(response)
+                {
+                    location.reload();
+                },
+                complete:function(){},
+                error:function (xhr, textStatus, thrownError){}
+              });
+  }
+}
+
+
+
+
+
+
+function uploadZip(id){
+    var form_data = new FormData();
+    var fileInput = $("#uploadzip11")[0].files[0];
+    var fileflag , docflag;
+    if(fileInput)
+    {
+            form_data.append('file', fileInput);
+            var file_extension = (fileInput.name).split('.')[1]
+            var file_name = (fileInput.name).split('.')[0]
+
+            if(file_extension == 'zip' )
+            {
+                docflag = true;
+            }
+            else
+            {
+                console.log("ext:"+file_extension)
+                alert("Only zip files are allowed")
+                docflag = false;
+
+            }
+           console.log('docflag: '+docflag)
+
+            patt= /^[a-z\d\_\s]+$/i
+            var result = file_name.match(patt)
+            if(result){
+                    fname = result[0]
+                    fileflag = true;
+                }
+
+                else{
+                    alert("Filename contains invalid characters")
+                    fileflag = false;
+                }
+
+        console.log('fileflag:'+fileflag)
+    }else{
+        alert("Please choose correct file.");
+    }
+
+ postdata = JSON.stringify(
+                    {  'commitee':'{{forum.fname}}',
+                        'id':id,
+                        'mid':'{{info.id}}',
+                        'fid':'{{forum.fid}}'
+
+                    })
+    form_data.append('requestData', postdata);
+    form_data.append( 'csrfmiddlewaretoken','{{ csrf_token }}')
+
+if(docflag && fileflag){
+        $.ajax({
+                type: 'POST',
+                url:'{{baseURL}}uploadZip/',
+                data: form_data,
+                contentType: false,
+                processData: false,
+                success:function(response)
+                {
+                    if(response.message){
+                        alert(response.message);
+                    }else{
+                        location.reload();
+                    }
+                },
+                complete:function(){},
+                error:function (xhr, textStatus, thrownError){}
+              });
+ }
+}
+
+
+
+
+
+
+
+function updatedesc(id,l){
+description = $('#txtDesc').val()
+var descflag = true;
+
+if (description == ""){
+    alert('Please provide description')
+    descflag = false;
+}
+else{
+    patt = /^[a-zA-Z0-9&()-.,]+(\s{0,1}[a-zA-Z0-9&()-., ,])*$/
+    var result = patt.test(description)
+    if (!result) {
+        alert('Invalid description')
+        descflag = false;
+    }
+}
+
+if(descflag){
+        $.ajax({
+                type: 'POST',
+                url:'{{baseURL}}updatedesc/',
+                data: {
+                            'ag_id':id,
+                             'l':l,
+                             'description':description,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                success:function(response)
+                {
+                         location.reload();
+                },
+                complete:function(){},
+                error:function (xhr, textStatus, thrownError){}
+              });
+    }
+}
+
+
+
+function reader(){
+$.ajax({
+        type: 'POST',
+        url:'{{baseURL}}attachment/',
+        data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success:function(response)
+        {
+
+
+
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+
+}
+
+
+function accessmo(id,title){
+ $.ajax({
+        type: 'POST',
+        url:'{{baseURL}}userslist/',
+        data: {
+                    'fid':{{forum.fid}},
+                    'id':id,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success:function(response)
+        {
+
+
+title = title.split('.')[1]
+var listu=response.a;
+var idlist = response.b;
+var restricted = response.restricted;
+$('#title_ag').html(title)
+
+txt = ""
+for (i = 0; i < listu.length; i++) {
+
+txt += '<div ><input style="margin-right:7px" type="checkbox" name="slt_username" value="'+idlist[i]+'" />'+listu[i]+'</div>'
+
+}
+
+
+$(".multiple_select_checkbox11").html(txt)
+
+
+
+$('#accessModel').modal('show');
+
+
+for (i = 0; i < restricted.length; i++) {
+
+$('input[type=checkbox][value='+restricted[i]+']').prop('checked', true);
+
+}
+
+$('#restrictacc').attr('onclick', 'removeaccess('+id+')');
+
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+
+}
+
+
+function removeaccess(id){
+console.log("length--------------->"+$("input:checkbox[name=slt_username]:checked").length);
+
+list1 =[]
+if ($("input:checkbox[name=slt_username]:checked").length == 0){
+    alert("Please select user");
+}
+else{
+$("input:checkbox[name=slt_username]:checked").each(function(){
+    list1.push($(this).val());
+});
+list2 =[]
+$("input:checkbox[name=slt_username]:not(:checked)").each(function(){
+    list2.push($(this).val());
+});
+
+ $.ajax({
+        type: 'POST',
+        url:'{{baseURL}}restrictlist/',
+        data: {
+
+                    'id':id,
+                    'list1[]':list1,
+                    'list2[]':list2,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success:function(response)
+        {
+            location.reload();
+
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+}
+}
+
+function reorder(id)
+{
+
+
+   $.ajax({
+        type: 'POST',
+        url:'{{baseURL}}orderag/',
+        data: {
+                    'id':id,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success:function(response)
+        {
+
+li = response.data
+
+var i=0;
+a=""
+for (i = 0; i < li.length; i++) {
+
+a += "<tr><td class='agg' id='ag"+i+"'>"+li[i][0]+"</td><td> "+li[i][1]+"</td><td class='aii' id='ai"+i+"'> "+li[i][2]+"</td></tr>"
+
+}
+
+$("#tbbb").html(a)
+$('#reorderModal').modal('show');
+
+
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+
+}
+
+
+function reorder1(id)
+{
+
+
+   $.ajax({
+        type: 'POST',
+        url:'{{baseURL}}ordersag/',
+        data: {
+                    'id':id,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success:function(response)
+        {
+
+li = response.data
+
+var i=0;
+a=""
+for (i = 0; i < li.length; i++) {
+
+a += "<tr><td class='sagg' id='sag"+i+"'>"+li[i][0]+"</td><td> "+li[i][1]+"</td><td class='saii' id='sai"+i+"'> "+li[i][2]+"</td></tr>"
+
+}
+
+if (li.length == 0){
+a = "<span style='margin-left: 40%;'> No Sub Agenda </span>"
+$('#draggable1button').css('display','none')
+$('#draggable1').css('display','none')
+$("#draggable1er").html(a)
+$("#draggable1er").css('display','block')
+}
+else{
+$('#draggable1button').css('display','table')
+$('#draggable1').css('display','table')
+$("#draggable1er").css('display','none')
+}
+
+$("#tbbb1").html(a)
+
+$('#reordersagModal').modal('show');
+
+
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+
+}
+
+function reorder2(id)
+{
+
+
+   $.ajax({
+        type: 'POST',
+        url:'{{baseURL}}orderssag/',
+        data: {
+                    'id':id,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success:function(response)
+        {
+
+li = response.data
+
+var i=0;
+a=""
+for (i = 0; i < li.length; i++) {
+
+a += "<tr><td class='ssagg' id='ssag"+i+"'>"+li[i][0]+"</td><td> "+li[i][1]+"</td><td class='ssaii' id='ssai"+i+"'> "+li[i][2]+"</td></tr>"
+
+}
+
+if (li.length == 0){
+a = "<span style='margin-left: 40%;'> No Sub Sub Agenda </span>"
+$('#draggable2button').css('display','none')
+$('#draggable2').css('display','none')
+$("#draggable2er").html(a)
+$("#draggable2er").css('display','block')
+}
+else{
+$('#draggable2button').css('display','table')
+$('#draggable2').css('display','table')
+$("#draggable2er").css('display','none')
+}
+
+
+$("#tbbb2").html(a)
+
+$('#reorderssagModal').modal('show');
+
+
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+
+}
+
+
+
+
+
+
+
+	var fixHelperModified = function(e, tr) {
+		var $originals = tr.children();
+		var $helper = tr.clone();
+		$helper.children().each(function(index) {
+			$(this).width($originals.eq(index).width())
+		});
+		return $helper;
+	},
+		updateIndex = function(e, ui) {
+			$('td.index', ui.item.parent()).each(function (i) {
+				$(this).html(i+1);
+			});
+			$('input[type=text]', ui.item.parent()).each(function (i) {
+				$(this).val(i + 1);
+			});
+		};
+
+	$("#draggable tbody").sortable({
+		helper: fixHelperModified,
+		stop: updateIndex
+	}).disableSelection();
+
+		$("tbody").sortable({
+		distance: 5,
+		delay: 100,
+		opacity: 0.6,
+		cursor: 'move',
+		update: function() {
+
+		}
+			});
+</script>
+
+<script>
+function findaid(aid,mid,type){
+    $("#zipbtn").attr("onclick","uploadAgendaZip('"+aid+"','"+mid+"','"+type+"')");
+}
+function findAttachmentAgid(agid,mid,type){
+    if(type == 'subagenda'){
+        $('#agenda_agid').val(agid);
+    }
+    else if(type == 'sub-subagenda'){
+        $('#sub_agenda_agid').val(agid);
+    }
+}
+
+function findSubAgendaDetails(ag_id,mid,type)
+{
+    //alert("find sub detail");
+    $.ajax({
+        type: 'POST',
+        url:'{{baseURL}}findSubAgendaDetails',
+        data: { 'mid':mid,
+                'type':type,
+                'ag_id':ag_id,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+        success:function(response)
+        {
+            if(response.agendaType == 'subagenda')
+            {
+                var agendatitle = response.parent_agendatitle;
+                var sub_agid = response.subagenda_aid;
+                var parent_agenda = response.parent_agenda;
+
+
+                $.each(agendatitle, function( key, value ) {
+                        console.log(key+ ":" + value);
+                      $('#sub_it_agendaname').append(`<option value="${value}">${key}</option>`);
+                    });
+
+                 $("#sub_it_agendaname").val(ag_id).prop("selected", true);
+                $('#sub_it_agenda_id').val(sub_agid);
+            }
+            else if(response.agendaType == 'sub-subagenda')
+            {
+                var sub_sub_aid = response.sub_sub_agenda_srno;
+                var parent_agid = response.parent_agid;
+                 $('#sub-sub-agenda_id').val(sub_sub_aid);
+                 $('#sub-sub-parent_agid').val(parent_agid);
+                 $('#sub-sub-agendacount').val(response.sub_sub_agenda_count);
+
+
+            }
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+}
+
+function addSubAgendaAttachment(mid,type)
+{
+    var form_data = new FormData();
+    var agenda_agid = document.getElementById('agenda_agid').value;
+    var sbtitle = document.getElementById('subagenda_title').value;
+    var sbdesc = document.getElementById('subagenda_desc').value;
+    var sbitemtype =  $('select[name="subitem_type"]').val()
+
+    var titleflag = true;
+    var descflag = true;
+    var fileflag = true;
+    var docflag = true;
+
+
+    if(sbtitle != ''){
+
+            var testdata = /^[\x00-\x7F]+$/.test(sbtitle)
+            if(!testdata){
+                document.getElementById('subagendaTitleValidator').style.visibility = 'visible';
+                titleflag = false;
+            }
+            else {
+				if (sbtitle != '') {
+					console.log('sbtitle: ' + sbtitle)
+					patt = /^[a-zA-Z0-9&()-.,]+(\s{0,1}[a-zA-Z0-9&()-., ,])*$/
+					var result = patt.test(sbtitle)
+					if (!result) {
+						$('#subagendaTitleValidator').text('Invalid title');
+						document.getElementById('subagendaTitleValidator').style.visibility = 'visible';
+						titleflag = false;
+					} else {
+						document.getElementById('subagendaTitleValidator').style.visibility = 'hidden';
+						titleflag = true;
+
+					}
+				}
+			}
+    }
+
+
+
+    if(sbdesc == ''){
+                $('#subagendaDescValidator').text("*");
+                document.getElementById('subagendaDescValidator').style.visibility = 'visible';
+                descflag = false;
+    }
+     else{
+            var testdata = /^[\x00-\x7F]+$/.test(sbdesc)
+            if(!testdata){
+                $('#subagendaDescValidator').text("Description contains invalid characters");
+                document.getElementById('subagendaDescValidator').style.visibility = 'visible';
+                descflag = false;
+            }
+             else {
+                    if (sbdesc != '') {
+                        console.log('sbdesc: ' + sbdesc)
+                        patt = /^[a-zA-Z0-9&()-.,]+(\s{0,1}[a-zA-Z0-9&()-., ,])*$/
+                        var result = patt.test(sbdesc)
+                        if (!result) {
+                            $('#subagendaDescValidator').text('Invalid description');
+                            document.getElementById('subagendaDescValidator').style.visibility = 'visible';
+                            descflag = false;
+                        } else {
+                            document.getElementById('subagendaDescValidator').style.visibility = 'hidden';
+                            descflag = true;
+
+                        }
+                    }
+             }
+
+    }
+
+    console.log('descflag: '+descflag)
+    var fileInput = $("#subagfile_btn")[0].files[0];
+
+    if(fileInput)
+    {
+        console.log('file input:---  '+fileInput);
+        form_data.append('file', fileInput);
+        //console.log(fileInput.name,typeof(fileInput.name));
+
+        var file_extension = (fileInput.name).split('.')[1]
+        var file_name = (fileInput.name).split('.')[0]
+        document.getElementById('subagformvalidator').style.visibility = 'hidden';
+        var extensions = ['pdf','xls','doc','txt','ppt','docx']
+            if(extensions.includes(file_extension))
+            {
+                docflag = true;
+            }
+            else
+            {
+                console.log("ext:"+file_extension)
+                $('#subfilenameValidator').text("Only Pdf/Document/Excel/PPT files are allowed");
+                document.getElementById('subfilenameValidator').style.visibility = 'visible';
+                docflag = false;
+
+            }
+        console.log('docflag: '+docflag)
+
+            patt= /^[a-z\d\_\s]+$/i
+            var result = file_name.match(patt)
+            if(result){
+                    fname = result[0]
+                    fileflag = true;
+                }
+
+                else{
+                    $('#subfilenameValidator').text("Filename contains invalid characters");
+                    document.getElementById('subfilenameValidator').style.visibility = 'visible';
+                    fileflag = false;
+                }
+
+        console.log('fileflag:'+fileflag)
+    }
+    else{
+
+                    $('#subagformvalidator').text("Please add attachment file");
+                    document.getElementById('subagformvalidator').style.visibility = 'visible';
+                    docflag = false;
+    }
+
+    if(docflag && fileflag){
+        document.getElementById('subagformvalidator').style.visibility = 'hidden';
+    }
+
+    postdata = JSON.stringify(
+                    {
+                        mid : mid,
+                        type :type,
+                        agenda_agid : agenda_agid,
+                        sbtitle : sbtitle,
+                        sbdesc : sbdesc,
+                        sbitemtype : sbitemtype
+
+                    })
+    form_data.append('requestData', postdata);
+    form_data.append( 'csrfmiddlewaretoken','{{ csrf_token }}')
+    console.log('titleflag== '+titleflag+' | '+'descflag== '+descflag+' | '+'fileflag== '+fileflag+' | '+'docflag== '+docflag+' | ')
+
+        if(descflag && fileflag && docflag)
+       {
+           if(titleflag)
+              {
+                         flag = true
+              }
+
+           else{
+                        flag = false
+               }
+       }
+       else{
+              flag = false
+       }
+
+    console.log('flag: '+flag);
+
+
+   if(flag){
+     $.ajax({
+            type: 'POST',
+            url: '{{baseURL}}addSubAgenda',
+            data:form_data,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                alert('Sub agenda added successfully!');
+                //$('#myModal5').modal('hide');
+                location.reload();
+            },
+            complete:function(){},
+           error:function (xhr, textStatus, thrownError){}
+        });
+     }
+
+
+}
+
+
+function addSubSubAgendaAttachment(mid,type)
+{
+    var form_data = new FormData();
+    var sub_agenda_agid = document.getElementById('sub_agenda_agid').value;
+    var sub_sbtitle = document.getElementById('sub_subagenda_title').value;
+    var sub_sbdesc = document.getElementById('sub_subagenda_desc').value;
+    var sub_sbitemtype =  $('select[name="sub_subitem_type"]').val()
+
+    var titleflag = true;
+    var descflag = true;
+    var fileflag = true;
+    var docflag = true;
+
+    if(sub_sbtitle != ''){
+            var testdata = /^[\x00-\x7F]+$/.test(sub_sbtitle)
+            if(!testdata){
+                document.getElementById('sub_subagendaTitleValidator').style.visibility = 'visible';
+                titleflag = false;
+            }
+           else {
+				if (sub_sbtitle != '') {
+					console.log('sub_sbtitle: ' + sub_sbtitle)
+					patt = /^[a-zA-Z0-9&()-.,]+(\s{0,1}[a-zA-Z0-9&()-., ,])*$/
+					var result = patt.test(sub_sbtitle)
+					if (!result) {
+						$('#sub_subagendaTitleValidator').text('Invalid title');
+						document.getElementById('sub_subagendaTitleValidator').style.visibility = 'visible';
+						titleflag = false;
+					} else {
+						document.getElementById('sub_subagendaTitleValidator').style.visibility = 'hidden';
+						titleflag = true;
+
+					}
+				}
+		   }
+    }
+
+
+    if(sub_sbdesc == ''){
+                $('#sub_subagendaDescValidator').text("*");
+                document.getElementById('sub_subagendaDescValidator').style.visibility = 'visible';
+                 descflag = false;
+    }
+     else{
+            var testdata = /^[\x00-\x7F]+$/.test(sub_sbdesc)
+            if(!testdata){
+                $('#sub_subagendaDescValidator').text("Description contains invalid characters");
+                document.getElementById('sub_subagendaDescValidator').style.visibility = 'visible';
+                descflag = false;
+            }
+             else {
+                    if (sub_sbdesc != '') {
+                        console.log('sub_sbdesc: ' + sub_sbdesc)
+                        patt = /^[a-zA-Z0-9&()-.,]+(\s{0,1}[a-zA-Z0-9&()-., ,])*$/
+                        var result = patt.test(sub_sbdesc)
+                        if (!result) {
+                            $('#sub_subagendaDescValidator').text('Invalid description');
+                            document.getElementById('sub_subagendaDescValidator').style.visibility = 'visible';
+                            descflag = false;
+                        } else {
+                            document.getElementById('sub_subagendaDescValidator').style.visibility = 'hidden';
+                            descflag = true;
+
+                        }
+                    }
+             }
+
+    }
+
+    console.log('descflag: '+descflag)
+    var fileInput = $("#sub_subagfile_btn")[0].files[0];
+
+    if(fileInput)
+    {
+
+        console.log('file input:---  '+fileInput);
+        form_data.append('file', fileInput);
+        //console.log(fileInput.name,typeof(fileInput.name));
+
+        var file_extension = (fileInput.name).split('.')[1]
+        var file_name = (fileInput.name).split('.')[0]
+        document.getElementById('sub_subagformvalidator').style.visibility = 'hidden';
+        var extensions = ['pdf','xls','doc','txt','ppt','docx']
+            if(extensions.includes(file_extension))
+            {
+                docflag = true;
+            }
+            else
+            {
+                console.log("ext:"+file_extension)
+                $('#sub_subfilenameValidator').text("Only Pdf/Document/Excel/PPT files are allowed");
+                document.getElementById('sub_subfilenameValidator').style.visibility = 'visible';
+                docflag = false;
+
+            }
+            console.log('docflag: '+docflag)
+
+            patt= /^[a-z\d\_\s]+$/i
+            var result = file_name.match(patt)
+            if(result){
+                    fname = result[0]
+                     fileflag = true;
+                }
+
+                else{
+                    $('#sub_subfilenameValidator').text("Filename contains invalid characters");
+                    document.getElementById('sub_subfilenameValidator').style.visibility = 'visible';
+                    fileflag = false;
+                }
+
+            console.log('fileflag:'+fileflag)
+    }
+    else{
+
+            $('#sub_subagformvalidator').text("Please add attachment file");
+                    document.getElementById('sub_subagformvalidator').style.visibility = 'visible';
+                    docflag = false;
+    }
+
+     if(docflag && fileflag){
+        document.getElementById('sub_subagformvalidator').style.visibility = 'hidden';
+    }
+
+    postdata = JSON.stringify(
+                    {
+                        mid : mid,
+                        type :type,
+                        sub_agenda_agid : sub_agenda_agid,
+                        sub_sbtitle : sub_sbtitle,
+                        sub_sbdesc : sub_sbdesc,
+                        sub_sbitemtype : sub_sbitemtype
+
+                    })
+    form_data.append('requestData', postdata);
+    form_data.append( 'csrfmiddlewaretoken','{{ csrf_token }}')
+
+    console.log('titleflag== '+titleflag+' | '+'descflag== '+descflag+' | '+'fileflag== '+fileflag+' | '+'docflag== '+docflag+' | ')
+
+
+    var flag;
+
+       if(descflag && fileflag && docflag)
+       {
+             if(titleflag )
+             {
+                 flag = true
+             }
+           else{
+                 flag = false
+           }
+       }
+       else{
+              flag = false
+       }
+
+    console.log('flag: '+flag);
+   if(flag){
+     $.ajax({
+            type: 'POST',
+            url: '{{baseURL}}addSubSubAgenda',
+            data:form_data,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                alert('Sub sub agenda added successfully!');
+               // $('#myModal8').modal('hide');
+                location.reload();
+            },
+            complete:function(){},
+           error:function (xhr, textStatus, thrownError){}
+        });
+     }
+
+
+}
+
+
+function addSubAgenda(mid,type){
+    //alert(mid);
+    var form_data = new FormData();
+    var subagenda_parentag = $('select[name="sub_it_agendaname"]').val()
+    var subagenda_srno = document.getElementById('sub_it_agenda_id').value;
+    var subagenda_title = document.getElementById('sub_it_agenda_title').value;
+    var subagenda_desc = document.getElementById('sub_it_agenda_desc').value;
+    var subitem_type =  $('select[name="sub_it_item_type"]').val()
+
+    var titleflag = true;
+    var descflag = true;
+     var fileflag = true;
+     var docflag = true;
+
+
+    if (subagenda_title == '')
+    {
+
+            $('#subagitformvalidator').text("Please Provide Title.");
+            document.getElementById('subagitformvalidator').style.visibility = 'visible';
+            titleflag = false;
+    }
+    else{
+            document.getElementById('subagitformvalidator').style.visibility = 'hidden';
+            var testdata = /^[\x00-\x7F]+$/.test(subagenda_title)
+            if(!testdata){
+                document.getElementById('subitagendaTitleValidator').style.visibility = 'visible';
+                titleflag = false;
+            }
+           else {
+                if (subagenda_title != '') {
+                    console.log('subagenda_title: ' + subagenda_title)
+                    patt = /^[a-zA-Z0-9&()-.,]+(\s{0,1}[a-zA-Z0-9&()-., ,])*$/
+                    var result = patt.test(subagenda_title)
+                    if (!result) {
+                        $('#subitagendaTitleValidator').text('Invalid title');
+                        document.getElementById('subitagendaTitleValidator').style.visibility = 'visible';
+                        titleflag = false;
+                    } else {
+                        document.getElementById('subitagendaTitleValidator').style.visibility = 'hidden';
+                        titleflag = true;
+
+                    }
+                }
+		   }
+    }
+
+    if(subagenda_desc != ''){
+            var testdata = /^[\x00-\x7F]+$/.test(subagenda_desc)
+            if(!testdata){
+                document.getElementById('subitagendaDescValidator').style.visibility = 'visible';
+                descflag = false;
+            }
+            else {
+                if (subagenda_desc != '') {
+                    console.log('subagenda_desc: ' + subagenda_desc)
+                    patt = /^[a-zA-Z0-9&()-.,]+(\s{0,1}[a-zA-Z0-9&()-., ,])*$/
+                    var result = patt.test(subagenda_desc)
+                    if (!result) {
+                        $('#subitagendaDescValidator').text('Invalid description');
+                        document.getElementById('subitagendaDescValidator').style.visibility = 'visible';
+                        descflag = false;
+                    } else {
+                        document.getElementById('subitagendaDescValidator').style.visibility = 'hidden';
+                        descflag = true;
+
+                    }
+                }
+            }
+    }
+    console.log('descflag: '+descflag)
+    var fileInput = $("#sub_it_file_btn")[0].files[0];
+
+    if(fileInput)
+    {
+    console.log('file input:---  '+fileInput);
+    form_data.append('file', fileInput);
+    //console.log(fileInput.name,typeof(fileInput.name));
+
+    var file_extension = (fileInput.name).split('.')[1]
+    var file_name = (fileInput.name).split('.')[0]
+
+    var extensions = ['pdf','xls','doc','txt','ppt','docx']
+        if(extensions.includes(file_extension))
+        {
+            docflag = true;
+        }
+        else
+        {
+            console.log("ext:"+file_extension)
+            $('#subagitformvalidator').text("Only Pdf/Document/Excel/PPT files are allowed");
+            document.getElementById('subagitformvalidator').style.visibility = 'visible';
+            docflag = false;
+
+        }
+    console.log('docflag: '+docflag)
+
+        patt= /^[a-z\d\_\s]+$/i
+        var result = file_name.match(patt)
+        if(result){
+                fname = result[0]
+                fileflag=true;
+            }
+
+            else{
+            document.getElementById('subitfilenameValidator').style.visibility = 'visible';
+            fileflag = false;
+        }
+
+  console.log('fileflag:'+fileflag)
+}
+
+    postdata = JSON.stringify(
+                    {
+                        mid : mid,
+                        subagenda_srno : subagenda_srno,
+                        subagenda_title : subagenda_title,
+                        subagenda_desc : subagenda_desc,
+                        subitem_type : subitem_type,
+                        subagenda_parentag:subagenda_parentag,
+                        type :type,
+
+                    })
+    form_data.append('requestData', postdata);
+    form_data.append( 'csrfmiddlewaretoken','{{ csrf_token }}')
+
+<!--    for (var key of form_data.entries()) {-->
+<!--        console.log(key[0] + ', ' + key[1]);-->
+<!--    }-->
+
+
+    console.log('titleflag: '+titleflag)
+
+    var flag;
+    if(titleflag){
+       if((titleflag && descflag) | (titleflag && fileflag) | (titleflag && docflag))
+           {
+           if(titleflag && descflag && fileflag && docflag){
+                flag = true
+           }
+           }
+
+       else{
+                 flag = false
+           }
+
+       }
+
+   if(flag){
+     $.ajax({
+            type: 'POST',
+            url: '{{baseURL}}addSubAgenda',
+            data:form_data,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                alert('Sub agenda added successfully!');
+                //$('#myModal6').modal('hide');
+                location.reload();
+            },
+            complete:function(){},
+           error:function (xhr, textStatus, thrownError){}
+        });
+     }
+}
+
+
+function addSubSubAgenda(mid,type){
+    //alert(mid);
+    var form_data = new FormData();
+
+     var parent_agid = document.getElementById('sub-sub-parent_agid').value;
+     var agenda_count = document.getElementById('sub-sub-agendacount').value;
+    var sub_sub_agenda_srno = document.getElementById('sub-sub-agenda_id').value;
+    var sub_sub_agenda_title = document.getElementById('sub-sub-agenda_title').value;
+    var sub_sub_agenda_desc = document.getElementById('sub-sub-agenda_desc').value;
+    var sub_sub_item_type =  $('select[name="sub-sub-item_type"]').val()
+
+    var titleflag = true;
+    var descflag = true;
+     var fileflag = true;
+     var docflag = true;
+
+
+    if (sub_sub_agenda_title == '')
+    {
+
+            $('#sub-sub-formvalidator').text("Please Provide Title.");
+            document.getElementById('sub-sub-formvalidator').style.visibility = 'visible';
+            titleflag = false;
+    }
+    else{
+            document.getElementById('sub-sub-formvalidator').style.visibility = 'hidden';
+            var testdata = /^[\x00-\x7F]+$/.test(sub_sub_agenda_title)
+            if(!testdata){
+                document.getElementById('sub-sub-agendaTitleValidator').style.visibility = 'visible';
+                titleflag = false;
+            }
+            else {
+				if (sub_sub_agenda_title != '') {
+					console.log('sub_sub_agenda_title: ' + sub_sub_agenda_title)
+					patt = /^[a-zA-Z0-9&()-.,]+(\s{0,1}[a-zA-Z0-9&()-., ,])*$/
+					var result = patt.test(sub_sub_agenda_title)
+					if (!result) {
+						$('#sub-sub-agendaTitleValidator').text('Invalid title');
+						document.getElementById('sub-sub-agendaTitleValidator').style.visibility = 'visible';
+						titleflag = false;
+					} else {
+						document.getElementById('sub-sub-agendaTitleValidator').style.visibility = 'hidden';
+						titleflag = true;
+
+					}
+				}
+			}
+    }
+
+    if(sub_sub_agenda_desc != ''){
+            var testdata = /^[\x00-\x7F]+$/.test(sub_sub_agenda_desc)
+            if(!testdata){
+                document.getElementById('sub-sub-agendaDescValidator').style.visibility = 'visible';
+                descflag = false;
+            }
+            else {
+				if (sub_sub_agenda_desc != '') {
+					console.log('sub_sub_agenda_desc: ' + sub_sub_agenda_desc)
+					patt = /^[a-zA-Z0-9&()-.,]+(\s{0,1}[a-zA-Z0-9&()-., ,])*$/
+					var result = patt.test(sub_sub_agenda_desc)
+					if (!result) {
+						$('#sub-sub-agendaDescValidator').text('Invalid description');
+						document.getElementById('sub-sub-agendaDescValidator').style.visibility = 'visible';
+						descflag = false;
+					} else {
+						document.getElementById('sub-sub-agendaDescValidator').style.visibility = 'hidden';
+						descflag = true;
+
+					}
+				}
+
+            }
+
+    }
+    console.log('descflag: '+descflag)
+
+
+    var fileInput = $("#sub-sub-file_btn")[0].files[0];
+
+    if(fileInput)
+    {
+    console.log('file input:---  '+fileInput);
+    form_data.append('file', fileInput);
+    //console.log(fileInput.name,typeof(fileInput.name));
+
+    var file_extension = (fileInput.name).split('.')[1]
+    var file_name = (fileInput.name).split('.')[0]
+
+    var extensions = ['pdf','xls','doc','txt','ppt','docx']
+        if(extensions.includes(file_extension))
+        {
+            docflag = true;
+        }
+        else
+        {
+            console.log("ext:"+file_extension)
+            $('#sub-sub-formvalidator').text("Only Pdf/Document/Excel/PPT files are allowed");
+            document.getElementById('sub-sub-formvalidator').style.visibility = 'visible';
+            docflag = false;
+
+        }
+    console.log('docflag: '+docflag)
+
+        patt= /^[a-z\d\_\s]+$/i
+        var result = file_name.match(patt)
+        if(result){
+                fname = result[0]
+                fileflag=true;
+
+            }
+
+            else{
+            document.getElementById('sub-sub-filenameValidator').style.visibility = 'visible';
+            fileflag = false;
+        }
+
+  console.log('fileflag:'+fileflag)
+}
+
+    postdata = JSON.stringify(
+                    {
+                        mid : mid,
+                        parent_agid : parent_agid,
+                        agenda_count:agenda_count,
+                        sub_sub_agenda_srno : sub_sub_agenda_srno ,
+                        sub_sub_agenda_title : sub_sub_agenda_title,
+                        sub_sub_agenda_desc : sub_sub_agenda_desc,
+                        sub_sub_item_type : sub_sub_item_type,
+                        type : type
+
+                    })
+    form_data.append('requestData', postdata);
+    form_data.append( 'csrfmiddlewaretoken','{{ csrf_token }}')
+
+<!--    for (var key of form_data.entries()) {-->
+<!--        console.log(key[0] + ', ' + key[1]);-->
+<!--    }-->
+
+
+    console.log('titleflag: '+titleflag)
+
+    var flag;
+    if(titleflag){
+       if((titleflag && descflag) | (titleflag && fileflag) | (titleflag && docflag))
+           {
+           if(titleflag && descflag && fileflag && docflag){
+                flag = true
+           }
+           }
+
+       else{
+                 flag = false
+           }
+
+       }
+
+   if(flag){
+     $.ajax({
+            type: 'POST',
+            url: '{{baseURL}}addSubSubAgenda',
+            data:form_data,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                alert('Sub sub agenda added successfully!');
+               // $('#myModal7').modal('hide');
+                location.reload();
+            },
+            complete:function(){},
+           error:function (xhr, textStatus, thrownError){}
+        });
+     }
+}
+
+
+
+
+
+
+
+ $('.radio-menu').on('change', function () {
+    var radiobtn =  $("input:radio[name=RadioButtonList1]:checked").val()
+    console.log(radiobtn)
+
+    var uncheck_radiobtn = Array.from($("input:radio[name=RadioButtonList1]:not(:checked)")
+              , ({value}) => value);
+
+    if(radiobtn){
+    document.getElementById(radiobtn).style.display = 'block';
+    }
+    if(uncheck_radiobtn){
+        for(var i=0;i<uncheck_radiobtn.length;i++){
+            document.getElementById(uncheck_radiobtn[i]).style.display = 'none';
+        }
+    }
+
+});
+
+
+
+function changeMeetingData(field,mid){
+    console.log(field,mid);
+    var isvalid;
+    patt = /^[a-zA-Z-,]+(\s{0,1}[a-zA-Z-, ])*$/
+
+   if(field == 'venue'){
+      var to_venue = $('#venue-to').val();
+      console.log(to_venue);
+      if(to_venue == ""){
+            document.getElementById('notifyVenueValidator').style.visibility = 'visible';
+            isvalid = false
+      }else{
+            if(to_venue != ''){
+                 console.log('to_venue: '+to_venue)
+
+                    var result = patt.test(to_venue)
+                    if(!result){
+                            $('#notifyVenueValidator').text('Invalid venue');
+                            document.getElementById('notifyVenueValidator').style.visibility = 'visible';
+                            isvalid=false;
+                        }
+                    else{
+                            document.getElementById('venue-mail-confirmation').style.visibility = 'visible';
+                            document.getElementById('venue-mail-confirmation1').style.visibility = 'visible';
+                            document.getElementById('notifyVenueValidator').style.visibility = 'hidden';
+                            isvalid = true;
+
+                    }
+            }
+      }
+   }
+
+    else{
+        if(field == 'date'){
+          var from_date1 = $('#date-from').val();
+          var from_date = from_date1.split('-')[2]+'-'+from_date1.split('-')[1]+'-'+from_date1.split('-')[0]
+          var to_date = $('#date-to').val();
+
+
+
+          console.log(from_date,to_date);
+          if(to_date == ""){
+                document.getElementById('notifyDateValidator').style.visibility = 'visible';
+                isvalid = false
+          }
+          else{
+                  if(from_date > to_date){
+                    $('#notifyDateValidator').text("Incorrect date");
+                        document.getElementById('notifyDateValidator').style.visibility = 'visible';
+                        isvalid = false
+                  }
+                  else{
+                        document.getElementById('date-mail-confirmation').style.visibility = 'visible';
+                        document.getElementById('date-mail-confirmation1').style.visibility = 'visible';
+                        isvalid = true;
+           }       }
+        }
+        else {
+           if(field == 'time'){
+				  var to_time = ($('#ddlhh').val()) +':'+ ($('#ddlmm').val()) + ($('#ddlam').val())
+				  console.log(to_time)
+
+                document.getElementById('time-mail-confirmation').style.visibility = 'visible';
+                document.getElementById('time-mail-confirmation1').style.visibility = 'visible';
+                isvalid = true;
+			}
+		}
+    }
+
+if(isvalid){
+    $.ajax({
+        type: 'POST',
+        url:'{{baseURL}}updatemeetinginfo',
+        data: { 'mid':mid,
+                'field':field,
+                'to_venue':to_venue,
+                'to_date':to_date,
+                'to_time':to_time,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+        success:function(response)
+        {
+          console.log("Meeting data Updated succesfully.")
+           //location.reload();
+
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+
+}
+}
+
+function sendEmail1(type,mid,value){
+console.log('------------------');
+
+if(type == 'agenda')
+{
+   value = "{{agenda_response|safe}}"
+}
+
+console.log(type,mid,value)
+         $.ajax({
+        type: 'POST',
+        url:'{{baseURL}}sendEmail',
+        data: { 'mid':mid,
+                'type':type,
+                'pre_value':value,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+        success:function(response)
+        {
+          alert("Mail sent succesfully.")
+
+
+          location.reload();
+
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+
+}
+function readEntries(entries) {
+    var entryLength = entries.length;
+    for (i = 0; i < entryLength; i++) {
+        var entry = entries[i];
+        var fileName = entry.filename.substring(entry.filename.lastIndexOf("/") + 1); //if inside folder
+        var ext = fileName.split(".").pop().toLowerCase();
+        if (ext.toUpperCase() == 'DOC' || ext.toUpperCase() == 'PDF' ||
+            ext.toUpperCase() == 'DOCX') {
+            alert("correct file !!!!!");
+        }
+    }
+}
+function uploadAgendaZip(aid,mid,type){
+    var form_data = new FormData();
+    if(type == 'agenda'){
+    var zipfileInput = $("#uploadzip_btn")[0].files[0];
+    }
+    else {
+        var zipfileInput = $("#subag_uploadzip_btn")[0].files[0];
+    }
+
+    var zipdocflag,fileflag;
+    if(zipfileInput)
+    {
+        console.log('file input:---  '+zipfileInput);
+        form_data.append('file', zipfileInput);
+
+
+        var file_extension = (zipfileInput.name).split('.')[1]
+        var file_name = (zipfileInput.name).split('.')[0]
+
+
+            if(file_extension == 'zip')
+            {
+                zipdocflag = true;
+            }
+            else
+            {
+                console.log("ext:"+file_extension)
+                alert("Only zip files are allowed")
+                //$('#').modal('show');
+                zipdocflag = false;
+
+            }
+        console.log('zipdocflag: '+zipdocflag)
+
+        patt= /^[a-z\d\_\s]+$/i
+            var result = file_name.match(patt)
+            if(result){
+                fname = result[0]
+                    fileflag=true;
+                }
+
+                else{
+                alert("File name contains invalid characters")
+                fileflag = false;
+
+            }
+    }
+    else{
+            alert("Please choose correct file");
+    }
+
+    postdata = JSON.stringify(
+                    {
+                         'mid' : mid,
+                         'type':type,
+                         'aid':aid,
+
+                    })
+    form_data.append('requestData', postdata);
+    form_data.append( 'csrfmiddlewaretoken','{{ csrf_token }}')
+
+    if(zipdocflag && fileflag){
+        $.ajax({
+            type: 'POST',
+            url: '{{baseURL}}quickUpload',
+            data:form_data,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                if (data.message){
+                    alert(data.message);
+                }else{
+                alert('Agenda uploaded successfully.');
+                location.reload();
+                }
+                //$('#myModal3').modal('hide');
+
+            },
+            complete:function(){},
+           error:function (xhr, textStatus, thrownError){}
+        });
+     }
+}
+
+
+function addAgenda(mid){
+    //alert(mid);
+    var form_data = new FormData();
+    var agenda_srno = document.getElementById('agenda_id').value;
+    var agenda_title = document.getElementById('agenda_title').value;
+    var agenda_desc = document.getElementById('agenda_desc').value;
+    var item_type =  $('select[name="item_type"]').val()
+
+    var titleflag = true;
+    var descflag = true;
+     var fileflag = true;
+     var docflag = true;
+
+     var splChars = ".*|,+-\":<>[]{}`\';()@&$#%";
+
+
+    if (agenda_title == '')
+    {
+
+            $('#formvalidator').text("Please Provide Title.");
+            document.getElementById('formvalidator').style.visibility = 'visible';
+            titleflag = false;
+    }
+    else{
+            document.getElementById('formvalidator').style.visibility = 'hidden';
+            var testdata = /^[\x00-\x7F]+$/.test(agenda_title)
+            if(!testdata){
+                document.getElementById('agendaTitleValidator').style.visibility = 'visible';
+
+                titleflag = false;
+            }
+
+           else{
+                    if(agenda_title != ''){
+                         console.log('agenda_title: '+agenda_title)
+                         patt = /^[a-zA-Z0-9&()-.,]+(\s{0,1}[a-zA-Z0-9&()-., ,])*$/
+                         var result = patt.test(agenda_title)
+                         if(!result){
+                                    $('#agendaTitleValidator').text('Invalid title');
+                                    document.getElementById('agendaTitleValidator').style.visibility = 'visible';
+                                    titleflag=false;
+                         }
+                         else{
+                            document.getElementById('agendaTitleValidator').style.visibility = 'hidden';
+                            titleflag = true;
+
+                         }
+                    }
+           }
+    }
+
+    if(agenda_desc != ''){
+            var testdata = /^[\x00-\x7F]+$/.test(agenda_desc)
+            if(!testdata){
+                document.getElementById('agendaDescValidator').style.visibility = 'visible';
+                descflag = false;
+            }
+           else{
+                    if(agenda_desc != ''){
+                         console.log('agenda_desc: '+agenda_desc)
+                         patt = /^[a-zA-Z0-9&()-.,]+(\s{0,1}[a-zA-Z0-9&()-., ,])*$/
+                         var result = patt.test(agenda_desc)
+                         if(!result){
+                                    $('#agendaDescValidator').text('Invalid desciption');
+                                    document.getElementById('agendaDescValidator').style.visibility = 'visible';
+                                    descflag=false;
+                         }
+                         else{
+                            document.getElementById('agendaDescValidator').style.visibility = 'hidden';
+                            descflag = true;
+
+                         }
+                    }
+           }
+    }
+    console.log('descflag: '+descflag)
+    var fileInput = $("#file_btn")[0].files[0];
+
+    if(fileInput)
+    {
+    console.log('file input:---  '+fileInput);
+    form_data.append('file', fileInput);
+    //console.log(fileInput.name,typeof(fileInput.name));
+
+    var file_extension = (fileInput.name).split('.')[1]
+    var file_name = (fileInput.name).split('.')[0]
+
+    var extensions = ['pdf','xls','doc','txt','ppt','docx']
+        if(extensions.includes(file_extension))
+        {
+            docflag = true;
+        }
+        else
+        {
+            console.log("ext:"+file_extension)
+            $('#formvalidator').text("Only Pdf/Document/Excel/PPT files are allowed");
+            document.getElementById('formvalidator').style.visibility = 'visible';
+            docflag = false;
+
+        }
+    console.log('docflag: '+docflag)
+
+        patt= /^[a-z\d\_\s]+$/i
+        var result = file_name.match(patt)
+        if(result){
+            fname = result[0]
+            fileflag=true;
+
+            }
+
+            else{
+            document.getElementById('filenameValidator').style.visibility = 'visible';
+            fileflag = false;
+        }
+
+  console.log('fileflag:'+fileflag)
+}
+
+    postdata = JSON.stringify(
+                    {
+                        mid : mid,
+                        agenda_srno : agenda_srno,
+                        agenda_title : agenda_title,
+                        agenda_desc : agenda_desc,
+                        item_type : item_type,
+
+                    })
+    form_data.append('requestData', postdata);
+    form_data.append( 'csrfmiddlewaretoken','{{ csrf_token }}')
+
+<!--    for (var key of form_data.entries()) {-->
+<!--        console.log(key[0] + ', ' + key[1]);-->
+<!--    }-->
+
+
+    console.log('titleflag: '+titleflag)
+
+    var flag;
+    if(titleflag){
+       if((titleflag && descflag) | (titleflag && fileflag) | (titleflag && docflag))
+           {
+           if(titleflag && descflag && fileflag && docflag){
+                flag = true
+           }
+           }
+
+       else{
+                 flag = false
+           }
+
+       }
+
+   if(flag){
+     $.ajax({
+            type: 'POST',
+            url: '{{baseURL}}addAgenda/',
+            data:form_data,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                alert('Agenda added successfully!');
+               // $('#myModal1').modal('hide');
+                location.reload();
+            },
+            complete:function(){},
+           error:function (xhr, textStatus, thrownError){}
+        });
+     }
+}
+
+
+
+
+
+
+
+
+ function checkAll(ele) {
+     var checkboxes = document.getElementsByName('chk[]');
+     if (ele.checked) {
+         for (var i = 0; i < checkboxes.length; i++) {
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = true;
+             }
+         }
+     } else {
+         for (var i = 0; i < checkboxes.length; i++) {
+             console.log(i)
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = false;
+             }
+         }
+     }
+ }
+
+$( document ).ready(function() {
+
+$('#meet_title').val('{{info.Title}}')
+ document.getElementById("exp_date").value = "{{info.duration}}";
+
+ document.getElementById("a_date").value = "{{info.date}}";
+document.getElementById('hrs').value="{{info.hrs}}";
+document.getElementById('mins').value="{{info.mins}}";
+document.getElementById('meridian').value="{{info.Meridian}}";
+});
+
+
+
+
+
+
+</script>
+
+<script>
+
+		function format(command, value) {
+			document.execCommand(command, false, value);
+		}
+
+   function changeFont(){
+      var myFont = document.getElementById("input-font").value;
+      document.execCommand('fontName', false, myFont);
+       var myFont1 = document.getElementById("input-font1").value;
+      document.execCommand('fontName', false, myFont1);
+    }
+
+    function changeSize(){
+      var mysize = document.getElementById("fontSize").value;
+      document.execCommand('fontSize', false, mysize);
+       var mysize1 = document.getElementById("fontSize1").value;
+      document.execCommand('fontSize', false, mysize1);
+    }
+
+	</script>
+<script>
+function notice(id){
+    console.log(id);
+
+    $.ajax({
+        type:'POST',
+        url:'{{baseURL}}notice',
+        data:{
+                'id':id,
+
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+              },
+        success:function(response){
+            var o=JSON.parse(response);
+            $('#fid').val(o.fid);
+            $('#editor1').html(o.esub);
+            $('#editor2').html(o.ebody);
+        },
+        complete:function(){
+        },
+        error:function (xhr, textStatus, thrownError){}
+
+
+
+    });
+}
+</script>
+
+
+<script>
+function sendEmail(){
+    fid = document.getElementById('fid').value;
+    esub = document.getElementById('editor1');
+    esubhtmlContent = esub.innerHTML;
+// htmlContent = "Some <span class="foo">sample</span> text."
+
+    esubtextContent = esub.textContent;
+// textContent = "Some sample text."
+    ebody = document.getElementById('editor2');
+    ebodytextContent = ebody.textContent;
+     ebodyhtmlContent = ebody.innerHTML;
+    $.ajax({
+        type:'POST',
+        url:'{{baseURL}}sendNoticeEmail',
+        data:{
+                'fid':fid,
+                'esub':esubhtmlContent,
+                'esubtextContent':esubtextContent,
+                'ebody':ebodyhtmlContent,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+              },
+        success:function(response){
+            alert('Mail has been sent!');
+            location.reload();
+        },
+        complete:function(){
+        },
+        error:function (xhr, textStatus, thrownError){}
+    });
+
+
+}
+</script>
+
+<script>
+function addMOM(mfid){
+    var form_data = new FormData();
+
+    var zipfileInput = $("#filepdf")[0].files[0];
+    var zipdocflag=false;
+    var fileflag=false;
+
+    if(zipfileInput)
+    {
+        console.log('file input:---  '+zipfileInput);
+        form_data.append('file', zipfileInput);
+
+
+        var file_extension = (zipfileInput.name).split('.')[1]
+        var file_name = (zipfileInput.name).split('.')[0]
+
+
+            if(file_extension == 'pdf')
+            {
+                zipdocflag = true;
+            }
+            else
+            {
+                console.log("ext:"+file_extension)
+                //$('#fileerror').text("Only PDF files are allowed");
+                //document.getElementById('fileerror').style.visibility = 'visible';
+                zipdocflag = false;
+                alert("Only PDF files are allowed");
+                $('#addMOM').modal('show');
+
+            }
+        console.log('zipdocflag: '+zipdocflag)
+
+        patt= /^[a-z\d\_\s]+$/i
+            var result = file_name.match(patt)
+            if(result){
+                fname = result[0]
+                    fileflag=true;
+                }
+
+                else{
+               // $('#fileerror').text("File name contains invalid characters");
+                //document.getElementById('fileerror').style.visibility = 'visible';
+                fileflag = false;
+                alert("File name contains invalid characters.");
+                $('#addMOM').modal('show');
+            }
+    }
+    else{
+            alert("Please choose correct file");
+            $('#addMOM').modal('show');
+    }
+
+    postdata = JSON.stringify(
+                    {
+                         'mid' : mfid,
+
+
+                    })
+    form_data.append('requestData', postdata);
+    form_data.append( 'csrfmiddlewaretoken','{{ csrf_token }}')
+
+    if(zipdocflag && fileflag){
+        $.ajax({
+            type: 'POST',
+            url: '{{baseURL}}uploadMOM',
+            data:form_data,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+               if(data.flag == 'true')
+                {
+                    alert(data.message);
+                }
+                else
+                {
+                       alert('MOM file uploaded successfully !');
+                }
+                //alert('MOM file uploaded successfully !');
+               // $('#addMOM').modal('show');
+                location.reload();
+            },
+            complete:function(){},
+           error:function (xhr, textStatus, thrownError){}
+        });
+     }
+
+}
+
+</script>
+
+</body>
+</html>
+

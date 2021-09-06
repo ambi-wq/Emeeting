@@ -1,0 +1,106 @@
+{% include "header.html" %}
+
+{% if messages %}
+	{% for message in messages %}
+	   <script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+
+<div id="content_manageuser" style="min-height: 792px;">
+<div class="committee">
+
+   <i class='fas fa-lock' style='font-size:15px;color:grey;margin-left:15px;margin-top: 14px;'></i>
+   <span style="margin-left: 24px;font-size: initial;">Change Password</span>
+   <div class="form-horizontal" style="margin:20px 30px;;">
+        <div class="form-group" style="marign-left:20px;">
+            Old Password<span style="color:red;font-size:larger;">*</span> <span style="margin-left: 31px;"></span>
+            <input type="text" id="oldpass" placeholder="" style="margin-left: 14px;height: 34px;width: 165px;border-color: darkgray;font-size: 15px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;" >
+            <span id="oldpassValidator" style="color:Red;visibility:hidden;"></span>
+        </div>
+
+        <div class="form-group">
+            New Password<span style="color:red;font-size:larger;">*</span> <span style="margin-left: 25px;"></span>
+            <input type="text" id="newpass" placeholder="" style="margin-left: 14px;height: 34px;width: 165px;border-color: darkgray;font-size: 15px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;" >
+            <span id="newpassValidator" style="color:Red;visibility:hidden;"></span>
+        </div>
+
+        <div class="form-group">
+            Confirm Password<span style="color:red;font-size:larger;">*</span> <span style="margin-left: 5px;"></span>
+            <input type="text" id="confirmpass" placeholder="" style="margin-left: 14px;height: 34px;width: 165px;border-color: darkgray;font-size: 15px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;" >
+            <span id="confirmpassValidator" style="color:Red;visibility:hidden;"></span>
+        </div>
+
+    </div>
+
+    <div style="margin-left:160px;">
+             <input type="button"  value="Submit"  class="sub2button" onclick="changePassword()" style="margin-bottom:20px;">
+    </div>
+</div>
+</div>
+
+<script>
+    function changePassword(){
+        var oldpass = $('#oldpass').val();
+        var newpass = $('#newpass').val();
+        var confirmpass = $('#confirmpass').val();
+        var passflag = true;
+
+        if(oldpass == ''){
+            $('#oldpassValidator').text("*");
+            document.getElementById('oldpassValidator').style.visibility = 'visible';
+        }
+        else{
+            document.getElementById('oldpassValidator').style.visibility = 'hidden';
+        }
+
+        if(newpass == ''){
+            $('#newpassValidator').text("*");
+            document.getElementById('newpassValidator').style.visibility = 'visible';
+        }
+         else{
+            document.getElementById('newpassValidator').style.visibility = 'hidden';
+        }
+
+        if(confirmpass == ''){
+            $('#confirmpassValidator').text("*");
+            document.getElementById('confirmpassValidator').style.visibility = 'visible';
+        }
+         else{
+            document.getElementById('confirmpassValidator').style.visibility = 'hidden';
+        }
+
+        if(newpass != confirmpass){
+            $('#confirmpassValidator').text("Password do not match");
+            document.getElementById('confirmpassValidator').style.visibility = 'visible';
+            passflag = false;
+
+        }
+
+        if(oldpass != '' && newpass != '' && confirmpass != '' && passflag)
+        {
+            $.ajax({
+            type: 'POST',
+            url: '{{baseURL}}changeUserPass',
+            data : {
+
+                'oldpass':oldpass,
+                'newpass':newpass,
+                'confirmpass':confirmpass,
+
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+
+            },
+            success:function(response) {
+                alert("Password changed!")
+                location.reload();
+
+            },
+            complete:function(){},
+           error:function (xhr, textStatus, thrownError){}
+        });
+
+        }
+
+    }
+
+</script>

@@ -1,0 +1,96 @@
+<!-- chat/templates/chat/room.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Chat Room</title>
+</head>
+<body>
+    <textarea id="chat-log" cols="100" rows="20"></textarea><br>
+    <input id="chat-message-input" type="text" size="100"><br>
+    <input id="chat-message-submit" type="button" value="Send">
+    {{ room_name|json_script:"room-name" }}
+    <script>
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+
+        const chatSocket = new WebSocket(
+            'wss://'
+             //+ 'c15b21711602.ngrok.io'
+            + window.location.host
+            + '/ws/chat/'
+            + roomName
+            + '/'
+        );
+        console.log(chatSocket);
+<!--        const wsLink =  'wss://'-->
+<!--             + 'ae48cd350a40.ngrok.io'-->
+<!--            //+ window.location.host-->
+<!--            + '/ws/chat/'-->
+<!--            + roomName-->
+<!--            + '/'-->
+<!--        alert(wsLink)-->
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.querySelector('#chat-log').value += (data.message + '\n');
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+            messageInputDom.value = '';
+        };
+    </script>
+</body>
+</html>
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Socket Thing2</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    Client2-->
+<!--    <button onclick="sendMsg()">Send Msg</button>-->
+<!--</body>-->
+<!--<script>-->
+<!--    // Create WebSocket connection.-->
+<!--    const socket = new WebSocket('wss://df5a83e44d68.ngrok.io');-->
+
+<!--    // Connection opened-->
+<!--    socket.addEventListener('open', function (event) {-->
+<!--        console.log('Connected to the WS Server!')-->
+<!--    });-->
+
+<!--    // Connection closed-->
+<!--    socket.addEventListener('close', function (event) {-->
+<!--        console.log('Disconnected from the WS Server!')-->
+<!--    });-->
+
+<!--    // Listen for messages-->
+<!--    socket.addEventListener('message', function (event) {-->
+<!--        console.log('Message from server ', event.data);-->
+<!--    });-->
+<!--    // Send a msg to the websocket-->
+<!--    const sendMsg = () => {-->
+<!--        socket.send('Hello from Client2!');-->
+<!--    }-->
+<!--</script>-->
+<!--</html>-->

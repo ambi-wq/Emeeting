@@ -1,0 +1,1074 @@
+{% include "header.html" %}
+
+{% if messages %}
+	{% for message in messages %}
+	   <script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<style>
+ .md-title{
+     float: left;
+    margin-top: 0px;
+    font-weight: 300;
+font-family: sans-serif;
+font-size: 16px;
+line-height: 16px;
+color: #57606A;
+ }
+.director-input{
+width:180px;
+margin-top:5px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    font-family: sans-serif;
+letter-spacing: 0px;
+border-color: #cccccc;
+display: inline-block;
+padding: 4px 6px;
+font-size: 14px;
+line-height: 20px;
+color: #555555;
+vertical-align: middle;
+-webkit-border-radius: 0px;
+-moz-border-radius: 0px;
+border-radius: 0px;
+margin-bottom: 10px;
+margin-left:5px;
+}
+</style>
+
+
+
+
+
+
+
+<div id="content_manageuser" style="min-height: 792px;">
+
+<div class="box" style="width:97%;margin-left:20px;">
+   <i class='fa fa-bookmark' style='font-size:20px;color:grey;margin-left:15px;margin-top: 14px;'></i>
+    <span style="margin-left: 24px;font-size: initial;">Directors</span>
+
+    <input type="button" class="sub2button" value="Add Members" data-toggle="modal" data-target="#addMember" onclick="addMember()" style="font-size:15px;margin-left:850px;">
+
+    <hr class="hrborder">
+
+    <table class="table table-striped bootstrap-datatable datatable dataTable" cellspacing = "0" cellpadding = "4" style="font-size:14pt;border-collapse:collapse;margin-top: -11px;">
+    <thead class="thead-dark">
+    <tr style="font-size: 13px;color:#333;font-family: sans-serif;">
+
+        <th>Sr No.</th>
+        <th>Name</th>
+        <th>Designation</th>
+        <th>Image</th>
+        <th>Update</th>
+        <th>Delete</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in member %}
+    <tr>
+		 {% if forloop.last %}
+           <span style="display:none;" id="u_id"> {{ user.id }}</span>
+        {% endif %}
+        <td style="valign:middle;align:center;font-size: 13px;">{{forloop.counter}}</td>
+        <td style="font-size: 13px;">{{ user.name }}</td>
+        <td style="font-size: 13px;">{{ user.desg }}</td>
+        {% if user.image == '' %}
+            <td><a href=""><img src="{{baseURL}}static/resources/Board Members/def.jpg" style="height:75px;width:75px;"></a></td>
+        {% else %}
+            <td><a href=""><img src="{{baseURL}}static/resources/Board Members/{{user.image}}" style="height:75px;width:75px;"></a></td>
+        {% endif %}
+         <td style="text-align:center;width:60px">
+            <a data-toggle="modal" onclick="viewMember('{{user.id}}','{{user.name}}')" data-target="#updateMember"/> <input type="image" src="{{baseURL}}static/images/penicl-01.png" style="width: 45%;margin-top:10px;"
+                                   value="Edit"></a>
+        </td>
+
+        <td style="text-align:center;width:60px"><a id="BtnDelete" class="custome-delete-btn" onclick="return confirm('Are you sure you want to delete this board member ?');" href="{{baseURL}}deleteMember/{{ user.id }}/{{ user.name }}"><span class='glyphicon glyphicon-trash' style='cursor: pointer;color:red;margin-top:10px;'></span> </a></td>
+
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+	
+	
+	<!-- +++++++++++++++++++++++++++++ Pagination start +++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+     {% if datalength < 11 %}
+            <div class="pagination" style="display:none;"></div>
+            {% else %}
+                    <div class="pagination" style="margin:0 0 0 10px;">
+                        <ul class="pagination" style="margin:0 0 0 10px;">
+                        <li class="page-item">
+                             {% if member.number != 1 %}
+                             <a class="page-link" href="?page=1">First</a>
+                             {% endif %}
+                         </li>
+                          <li class="page-item">
+                             {% if member.has_previous %}
+                             <a class="page-link" href="?page={{ member.previous_page_number }}" aria-label="Previous">
+                             <span aria-hidden="true">&laquo;</span>
+                             </a>
+                             {% endif %}
+                          </li>
+                          {% for num in member.paginator.page_range %}
+                              {% if member.number == num %}
+                              <li class="page-item "><a class="page-link current" href="?page={{ num }}">{{ num }}</a></li>
+                              {% elif num > member.number|add:-3 and num < member.number|add:3  %}
+                              <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                              {% endif %}
+                          {% endfor %}
+                          <li class="page-item">
+                             {% if member.has_next %}
+                             <a class="page-link" href="?page={{ member.next_page_number }}" aria-label="Next">
+                             <span aria-hidden="true">&raquo;</span>
+                             </a>
+                             {% endif %}
+                          </li>
+                          </li>
+                          <li class="page-item">
+                             {% if member.number != member.paginator.num_pages %}
+                             <a class="page-link" href="?page={{ member.paginator.num_pages }}">Last</a>
+                             {% endif %}
+                          </li>
+                         </ul>
+
+                    </div>
+
+             {% endif %}
+
+    <!--+++++++++++++++++++++++++++++++Pagination End +++++++++++++++++++++++++++++++++-->
+	
+	
+	
+</div>
+
+</div>
+<!-- ++++++++++++++++++++++++++++++++++++++++++      Add Member Start ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+
+<div id="addMember" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content" style="font-family: UbuntuRegular;width:175%;margin-left:-200px;">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" onclick="location.reload();">&times;</button>
+             <h2 class="md-title"><i class="fa fa-pencil-square-o"></i><span class="break"></span>Add Members</h2>
+          </div>
+        <div class="modal-body">
+          <div class="modal-body1">
+
+            {% csrf_token %}
+              <div style="display:flex;">
+              <div class="director-leftblk">
+                  <div>
+                      <span style="display: inline-block;width: 80px;">ID <span style="color:red;font-size:medium;">*</span></span>
+                                <span style="margin-right:10px;">:</span>
+                                <span>
+                                    <input name="add_id" type="text"  id="add_id" class="director-input">
+                                    <span id="add_RequiredFieldValidator1" class="auto-style1" style="color:Red;visibility:hidden;">*</span>
+<!--                                    <span id="add_RegularExpressionValidator1"  style="color:Red;visibility:hidden;">Only numbers are allowed</span>-->
+                                </span>
+                  </div>
+
+                  <div>
+                      <span style="display: inline-block;width: 80px;">DOB<span style="color:red;font-size:medium;">*</span></span>
+                                <span style="margin-right:10px;">:</span>
+                                <span>
+                                    <input name="add_dob" type="date" id="add_dob" autocomplete="off" class="director-input" style="" onkeydown="return false" onkeypress="javascript: return false;" onpaste="javascript: return false;" required="required">
+                                    <span id="add_RequiredFieldValidator3" style="color:Red;visibility:hidden;">*</span>
+                                </span>
+
+                  </div>
+
+                  <div>
+                      <span style="display: inline-block;width: 83px;">Education</span><span style="margin-right:10px;">:</span>
+                                <span>
+                                    <input name="add_qualification" type="text" id="add_qualification" class="director-input">
+                                    <span id="add_RequiredFieldValidator5" class="auto-style1" style="color:Red;visibility:hidden;"></span>
+                                </span>
+                  </div>
+
+                  <div>
+                      <span style="display: inline-block;width: 80px;">Designation<span style="color:red;font-size:medium;">*</span></span>
+                                <span style="margin-right:10px;">:</span>
+                                <span>
+                                    <input name="add_desig" type="text" id="add_desig" class="director-input">
+                                    <span id="add_RequiredFieldValidator4" class="auto-style1" style="color:Red;visibility:hidden;">*</span>
+                                </span>
+                  </div>
+
+                  <div>
+                      <span style="display: inline-block;width: 83px;">Image</span><span style="margin-right:10px;">:</span>
+
+                                <input type="file" name="add_img" id="add_img" accept=" .jpg" style="display:inline;margin-left:5px;">
+
+                  </div>
+                  <div style="margin-left:105px;margin-top:20px;">
+                      <span class="director-note">Note:- Image must be in 200*200 pixels</span>
+                  </div>
+
+<!--                   <p id="add_RegularExpressionValidator4" name="add_RegularExpressionValidator4" style="color:Red;font-size:medium;visibility:hidden;">Image must be in 200*200 pixels</p>-->
+                   <p id="add_RegularExpressionValidator3" name="add_RegularExpressionValidator3" style="color:Red;font-size:medium;visibility:hidden;">Only jpg files are allowed</p>
+                   <p id="fileNamevalidator" class="auto-style2 " style="color:Red;visibility:hidden;">File Name Contains Invalid Characters.</p>
+                    <p id="add_idExist" style="color:Red;"></p>
+
+              </div>
+
+
+              <div class="director-rightblk">
+                  <div>
+                      <span style="display: inline-block;width: 80px;">Name<span style="color:red;font-size:medium;">*</span></span>
+                                <span style="margin-right:10px;">:</span>
+                                <span>
+                                    <input name="add_name" type="text" id="add_name" class="director-input">
+                                    <span id="add_RequiredFieldValidator2" class="auto-style1" style="color:Red;visibility:hidden;">*</span>
+<!--                                    <span id="add_RegularExpressionValidator2" style="color:Red;visibility:hidden;">Only alphabets are allowed</span>-->
+
+                                </span>
+                  </div>
+
+                  <div>
+                      <span style="display: inline-block;width: 80px;">Achievements</span>
+                                <span style="margin-right:10px;">:</span>
+                                <span rowspan="4">
+                                    <textarea name="add_det" rows="2" cols="20" id="add_det" class="director-input" style="resize: none;height:146px;margin-top:0px;"></textarea>
+                                     <span id="add_CustomValidator1" style="color:Red;visibility:hidden;">Text contains invalid characters</span>
+                                </span>
+
+                  </div>
+
+
+              </div>
+              <div style="clear:both;"></div>
+            </div>
+               <div style="text-align:center" >
+                  <input type="button" name="addMemberbtn" value="Submit" onclick="insertMember()" id="addMemberbtn" class="sub2button">
+               </div>
+          </div>
+
+        </div>
+        </div>
+      </div>
+</div>
+
+<!--  ++++++++++++++++++++++++++++++++++++ Add Member End+++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+<!-- ++++++++++++++++++++++++++++++++++++++++++      Update Member Start ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+
+<div id="updateMember" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content" style="font-family: UbuntuRegular;width:175%;margin-left:-170px;">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" onclick="location.reload();">&times;</button>
+             <h2 class="md-title"><i class="fa fa-pencil-square-o"></i><span class="break"></span>Update Member</h2>
+          </div>
+           <div class="modal-body">
+              <div class="modal-body1">
+            {% csrf_token %}
+
+               <div style="display:flex;">
+              <div class="director-leftblk">
+                  <div>
+                       <input name="update_cid"  type="text"  id="update_cid"  class="director-input" style="display:none;">
+                      <span style="display: inline-block;width: 80px;">ID <span style="color:red;font-size:medium;">*</span></span>
+                                <span style="margin-right:10px;">:</span>
+                                <span>
+                                    <input name="update_id"  type="text"  id="update_id"  class="director-input">
+                                    <span id="update_RequiredFieldValidator1" class="auto-style1" style="color:Red;visibility:hidden;">*</span>
+<!--                                    <span id="add_RegularExpressionValidator1"  style="color:Red;visibility:hidden;">Only numbers are allowed</span>-->
+                                </span>
+                  </div>
+
+                  <div>
+                      <span style="display: inline-block;width: 80px;">DOB<span style="color:red;font-size:medium;">*</span></span>
+                                <span style="margin-right:10px;">:</span>
+                                <span>
+                                    <input name="update_dob" type="date" id="update_dob" autocomplete="off" class="director-input" style="" onkeydown="return false" onkeypress="javascript: return false;" onpaste="javascript: return false;" required="required">
+                                    <span id="update_RequiredFieldValidator3" style="color:Red;visibility:hidden;">*</span>
+                                </span>
+
+                  </div>
+
+                  <div>
+                      <span style="display: inline-block;width: 83px;">Education</span><span style="margin-right:10px;">:</span>
+                                <span>
+                                    <input name="update_qualification" type="text" id="update_qualification" class="director-input">
+                                    <span id="update_RequiredFieldValidator5" class="auto-style1" style="color:Red;visibility:hidden;"></span>
+                                </span>
+                  </div>
+
+                  <div>
+                      <span style="display: inline-block;width: 80px;">Designation<span style="color:red;font-size:medium;">*</span></span>
+                                <span style="margin-right:10px;">:</span>
+                                <span>
+                                    <input name="update_desig" type="text" id="update_desig" class="director-input">
+                                    <span id="update_RequiredFieldValidator4" class="auto-style1" style="color:Red;visibility:hidden;">*</span>
+                                </span>
+                  </div>
+
+                  <div>
+                      <span style="display: inline-block;width: 83px;">Image</span><span style="margin-right:10px;">:</span>
+
+                                <input type="file" name="update_img" id="update_img" accept=" .jpg" style="display:inline;margin-left:5px;" >
+
+                  </div>
+                  <div style="margin-left:105px;margin-top:20px;">
+                      <span class="director-note">Note:- Image must be in 200*200 pixels</span>
+                  </div>
+
+<!--                   <p id="add_RegularExpressionValidator4" name="add_RegularExpressionValidator4" style="color:Red;font-size:medium;visibility:hidden;">Image must be in 200*200 pixels</p>-->
+                   <p id="update_RegularExpressionValidator3" name="add_RegularExpressionValidator3" style="color:Red;font-size:medium;visibility:hidden;">Only jpg files are allowed</p>
+                   <p id="updatefileNamevalidator" class="auto-style2 " style="color:Red;visibility:hidden;">File Name Contains Invalid Characters.</p>
+                    <p id="update_idExist" style="color:Red;"></p>
+
+              </div>
+
+
+              <div class="director-rightblk">
+                  <div>
+                      <span style="display: inline-block;width: 80px;">Name<span style="color:red;font-size:medium;">*</span></span>
+                                <span style="margin-right:10px;">:</span>
+                                <span>
+                                    <input name="update_name" type="text" id="update_name" class="director-input">
+                                    <span id="update_RequiredFieldValidator2" class="auto-style1" style="color:Red;visibility:hidden;">*</span>
+<!--                                    <span id="add_RegularExpressionValidator2" style="color:Red;visibility:hidden;">Only alphabets are allowed</span>-->
+
+                                </span>
+                  </div>
+
+                  <div>
+                      <span style="display: inline-block;width: 80px;">Achievements</span>
+                                <span style="margin-right:10px;">:</span>
+                                <span rowspan="4">
+                                    <textarea name="update_det" rows="2" cols="20" id="update_det" class="director-input" style="resize: none;height:146px;margin-top:0px;"></textarea>
+                                     <span id="update_CustomValidator1" style="color:Red;visibility:hidden;">Text contains invalid characters</span>
+                                </span>
+
+                  </div>
+
+
+              </div>
+              <div style="clear:both;"></div>
+            </div>
+               <div style="text-align:center" >
+                  <input type="button" name="updateMemberbtn" value="Submit" onclick="updateMember()" id="updateMemberbtn" class="sub2button">
+               </div>
+
+
+          </div>
+          </div>
+        </div>
+      </div>
+</div>
+
+<!--  ++++++++++++++++++++++++++++++++++++ Update Member End+++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+
+</body>
+</html>
+
+<script>
+
+
+$('.modal').on('hidden.bs.modal', function (e) {
+  $(this)
+    .find("input[type=text],input[type=email],input[type=date],input[type=file],textarea,select")
+       .val('')
+       .end()
+    .find("input[type=checkbox], input[type=radio]")
+       .prop("checked", "")
+       .end();
+})
+
+    $(document).ready(function () {
+        var today = new Date();
+        var day=today.getDate()>9?today.getDate():"0"+today.getDate(); // format should be "DD" not "D" e.g 09
+        var month=(today.getMonth()+1)>9?(today.getMonth()+1):"0"+(today.getMonth()+1);
+        var year=today.getFullYear();
+
+        $("#add_dob").attr('max', year + "-" + month + "-" + day);
+        $("#update_dob").attr('max', year + "-" + month + "-" + day);
+
+
+});
+</script>
+
+<script>
+function addMember(id){
+var id = document.getElementById('u_id').innerText;
+console.log("id===>",id);
+    var ids = +id + 1;
+    $('#add_id').val(ids);
+}
+
+function insertMember(){
+
+    var idflag = true;
+    var nameflag = true;
+    var dateflag = true;
+    var eduflag = true;
+    var desgflag = true;
+    var achvflag = true;
+    var imgflag = true;
+    var  fileflag = true;
+
+     var form_data = new FormData();
+
+    var id = document.getElementById('add_id').value;
+    var dob = document.getElementById('add_dob').value;
+    var education = document.getElementById('add_qualification').value;
+    var desg =document.getElementById('add_desig').value;
+
+    var name =document.getElementById('add_name').value;
+    var achv=document.getElementById('add_det').value;
+
+    var img = $("#add_img")[0].files[0];
+
+
+    var idregex=/^[0-9]*$/;
+    var nameregex =  /^[a-zA-Z\' \'\\s.]+$/;
+    //var taregex = /^[A-Za-z0-9,.?! ]+$/;
+    //var taregex = /^\[a-zA-Z0-9,.]+( \[a-zA-Z0-9,.]+)*$/
+    //var val_regex = /^\[a-zA-Z]+( \[a-zA-Z]+)*$/
+	 var taregex = /^[a-zA-Z0-9.,]+(\s{0,1}[a-zA-Z0-9. ,])*$/
+    var val_regex = /^[a-zA-Z-,]+(\s{0,1}[a-zA-Z-, ])*$/
+
+    var isvalid;
+
+
+    if(id == ""){
+        document.getElementById('add_RequiredFieldValidator1').style.visibility = "visible";
+        idflag = false
+    }
+    else
+    {
+       if(idregex.test(id) === false){
+            $('#add_RequiredFieldValidator1').text('Only numbers are allowed');
+            document.getElementById('add_RequiredFieldValidator1').style.visibility = "visible";
+            idflag = false;
+       }
+       else{
+             document.getElementById('add_RequiredFieldValidator1').style.visibility = "hidden";
+             idflag = true;
+
+       }
+    }
+
+
+        // name validator
+        if(name == ""){
+             document.getElementById('add_RequiredFieldValidator2').style.visibility = "visible";
+            nameflag = false;
+        }
+        else{
+
+            if(val_regex.test(name) === false){
+                $('#add_RequiredFieldValidator2').text('Only characters are allowed');
+                document.getElementById('add_RequiredFieldValidator2').style.visibility = "visible";
+                nameflag = false;
+
+            }
+             else{
+                    document.getElementById('add_RequiredFieldValidator2').style.visibility = "hidden";
+                    nameflag = true;
+             }
+        }
+
+        // dob
+         if (dob == ""){
+            document.getElementById('add_RequiredFieldValidator3').style.visibility = "visible";
+            dateflag = false;
+          }
+          else{
+                document.getElementById('add_RequiredFieldValidator3').style.visibility = "hidden";
+                dateflag = true;
+          }
+
+        if(desg == ""){
+
+            document.getElementById('add_RequiredFieldValidator4').style.visibility = "visible";
+            desgflag = false;
+            }
+
+          else{
+
+            if(val_regex.test(desg) === false){
+                $('#add_RequiredFieldValidator4').text('Only characters are allowed');
+                document.getElementById('add_RequiredFieldValidator4').style.visibility = "visible";
+                desgflag = false;
+
+            }
+             else{
+                    document.getElementById('add_RequiredFieldValidator4').style.visibility = "hidden";
+                    desgflag = true;
+             }
+        }
+
+        if(achv != ""){
+
+           if(taregex.test(achv) === false){
+                document.getElementById('add_CustomValidator1').style.visibility = "visible";
+                achvflag = false;
+
+            }
+             else{
+                    document.getElementById('add_CustomValidator1').style.visibility = "hidden";
+                    achvflag = true;
+             }
+        }
+        if(education != ""){
+
+            if(val_regex.test(education) === false){
+                $('#add_RequiredFieldValidator5').text('Only characters are allowed');
+                document.getElementById('add_RequiredFieldValidator5').style.visibility = "visible";
+                eduflag = false;
+
+            }
+             else{
+                    document.getElementById('add_RequiredFieldValidator5').style.visibility = "hidden";
+                    eduflag = true;
+             }
+        }
+
+
+
+
+
+        if(img)
+        {
+            console.log('file input:---  '+img);
+            var file_extension = (img.name).split('.')[1]
+            var file_name = (img.name).split('.')[0]
+
+            console.log("file_exten==>"+file_extension);
+            console.log("file name===>"+file_name );
+            if(file_extension != 'jpg')
+                {
+                    console.log("ext:"+file_extension)
+
+<!--                    document.getElementById('add_RegularExpressionValidator3').style.visibility = 'visible';-->
+<!--                    document.getElementById('add_RegularExpressionValidator4').style.visibility = 'hidden';-->
+
+                        $('#add_RegularExpressionValidator3').text('Only jpg files are allowed');
+                       document.getElementById('add_RegularExpressionValidator3').style.visibility = 'visible';
+                       imgflag = false;
+
+
+                }
+                else
+                {
+                    console.log("ext:"+file_extension)
+
+<!--                    document.getElementById('add_RegularExpressionValidator3').style.visibility = 'hidden';-->
+
+                   document.getElementById('add_RegularExpressionValidator3').style.visibility = 'hidden';
+                    imgflag = true;
+
+
+                    var reader = new FileReader();
+                    reader.readAsDataURL(img);
+                    reader.onload = function(e){
+                        var image = new Image();
+                        image.src   = e.target.result;
+                        image.onload  = function(){
+                            var width = image.width;
+                            var height = image.height;
+                            console.log("height======>"+height+"width===>"+width);
+                            if(height === 200 && width === 200)
+                            {
+<!--                                document.getElementById('add_RegularExpressionValidator4').style.visibility = 'hidden';-->
+
+
+                                 document.getElementById('add_RegularExpressionValidator3').style.visibility = 'hidden';
+                             imgflag = true;
+                            }
+                            else
+                            {
+
+<!--                                document.getElementById('add_RegularExpressionValidator4').style.visibility = 'visible';-->
+
+                        $('#add_RegularExpressionValidator3').text('Image must be in 200*200 pixels');
+                       document.getElementById('add_RegularExpressionValidator3').style.visibility = 'visible';
+
+
+                                imgflag = false;
+                            }
+                        }
+
+                    };
+
+
+
+                }
+
+
+            patt= /^[a-z\d\_\s]+$/i
+            var result = file_name.match(patt)
+            if(!result)
+            {
+
+                 document.getElementById('fileNamevalidator').style.visibility = 'visible';
+                 fileflag = false;
+            }
+            else{
+                   document.getElementById('fileNamevalidator').style.visibility = 'hidden';
+                    fileflag = true;
+            }
+        }
+
+        if(idflag && nameflag && dateflag && desgflag){
+            if(eduflag && imgflag && achvflag && fileflag){
+                    isvalid = true
+            }else{
+                    isvalid = false
+            }
+        }
+        else{
+                isvalid = false
+        }
+
+    console.log('isvalid---> '+isvalid);
+
+    if(isvalid){
+        postdata = JSON.stringify(
+                    {
+                       'id':id,
+                       'dob':dob,
+                       'education':education,
+                       'desg':desg,
+                       'name':name,
+                       'achv':achv,
+
+                    })
+    form_data.append('img',img);
+    form_data.append('requestData', postdata);
+    form_data.append( 'csrfmiddlewaretoken','{{ csrf_token }}')
+
+        $.ajax({
+            type: 'POST',
+           url: '{{baseURL}}addMember',
+            data:form_data,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+
+                if(response.message == 'ID already exists.'){
+                    //alert(response.message);
+                    document.getElementById("add_idExist").innerHTML = response.message;
+                }
+                else{
+                     alert(response.message);
+
+                     location.reload();
+                }
+
+            },
+            complete:function(){},
+           error:function (xhr, textStatus, thrownError){}
+        });
+
+    }
+
+}
+</script>
+
+<script>
+function viewMember(id,name){
+    $.ajax({
+        type:'POST',
+        url:'{{baseURL}}viewMember',
+        data:{
+            'id':id,
+            'name':name,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+        success:function(response){
+            var o=JSON.parse(response);
+
+            $('#update_cid').val(o.id);
+            $('#update_id').val(o.id);
+            $('#update_name').val(o.name);
+            $('#update_dob').val(formatDate(o.dob));
+            $('#update_qualification').val(o.qualify);
+            $('#update_desig').val(o.desg);
+            $('#update_det').val(o.detail);
+
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+
+    });
+}
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+</script>
+<script>
+function updateMember(){
+
+ var idflag = true;
+    var nameflag = true;
+    var dateflag = true;
+    var eduflag = true;
+    var desgflag = true;
+    var achvflag = true;
+    var imgflag = true;
+    var  fileflag = true;
+
+     var form_data = new FormData();
+    var cid = document.getElementById('update_cid').value;
+    var id = document.getElementById('update_id').value;
+    var dob = document.getElementById('update_dob').value;
+    var education =document.getElementById('update_qualification').value;
+    var desg =document.getElementById('update_desig').value;
+
+    var name =document.getElementById('update_name').value;
+    var achv=document.getElementById('update_det').value;
+
+
+
+   var img = $("#update_img")[0].files[0];
+
+
+
+    var isvalid = true;
+
+    var idregex=/^[0-9]*$/;
+    //var taregex = /[a-zA-Z0-9,. ]/;
+    //var val_regex = /^\[a-zA-Z]+( \[a-zA-Z]+)*$/
+
+    //var nameregex =  /^[a-zA-Z\' \'\\s.]+$/;
+   // var taregex = /^\[a-zA-Z0-9,.]+( \[a-zA-Z0-9,.]+)*$/
+	
+	 var taregex = /^[a-zA-Z0-9.,]+(\s{0,1}[a-zA-Z0-9. ,])*$/
+    var val_regex = /^[a-zA-Z-,]+(\s{0,1}[a-zA-Z-, ])*$/
+
+
+        if(id == ""){
+             document.getElementById('update_RequiredFieldValidator1').style.visibility = "visible";
+              idflag = false
+        }
+        else{
+
+            if(idregex.test(id) === false){
+                $('#update_RequiredFieldValidator1').text('Only numbers are allowed');
+                document.getElementById('update_RequiredFieldValidator1').style.visibility = "visible";
+                idflag  = false;
+            }
+             else{
+                    document.getElementById('update_RequiredFieldValidator1').style.visibility = "hidden";
+                     idflag  = true;
+
+             }
+        }
+
+
+        // name validator
+        if(name == ""){
+             document.getElementById('update_RequiredFieldValidator2').style.visibility = "visible";
+              nameflag = false;
+        }
+        else{
+
+             if(val_regex.test(name) === false){
+                $('#update_RequiredFieldValidator2').text('Only characters are allowed');
+                document.getElementById('update_RequiredFieldValidator2').style.visibility = "visible";
+                nameflag = false;
+
+            }
+             else{
+                    document.getElementById('update_RequiredFieldValidator2').style.visibility = "hidden";
+                    nameflag = true;
+             }
+
+
+
+        }
+
+        // dob
+         if (dob == ""){
+            document.getElementById('update_RequiredFieldValidator3').style.visibility = "visible";
+           dateflag = false;
+          }
+            else{
+                document.getElementById('update_RequiredFieldValidator3').style.visibility = "hidden";
+                dateflag = true;
+
+            }
+
+        if(desg == ""){
+
+            document.getElementById('update_RequiredFieldValidator4').style.visibility = "visible";
+            isvalid = false;
+          }
+		  else{
+
+            if(val_regex.test(desg) === false){
+                $('#update_RequiredFieldValidator4').text('Only characters are allowed');
+                document.getElementById('update_RequiredFieldValidator4').style.visibility = "visible";
+                desgflag = false;
+
+            }
+             else{
+                    document.getElementById('update_RequiredFieldValidator4').style.visibility = "hidden";
+                    desgflag = true;
+             }
+        }
+
+        if(achv != ""){
+            if(taregex.test(achv) === false){
+                document.getElementById('update_CustomValidator1').style.visibility = "visible";
+                achvflag = false;
+            }
+            else{
+                document.getElementById('update_CustomValidator1').style.visibility = "hidden";
+                achvflag = true;
+            }
+        }
+
+		if(education != ""){
+
+            if(val_regex.test(education) === false){
+                $('#update_RequiredFieldValidator5').text('Only characters are allowed');
+                document.getElementById('update_RequiredFieldValidator5').style.visibility = "visible";
+                eduflag = false;
+
+            }
+             else{
+                    document.getElementById('update_RequiredFieldValidator5').style.visibility = "hidden";
+                    eduflag = true;
+             }
+        }
+
+        if(img)
+        {
+            console.log('file input:---  '+img);
+            var file_extension = (img.name).split('.')[1]
+            var file_name = (img.name).split('.')[0]
+
+            console.log("file_exten==>"+file_extension);
+            console.log("file name===>"+file_name );
+            patt= /^[a-z\d\_\s]+$/i
+            var result = file_name.match(patt)
+            if(!result)
+            {
+                document.getElementById('updatefileNamevalidator').style.visibility = 'visible';
+
+                 fileflag = false;
+            }
+            else{
+               document.getElementById('updatefileNamevalidator').style.visibility = 'hidden';
+               fileflag = true;
+            }
+
+                if(file_extension != 'jpg' )
+                {
+                    console.log("ext:"+file_extension)
+                    $('#update_RegularExpressionValidator3').text('Only jpg files are allowed');
+                    document.getElementById('update_RegularExpressionValidator3').style.visibility = 'visible';
+                    imgflag = false;
+
+                }
+                else
+                {
+                    console.log("else ###  ext:"+file_extension)
+
+
+                     document.getElementById('update_RegularExpressionValidator3').style.visibility = 'hidden';
+
+
+                    var reader = new FileReader();
+                    reader.readAsDataURL(img);
+                    reader.onload = function(e){
+
+                        var image = new Image();
+                        image.src   = e.target.result;
+                        var width = image.width;
+                            var height = image.height;
+                            console.log("########### height======>"+height+"width===>"+width);
+                        image.onload  = function(){
+                           console.log('Fully loaded');
+                            var width = image.width;
+                            var height = image.height;
+                            console.log("height======>"+height+"width===>"+width);
+                            if(height === 200 && width === 200)
+                            {
+                               //  document.getElementById('update_RegularExpressionValidator4').style.visibility = 'hidden';
+                               document.getElementById('update_RegularExpressionValidator3').style.visibility = 'hidden';
+                               imgflag = true;
+
+
+                            }
+                             else
+                             {
+                                 // document.getElementById('update_RegularExpressionValidator4').style.visibility = 'visible';
+                                $('#update_RegularExpressionValidator3').text('Image must be in 200*200 pixels');
+                                document.getElementById('update_RegularExpressionValidator3').style.visibility = 'visible';
+                                imgflag = false;
+
+
+                             }
+
+                        }
+
+                     };
+                }
+         }
+
+
+
+
+
+
+
+ if(idflag && nameflag && dateflag && desgflag){
+    if(eduflag && imgflag && achvflag && fileflag){
+       isvalid = true
+    }else{
+         isvalid = false
+    }
+ }
+ else{
+      isvalid = false
+ }
+console.log('isvalid---> '+isvalid);
+    if(isvalid){
+        postdata = JSON.stringify(
+                    {
+                        'cid':cid,
+                       'id':id,
+                       'dob':dob,
+                       'education':education,
+                       'desg':desg,
+                       'name':name,
+                       'achv':achv,
+
+                    })
+    form_data.append('img',img);
+    form_data.append('requestData', postdata);
+    form_data.append( 'csrfmiddlewaretoken','{{ csrf_token }}')
+
+        $.ajax({
+            type: 'POST',
+            url: '{{baseURL}}updateMember',
+            data:form_data,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if(response.message == 'ID already exists.'){
+                    //alert(response.message);
+                    document.getElementById("update_idExist").innerHTML = response.message;
+                }
+                else{
+                     alert(response.message);
+
+                     location.reload();
+                }
+
+            },
+            complete:function(){},
+           error:function (xhr, textStatus, thrownError){}
+        });
+
+    }
+
+
+
+}
+
+function validateImageDimension(){
+    var img = $("#update_img")[0].files[0];
+    var imgflag;
+    if(img)
+        {
+
+            var file_extension = (img.name).split('.')[1]
+            var file_name = (img.name).split('.')[0]
+
+            if(file_extension != 'jpg')
+                {
+
+                    $('#update_RegularExpressionValidator3').text('Only jpg files are allowed');
+                    document.getElementById('update_RegularExpressionValidator3').style.visibility = 'visible';
+                    imgflag = false;
+
+                }
+                else
+                {
+
+                   document.getElementById('update_RegularExpressionValidator3').style.visibility = 'hidden';
+
+
+                    var reader = new FileReader();
+                    var image = new Image();
+
+
+                    reader.onload = function(e){
+                        image.src   = e.target.result;
+
+
+                    image.onload  = function(){
+
+                        var width = image.width;
+                        var height = image.height;
+                        console.log("height======>"+height+"width===>"+width);
+                        if(height === 200 && width === 200)
+                        {
+                            document.getElementById('update_RegularExpressionValidator3').style.visibility = 'hidden';
+                            imgflag = true;
+
+
+                         }
+                         else
+                         {
+                            $('#update_RegularExpressionValidator3').text('Image must be in 200*200 pixels');
+                            document.getElementById('update_RegularExpressionValidator3').style.visibility = 'visible';
+                            imgflag1 = false;
+                            console.log("not equal ---------->"+imgflag1);
+                            return imgflag1;
+
+                           }
+                      };
+
+
+                    };
+                    reader.readAsDataURL(img);
+                }
+
+
+            patt= /^[a-z\d\_\s]+$/i
+            var result = file_name.match(patt)
+            if(!result)
+            {
+
+                 document.getElementById('updatefileNamevalidator').style.visibility = 'visible';
+
+                 imgflag = false;
+            }
+            else{
+                   document.getElementById('updatefileNamevalidator').style.visibility = 'hidden';
+                     imgflag = true;
+            }
+      }
+
+    return imgflag;
+}
+
+</script>

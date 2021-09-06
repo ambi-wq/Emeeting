@@ -1,0 +1,461 @@
+{% include "header.html" %}
+
+{% if messages %}
+	{% for message in messages %}
+	   <script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<style>
+ input[type="checkbox"] {
+    margin:0;
+
+}
+
+</style>
+<div id="content_manageuser" style="min-height: 792px;">
+
+<div class="committee_draftmom">
+
+	<i class='fa fa-square' style='font-size:15px;margin-left:15px;margin-top: 14px;'></i>
+   	<span style="margin-left: 24px;font-size: larger;color: #57606A;">Draft MOM for [ {{ meeting_title }} ]</span>
+    <br>
+	<br>
+	<br>
+	<span style="margin-left: 20px;">Meeting Title</span><span style="margin-left: 30px;">:</span></span><input type="text" id="Meeting_title" name="Meeting_title" value="{{meeting_title}}" style="margin-left: 2px;height: 32px;width:340px;border-color: darkgray;font-size: 15px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;background-color: lightgray;cursor: not-allowed;" disabled>
+    <br>
+	<br>
+	<span style="margin-left: 20px;">Title</span><span style="margin-left: 84px;">:</span></span><input type="text" id="title" name="title" value="{{ Drafttitle }}" style="margin-left: 2px;height: 32px;width:340px;border-color: darkgray;font-size: 15px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;background-color: lightgray;cursor: not-allowed;" disabled>
+    <br>
+	<br>
+	<span style="margin-left: 20px;">Expiry Date</span><span style="margin-left: 38px;">:</span></span>
+	<input type="date" style="width: 200px;height: 30px;" id="expirydate" name="expirydate">
+    <span style="margin-left: 224px;">Time</span><span style="margin-left:48px;">:</span>
+	<select id="hours" style="width: 65px;height: 30px;font-size: 14px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;color: #555555;">
+            {% for i in range1 %}
+                <option value="{{ i }}">{{ i }}</option>
+            {% endfor %}
+          </select>
+          <select id="Min" style="width: 65px;height: 30px;font-size: 14px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;color: #555555;">
+            {% for j in rangemin %}
+                <option value="{{ j }}">{{ j }}</option>
+            {% endfor %}
+          </select>
+          <select id="AMPM" style="width: 65px;height: 30px;font-size: 14px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;color: #555555;">
+            <option value="AM">AM</option>
+            <option value="PM">PM</option>
+		  </select>
+    <br>
+	<br>
+	<br>
+    <span style="margin-left: 21px;">Document</span><span style="margin-left:44px;">:</span><input type="file" style="margin-left: 146px;margin-top: -19px;margin-left: 135px;" id="uploadfile" name="uploadfile">
+    <br>
+	<br>
+	<br>
+	<span style="margin-left: 21px;">Select Users</span><span style="margin-left:28px;">:</span>
+	<div class="scrollit" style="width:350px;height:200px;border: 1px solid whitesmoke;margin-left: 138px;margin-top: -44px;background-color: whitesmoke;">
+			<table class="scrollit" cellspacing = "0" cellpadding = "4" style="font-size:11pt;margin-top: 14px;margin-left: 7px;width: 96%;font-family: sans-serif;">
+			<thead class="thead-dark">
+			</thead>
+			<tbody>
+			{% for usr in Users %}
+				<tr>
+					<td><input type="checkbox" class="checkbox-inline" name="selectuser" value="{{ usr }}" id="chk1" style="margin-left: 14px;height: 18px;width: 24px;"/><label style="font-weight:200;" for="chk1">{{ usr }}</label></td>
+				</tr>
+			{% endfor %}
+			</tbody>
+
+			</table>
+	</div>
+    <br>
+	<br>
+	<input type="checkbox" class="checkbox-inline" name="sendemail" id = "sendemail" value="" style="margin-left: 14px;height: 18px;width: 24px;"/>&nbsp;<span class="checkbox-inline" style="font-weight: bold;padding-top:5px;padding-left:0;margin-left:0;margin-top:0;">Would you like to send Email notification to selected committee members</span>
+    <br>
+	<br>
+	<input type="button" class="sub2button" value="Submit" onclick="CreateNewDraft()" style="font-size:14px;margin-left: 550px;">
+</div>
+
+<div class="committee_draftmom1">
+	<i class='fas fa-exchange-alt' style='font-size:15px;margin-left:15px;margin-top: 14px;'></i>
+   	<span style="margin-left: 24px;font-size: larger;color: #57606A;">Manage Draft Minutes</span>
+
+	<table class="table table-striped" cellspacing = "0" cellpadding = "4" style="font-size:14pt;width: 98%;margin-left: 7px;margin-top: 16px;">
+    {% if momdict|length > 0 %}
+		<thead class="thead-dark">
+			<tr style="font-size: 13px;color:black;font-family: sans-serif;">
+				<th>Draft Title</th>
+				<th>Expiry Date</th>
+				<th>Status</th>
+				<th>User Approval Status</th>
+				<th>Comments</th>
+				<th>Edit</th>
+			</tr>
+		</thead>
+	{% endif %}
+    <tbody>
+	{% if momdict|length > 0 %}
+		{% for draftmom in momdict %}
+			<tr>
+				<td style="font-size: 14px;font-family: sans-serif;">{{ draftmom.draft_title  }}</td>
+				<td style="font-size: 14px;font-family: sans-serif;">{{ draftmom.expirydate | date:"d/m/Y h:i A" }}</td>
+				{% for j in Approved_status  %}
+					{% if draftmom.momid == j.momid %}
+						<td style="font-size: 14px;font-family: sans-serif;">{{ j.status }}</td>
+					{% endif %}
+				{% endfor %}
+				<td><input type="button" class="sub2button" value="User Status" onclick="location.href='{{baseURL}}Draftuserstatus/{{ draftmom.momid }}';" style="font-size:14px;"></td>
+				{% for k in finalcommentcountarr %}
+				    {% if draftmom.momid == k.momid %}
+						<td><input type="button" class="sub2button" value="MOM Comments[{{ k.commentcount }}]" onclick="location.href='{{baseURL}}Draftusercomment/{{ draftmom.momid }}';" style="font-size:14px;"></td>
+					{% endif %}
+				{% endfor %}
+				{% if drafttitleenabled == draftmom.draft_title %}
+						<td><input type="button" class="sub2button" value="Edit" onclick="EditMOM('{{draftmom.momid}}')" data-toggle="modal" data-target="#myModalEdit" style="font-size:14px;"></td>
+			    {% else %}
+				        <td><input type="button" id="edit-disable" class="sub2button" value="Edit" onclick="EditMOM('{{draftmom.momid}}')" data-toggle="modal" data-target="#myModalEdit" style="font-size:14px;" disabled></td>
+				{% endif %}
+
+			</tr>
+		{% endfor %}
+	{% else %}
+		<p style="font-size: medium;font-weight: bold;margin-left:58px;margin-top: 33px;"> No MOM Drafts are available</p>
+	{% endif %}
+	</tbody>
+	</table>
+</div>
+</div>
+
+{% if userstatusflag == "True" %}
+<div class="modal" id="myModal4" style="backdrop-filter: blur(6px);">
+  <div class="modal-dialog" style="  margin:auto;margin-top:125px;  width:700px;">
+    <div class="modal-content" >
+      <div class="modal-header">
+         <button type="button" class="close" onclick="closemodel()">&times;</button>
+      </div>
+      <div class="modal-body">
+          <table class="table table-striped bootstrap-datatable datatable dataTable" cellspacing = "0" cellpadding = "4" style="font-size:12pt;border-collapse:collapse;border: 1px solid lightgray;width: 98%;margin-left: 7px;">
+				<thead class="thead-dark">
+				<tr style="font-size: 12px;color:black;font-weight: bold;font-family: sans-serif;">
+					<th>User Id</th>
+					<th>Status</th>
+					<th>Comments</th>
+				</tr>
+				</thead>
+				<tbody>
+                 {% for userstatus in userstatusdata %}
+				  <tr style="font-size: 14px;">
+				     <td>{{ userstatus.userid| capfirst }}</td>
+                     <td>{{ userstatus.status }}</td>
+					 {% if userstatus.comments == None %}
+					 	<td> </td>
+					 {% else %}
+					    <td>{{ userstatus.comments }} </td>
+					 {% endif %}
+				  </tr>
+				</tbody>
+			     {% endfor %}
+		  </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if userstatusflag == "False" %}
+<div class="modal" id="myModal" style="backdrop-filter: blur(6px);">
+  <div class="modal-dialog" style="  margin:auto;margin-top:125px;  width:850px;">
+    <div class="modal-content" >
+      <div class="modal-header">
+         <button type="button" class="close" onclick="Commentsclosemodel()">&times;</button>
+      </div>
+      <div class="modal-body">
+          <table class="table table-striped bootstrap-datatable datatable dataTable" cellspacing = "0" cellpadding = "4" style="font-size:12pt;border-collapse:collapse;border: 1px solid lightgray;width: 98%;margin-left: 7px;">
+				{% if finalusercomments|length > 0 %}
+					<thead class="thead-dark">
+					<tr style="font-size: 12px;color:black;font-weight: bold;font-family: sans-serif;">
+						<th>Draft Version</th>
+						<th>Comments</th>
+						<th>User Name</th>
+						<th>Date</th>
+						<th>Page No.</th>
+					</tr>
+					</thead>
+			    {% endif %}
+			    {% if finalusercomments|length > 0 %}
+					<tbody>
+					 {% for usercomment in finalusercomments %}
+					  <tr style="font-size: 14px;">
+						 <td>{{ usercomment.title }}</td>
+						 <td>{{ usercomment.comments }}</td>
+						 <td>{{ usercomment.userid|capfirst }}</td>
+						 <td>{{ usercomment.dt| date:"d/m/Y h:i A"}}</td>
+						 <td>{{ usercomment.page_no }}</td>
+					  </tr>
+					</tbody>
+					 {% endfor %}
+			    {% else %}
+			        <p style="font-size: medium;font-weight: bold;margin-left:20px;"> No Comments are available</p>
+			    {% endif %}
+		  </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+
+<div id="myModalEdit" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><i class='fas fa-edit' style='font-size:15px;color:grey;'></i>&nbsp;&nbsp;&nbsp;&nbsp;Edit Draft MOM</h4>
+      </div>
+      <div class="modal-body">
+		    <input type="text" name="momid" id="momid"  value="" style="margin-left: 14px;height: 18px;width: 24px;display:none"/>
+		    <span>Expiry Date</span><span style="margin-left: 38px;">:</span></span>
+         	<input type="date" style="width: 200px;height: 30px;cursor: not-allowed;background-color: lightgray;" id="Edit_expirydate" name="Edit_expirydate">
+         	<br>
+		 	<br>
+		    <span>Time</span><span style="margin-left:80px;">:</span>
+			<select id="hours1" style="width: 65px;height: 30px;font-size: 14px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;color: #555555;">
+            {% for i in range1 %}
+                <option value="{{ i }}">{{ i }}</option>
+            {% endfor %}
+          	</select>
+          	<select id="Min1" style="width: 65px;height: 30px;font-size: 14px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;color: #555555;">
+            {% for j in rangemin %}
+                <option value="{{ j }}">{{ j }}</option>
+            {% endfor %}
+          	</select>
+          	<select id="AMPM1" style="width: 65px;height: 30px;font-size: 14px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;color: #555555;">
+            <option value="AM">AM</option>
+            <option value="PM">PM</option>
+		  	</select>
+    		<br>
+			<br>
+		    <br>
+		  	<br>
+		    <br>
+            <span>Select Users</span><span style="margin-left:32px;">:</span>
+			<div class="scrollit" style="width:350px;height:200px;border: 1px solid whitesmoke;margin-left: 117px;margin-top: -74px;background-color: whitesmoke;">
+				<table class="scrollit" id="selectuserid" cellspacing = "0" cellpadding = "4" style="font-size:11pt;margin-top: 14px;margin-left: 7px;width: 96%;font-family: sans-serif;">
+					<thead class="thead-dark">
+					</thead>
+					<tbody>
+						{% for usr in Users %}
+						<tr>
+				   			<td><input class="checkbox-inline" type="checkbox" name="selectuser" value="{{ usr }}" id="{{ usr }}"
+									   style="margin-left: 14px;height: 20px;width: 25px;margin:5px;"/>{{ usr }}</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+
+				</table>
+			</div>
+		  <br>
+		  <br>
+		  	<input type="checkbox" class="checkbox-inline" name="sendemail1" id="sendemail1" value=""
+				   style="margin-left: 14px;height: 18px;width: 24px;"/>&nbsp;<span class="checkbox-inline"  style="font-weight: bold;padding-top:5px;padding-left:0;margin-left:0;margin-top:0;">
+		  Would you like to send Email notification to selected committee members</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="sub2button" data-dismiss="modal" style="font-weight: bold;margin-right:233px;width: 90px;height: 42px;" onclick="UpdateDraftInfo()">Submit</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+function CreateNewDraft()
+{
+    var form_data = new FormData();
+
+    var mailbox = document.getElementById("sendemail").checked;
+
+    var meeting_title = document.getElementById("Meeting_title").value;
+    var title = document.getElementById("title").value;
+
+    var expirydate = document.getElementById("expirydate").value;
+
+    var hour = document.getElementById("hours").value;
+
+    var min = document.getElementById("Min").value;
+
+    var AMPM = document.getElementById("AMPM").value;
+
+    var selected=[]
+    $("input:checkbox[name=selectuser]:checked").each(function(){
+            selected.push($(this).val());
+    });
+
+    var zipfileInput = $("#uploadfile")[0].files[0];
+
+    if(zipfileInput && expirydate != "" && selected.length > 0)
+    {
+       form_data.append('file', zipfileInput);
+       postdata = JSON.stringify(
+                    {
+                         'meeting_title' : meeting_title,
+                         'title':title,
+                         'expirydate':expirydate,
+                         'hour':hour,
+                         'min':min,
+                         'AMPM':AMPM,
+                         'sendmail':mailbox,
+                         'selecteuser':selected,
+						 'mid':'{{mid}}',
+                         'fid':'{{fid}}'
+                    })
+
+       form_data.append('requestData', postdata);
+       form_data.append( 'csrfmiddlewaretoken','{{ csrf_token }}')
+
+       $.ajax({
+            type: 'POST',
+            url: '{{baseURL}}NewDraftMOM/',
+            data:form_data,
+            contentType: false,
+            processData: false,
+            success: function(data)
+            {
+                alert('New Draft is Successfully created!');
+                location.reload();
+            },
+            complete:function(){},
+           error:function (xhr, textStatus, thrownError){}
+        });
+    }
+    else
+    {
+          alert("Please choose correct file and Fill all the details.");
+    }
+
+}
+
+function EditMOM(id)
+{
+   var momid = id
+   $.ajax({
+        type: 'POST',
+        url:'{{baseURL}}EditDraft/',
+        data: { 'momid': momid,
+                'dataType': 'json',
+                'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success:function(response)
+        {
+            localStorage.clear();
+            var o=JSON.parse(response);
+            var arrayuserdata = o.Assignuserlist;
+            var alluser = o.activeuserarr1;
+            var Expirydate = o.Expirydate;
+            $('#Edit_expirydate').val(Expirydate);
+            document.getElementById("Edit_expirydate").disabled = true;
+
+            var selected1=[]
+        	$("input:checkbox[name=selectuser]:checked").each(function(){
+           	 	selected1.push($(this).val());
+        	});
+
+            for(j =0;j < selected1.length;j++)
+            {
+                document.getElementById(selected1[j]).checked = false;
+            }
+			//alert(arrayuserdata)
+            for(i =0;i < arrayuserdata.length;i++)
+            {
+                document.getElementById(arrayuserdata[i]).checked = true;
+            }
+
+            var time_hour = o.time_hour;
+            $('#hours1').val(time_hour);
+            document.getElementById("hours1").disabled = true;
+
+            var time_min = o.time_min;
+            $('#Min1').val(time_min);
+            document.getElementById("Min1").disabled = true;
+
+            var AMPMdata = o.AMPMdata;
+            $('#AMPM1').val(AMPMdata);
+            document.getElementById("AMPM1").disabled = true;
+
+            var momid = o.momid;
+            $('#momid').val(momid);
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+
+}
+
+function UpdateDraftInfo()
+{
+    var momid = document.getElementById("momid").value;
+	var expirydate = document.getElementById("Edit_expirydate").value;
+    var hour = document.getElementById("hours1").value;
+    var min = document.getElementById("Min1").value;
+    var AMPM = document.getElementById("AMPM1").value;
+    var selected2=[]
+
+    $("input:checkbox[name=selectuser]:checked").each(function(){
+          	selected2.push($(this).val());
+    });
+
+    var mailbox = document.getElementById("sendemail1").checked;
+
+    $.ajax({
+        type: 'POST',
+        url:'{{baseURL}}UpdateDraftMOM/',
+        data: { 'momid':momid,
+                'selected2':selected2,
+                'mailbox':mailbox,
+                'expirydate':expirydate,
+                'hour':hour,
+                 'min':min,
+                 'AMPM':AMPM,
+                'mid':'{{mid}}',
+                'fid':'{{fid}}',
+                'dataType': 'json',
+                'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success:function(response)
+        {
+           alert("The Draft MOM is successfully Updated.")
+           location.reload();
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+}
+</script>
+
+
+
+
+<script>
+var modal = document.getElementById("myModal4");
+modal.style.display = "block";
+
+function closemodel()
+{
+    modal.style.display = "none";
+    window.history.back();
+}
+
+</script>
+
+<script>
+var modal1 = document.getElementById("myModal");
+modal1.style.display = "block";
+
+function Commentsclosemodel()
+{
+    modal1.style.display = "none";
+    window.history.back();
+}
+</script>
+
+
+</body>
+</html>

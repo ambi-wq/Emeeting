@@ -1,0 +1,782 @@
+{% include "header.html" %}
+
+{% if messages %}
+	{% for message in messages %}
+	   <script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+
+<div id="content_manageuser" style="min-height: 792px;">
+
+<div class="committee" style="height:150px;">
+   <i class='fa fa-briefcase' style='font-size:15px;color:grey;margin-left:15px;margin-top: 14px;'></i>
+   <span style="margin-left: 24px;font-size: initial;">Meeting</span>
+   <hr style="margin-top:30px;">
+
+    <div style="margin-left: 20px;">
+             Committee<span style="margin-right: 5px;color:red;font-size:larger;">*</span>:
+            <select id="select_committee_name" style="width: 160px;height: 30px;font-size: 14px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;color: #555555;">
+                {% if forums == "Select Committee" %}
+                    <option value="{{ forums }}">{{ forums }}</option>
+                {% else %}
+                    <option value="{{ forums }}">{{ forums }}</option>
+                    <option value="Select Committee">Select Committee</option>
+                {% endif %}
+                {% for committee in committee_array %}
+                    {% if forums == committee.fname %}
+                        <option value="{{ committee.fname }}" style="display:none">{{ committee.fname }}</option>
+                    {% else %}
+                        <option value="{{ committee.fname }}">{{ committee.fname }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        <span style="margin-left: 12px;">Search By</span><span style="margin-right: 5px;color:red;font-size:larger;">*</span>:</span>
+
+        <select id="select_menu" onclick="getoption();" style="width: 148px;height: 30px;font-size: 14px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;color: #555555;">
+            <option value="Select">Select</option>
+            <option value="Date">Date</option>
+            <option value="Meeting_Status">Meeting Status</option>
+        </select>
+        <input type="text" id="from_date" name="stodate" placeholder="From Date" style="height:30px;width:130px;display:none;" autocomplete="off">
+        <input type="text" id="To_date" name="todate" placeholder="To Date" style="height:30px;width:140px;display:none;" autocomplete="off">
+
+        <select id="select_menu1" style="width: 148px;height: 30px;font-size: 14px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;color: #555555;display:none">
+            <option value="Select">Select--</option>
+            <option value="Over">Over</option>
+            <option value="Current">Current</option>
+            <option value="Scheduled">Scheduled</option>
+        </select>
+
+        <input type="button" value="Search" class="sub2button" onclick="Searchcommitteedata()" style="width: 74px;height: 34px;margin-left: 18px;">
+        <input type="button" value="Add Meeting" class="sub2button" onclick="CheckCommitte()" data-toggle="modal" style="width:108px;height: 34px;">
+    </div>
+</div>
+
+<div class="committee2">
+    <i class='fa fa-search' style='font-size:15px;color:grey;margin-left:15px;margin-top: 14px;'></i>
+    <span style="margin-left: 24px;font-size: initial;">Manage Meetings</span>
+    {% if datedisplay == "hide"  %}
+        <input type="button" class="removebutton" value="Remove Meeting" onclick="location.href='{{baseURL}}removemeeting';" style="font-size:15px;display:none;">
+        <input type="button" class="sub2button" value="Download CSV" onclick="location.href='{{baseURL}}downloadforumsbasedata?f={{ forums }}';" style="font-size:15px;margin-left: 728px;">
+    {% else  %}
+        <input type="button" class="removebutton" value="Remove Meeting" onclick="RemoveMeeting()" style="font-size:15px;">
+        {% if forums == "Select Committee"  %}
+            <input type="button" class="sub2button" value="Download CSV" onclick="location.href='{{baseURL}}downloadAllMeetingdata/';" style="font-size:15px;">
+        {% else %}
+            <input type="button" class="sub2button" value="Download CSV" onclick="location.href='{{baseURL}}downloadforumsbasedata?f={{ forums }}';" style="font-size:15px;">
+        {% endif %}
+
+    {% endif %}
+    <hr style="margin-top:15px;">
+
+    {% if meetingdata|length  > 0 %}
+        <table class="table table-striped bootstrap-datatable datatable committee-table" cellspacing = "0" cellpadding = "4" style="font-size:14pt;border-collapse:collapse;margin-top: -11px;margin-left: 7px;width: 98%;">
+        <thead class="thead-dark">
+        <tr style="font-size: 13px;color:#333;font-family: sans-serif;">
+            {% if datedisplay == "hide"  %}
+                <th><input type="checkbox" onchange="checkAll(this)" name="chk1" style="margin-left: 14px;height: 16px;width: 18px;display:none;"/></th>
+            {% else  %}
+                <th><input type="checkbox" onchange="checkAll(this)" name="chk1" style="margin-left: 14px;height: 18px;width: 24px;"/></th>
+            {% endif %}
+            <th>Meetings</th>
+            <th>Title</th>
+            <th>Date and Time</th>
+            {% if datedisplay == "hide"  %}
+                <th style="display:none">Edit</th>
+                <th style="display:none">Mom</th>
+                <th style="display:none">View Comment</th>
+                <th style="display:none">Report</th>
+                <th style="float: right;margin-right: -169px;">Publish</th>
+            {% else %}
+                <th>Edit</th>
+                <th>Mom</th>
+                <th>View Comment</th>
+                <th>Report<i title="Downloading Report of Userwise Read Status of all Meeting-agenda items" class="fa fa-info-circle" style="margin-left: 4px;"></i></th>
+                <th>Publish</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in meetingdata %}
+        <tr>
+            {% if datedisplay == "hide"  %}
+                <td><input type="checkbox" name="chk1" value="{{ user.id }}" style="margin-left: 14px;height: 18px;width: 24px;display:none"/></td>
+            {% else  %}
+                <td><input type="checkbox" name="chk1" value="{{ user.id }}" style="margin-left: 14px;height: 18px;width: 24px;"/></td>
+            {% endif %}
+                <td style="font-size: 13px;"> Meeting {{ user.id }}</td>
+            <td style="font-size: 13px;text-align:left;">{{ user.title }}</td>
+            <td style="font-size: 13px;">{{ user.dt| date:"d/m/Y h:i A" }}</td>
+            {% if datedisplay == "hide"  %}
+                <td><a href="/"><img src="{{baseURL}}static/images/Edit.png" style="height:20px;width:20px;display:none;"></a></td>
+                <td><input type="button" class="sub2button" value="Draft MOM" onclick="location.href='{{baseURL}}downloadCommitteedata';" style="font-size:12px;display:none;"></td>
+                <td><input type="button" class="sub2button" value="MOM Comments" onclick="location.href='{{baseURL}}downloadCommitteedata';" style="font-size:12px;display:none;"></td>
+                <td><input type="button" class="sub2button" value="Report" onclick="location.href='{{baseURL}}downloadCommitteedata';" style="font-size:12px;display:none;"></td>
+                {% if user.status == "true" %}
+                    {% for enddate in Expirydatearray %}
+                         {% if user.id == enddate.id %}
+                             {% if today_date > enddate.ExpiryDate  %}
+                                <td><input type="checkbox" name="meetingstatus" value="" style="margin-left: 14px;height: 18px;width: 24px;" checked disabled/></td>
+                             {% else %}
+                                <td><input type="checkbox" name="meetingstatus" value="" onclick="Changepublishstatus('{{ user.id }}','{{ user.status }}')" style="margin-left: 14px;height: 18px;width: 24px;" checked/></td>
+                             {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {% for enddate in Expirydatearray %}
+                        {% if user.id == enddate.id %}
+                            {% if today_date > enddate.ExpiryDate  %}
+                                <td><input type="checkbox" name="meetingstatus" value="" style="margin-left: 14px;height: 18px;width: 24px;" disabled/></td>
+                            {% else %}
+                                <td><input type="checkbox" name="meetingstatus" value="" onclick="Changepublishstatus('{{ user.id }}','{{ user.status }}')" style="margin-left: 14px;height: 18px;width: 24px;"/></td>
+                             {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% else %}
+                <td><a href="{{baseURL}}info/{{ user.id }}"><img src="{{baseURL}}static/images/Edit.png" style="height:20px;width:20px;"></a></td>
+                <td><input type="button" class="sub2button" value="Draft MOM" onclick="location.href='{{baseURL}}DraftMOMsite?mid= {{ user.id }}&f_id={{ user.fid }}';" style="font-size:14px;font-weight: bold;"></td>
+
+                {%  for count1 in max_comment_count %}
+                    {% if count1.id == user.id  %}
+                        <td><input type="button" class="sub2button" value="MOM Comments [{{ count1.count }}]" onclick="location.href='{{baseURL}}Momcomments/{{ count1.momid }}';" style="font-size:14px;font-weight: bold;"></td>
+                    {% endif %}
+                {% endfor %}
+
+                <td><input type="button" class="sub2button" value="Report" onclick="location.href='{{baseURL}}DownloadReports/{{ user.id }}';" style="font-size:14px;font-weight: bold;"></td>
+
+                {% if user.status == "true" %}
+                    {% for enddate in Expirydatearray %}
+                         {% if user.id == enddate.id %}
+                             {% if today_date > enddate.ExpiryDate  %}
+                                <td><input type="checkbox" name="meetingstatus" value="" style="margin-left: 14px;height: 18px;width: 24px;" checked disabled/></td>
+                             {% else %}
+                                <td><input type="checkbox" name="meetingstatus" value="" onclick="Changepublishstatus('{{ user.id }}','{{ user.status }}')" style="margin-left: 14px;height: 18px;width: 24px;" checked/></td>
+                             {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {% for enddate in Expirydatearray %}
+                        {% if user.id == enddate.id %}
+                            {% if today_date > enddate.ExpiryDate  %}
+                                <td><input type="checkbox" name="meetingstatus" value="" style="margin-left: 14px;height: 18px;width: 24px;" disabled/></td>
+                            {% else %}
+                                <td><input type="checkbox" name="meetingstatus" value="" onclick="Changepublishstatus('{{ user.id }}','{{ user.status }}')" style="margin-left: 14px;height: 18px;width: 24px;"/></td>
+                             {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    {% else %}
+    <p style="font-size: large;font-weight: bold;margin-left: 36px;"> No Meetings available</p>
+    {% endif %}
+	
+	
+	{% if datalength < 11 %}
+            <div class="pagination" style="display:none;"></div>
+            {% else %}
+                    <div class="pagination" style="margin:0 0 0 10px;">
+                        <ul class="pagination" style="margin:0 0 0 10px;">
+                        <li class="page-item">
+                             {% if meetingdata.number != 1 %}
+                             <a class="page-link" href="?page=1">First</a>
+                             {% endif %}
+                         </li>
+                          <li class="page-item">
+                             {% if meetingdata.has_previous %}
+                             <a class="page-link" href="?page={{ meetingdata.previous_page_number }}" aria-label="Previous">
+                             <span aria-hidden="true">&laquo;</span>
+                             </a>
+                             {% endif %}
+                          </li>
+                          {% for num in meetingdata.paginator.page_range %}
+                              {% if meetingdata.number == num %}
+                              <li class="page-item "><a class="page-link current" href="?page={{ num }}">{{ num }}</a></li>
+                              {% elif num > meetingdata.number|add:-3 and num < meetingdata.number|add:3  %}
+                              <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                              {% endif %}
+                          {% endfor %}
+                          <li class="page-item">
+                             {% if meetingdata.has_next %}
+                             <a class="page-link" href="?page={{ meetingdata.next_page_number }}" aria-label="Next">
+                             <span aria-hidden="true">&raquo;</span>
+                             </a>
+                             {% endif %}
+                          </li>
+                          </li>
+                          <li class="page-item">
+                             {% if meetingdata.number != meetingdata.paginator.num_pages %}
+                             <a class="page-link" href="?page={{ meetingdata.paginator.num_pages }}">Last</a>
+                             {% endif %}
+                          </li>
+                         </ul>
+
+                    </div>
+
+             {% endif %}
+</div>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><i class='fas fa-edit' style='font-size:15px;color:grey;'></i>&nbsp;&nbsp;&nbsp;&nbsp;Add Meeting</h4>
+      </div>
+      <div class="modal-body">
+          <span>Title</span><span style="color:red;font-size: larger;">*</span><span style="margin-left: 60px;">:</span><input type="text" id="title" name="title" style="margin-left: 2px;height: 32px;width:220px;border-color: darkgray;font-size: 15px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;">
+          <br>
+          <br>
+          <span>Committee</span><span style="margin-left: 25px;">:</span>
+            <select id="select_committee_name1" style="width: 220px;height: 30px;font-size: 14px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;color: #555555;">
+                {% for committee in committee_array %}
+                    <option value="{{ committee.fname }}">{{ committee.fname }}</option>
+                {% endfor %}
+            </select>
+          <br>
+          <br>
+          <span>Venue</span><span style="color:red;font-size: larger;">*</span><span style="margin-left: 48px;">:</span><input type="text" id="venue" style="margin-left: 2px;height: 32px;width:220px;border-color: darkgray;font-size: 15px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;">
+          <br>
+          <br>
+          <span>Meeting Date</span><span style="color:red;font-size: larger;">*</span><span style="margin-left: 6px;">:</span><input type="text" id="meetingdate" name="meetingdate" placeholder="Select Date" style="margin-left: 2px;height:32px;width:220px;border-color: darkgray;font-size: 15px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;" autocomplete="off">
+          <br>
+          <br>
+          <span>Time</span><span style="color:red;font-size: larger;">*</span><span style="margin-left:57px;">:</span>
+          <select id="hours" style="width: 65px;height: 30px;font-size: 14px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;color: #555555;">
+            {% for i in range1 %}
+                <option value="{{ i }}">{{ i }}</option>
+            {% endfor %}
+          </select>
+          <select id="Min" style="width: 65px;height: 30px;font-size: 14px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;color: #555555;">
+            {% for j in rangemin %}
+                <option value="{{ j }}">{{ j }}</option>
+            {% endfor %}
+          </select>
+          <select id="AMPM" style="width: 65px;height: 30px;font-size: 14px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;color: #555555;">
+            <option value="AM">AM</option>
+            <option value="PM">PM</option>
+          </select>
+          <br>
+          <br>
+          <span>Days</span><span style="color:red;font-size: larger;">*</span><span style="margin-left: 57px;">:</span><input type="text" id="days" style="margin-left: 2px;height: 32px;width:220px;border-color: darkgray;font-size: 15px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;">
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="sub2button"  style="font-weight: bold;margin-right:312px;width: 98px;height: 44px;" onclick="AddNewMeeting('add-meeting')">Submit</button>
+         <div style="margin-top: -55px;"><button type="button" class="sub2button" style="font-weight: bold;margin-right: 181px;margin-top:7px;width:109px;height: 44px;" onclick="AddNewMeeting('add-agenda')">Add Agenda</button></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+{% if momcomment_arr1 == "True" %}
+<div class="modal" id="myModalComment" style="backdrop-filter: blur(6px);">
+  <div class="modal-dialog" style="  margin:auto;margin-top:125px;  width:1016px;">
+    <div class="modal-content" >
+      <div class="modal-header">
+         <button type="button" class="close" onclick="closecommentmodel()">&times;</button>
+      </div>
+      <div class="modal-body">
+          <table class="table table-striped bootstrap-datatable datatable dataTable" cellspacing = "0" cellpadding = "4" style="font-size:12pt;border-collapse:collapse;border: 1px solid lightgray;width: 98%;margin-left: 7px;">
+				{% if momcomment_arr|length > 0 %}
+					<thead class="thead-dark">
+					<tr style="font-size: 12px;color:black;font-weight: bold;font-family: sans-serif;">
+						<th>Draft Version</th>
+						<th style="text-align: center;">Comments</th>
+						<th>User Name</th>
+						<th style="text-align: center;">Date</th>
+						<th style="text-align: center;">Page No.</th>
+					</tr>
+					</thead>
+			    {% endif %}
+			    {% if momcomment_arr|length > 0 %}
+					<tbody>
+					 {% for usercomment in momcomment_arr %}
+					  <tr style="font-size: 14px;">
+						 <td>{{ usercomment.title }}</td>
+						 <td>{{ usercomment.comments }}</td>
+						 <td>{{ usercomment.userid|capfirst }}</td>
+						 <td style="text-align: center;">{{ usercomment.dt| date:"d/m/Y"}}</td>
+						 <td style="text-align: center;">{{ usercomment.page_no }}</td>
+					  </tr>
+					</tbody>
+					 {% endfor %}
+			    {% else %}
+			        <p style="font-size: medium;font-weight: bold;margin-left:20px;"> No Comments are available</p>
+			    {% endif %}
+		  </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+
+<script>
+    $(function() {
+         $( "#from_date" ).datepicker({dateFormat:'dd/mm/yy'});
+    });
+
+    $(function() {
+         $( "#To_date" ).datepicker({dateFormat:'dd/mm/yy'});
+    });
+
+</script>
+
+<script>
+var modal1 = document.getElementById("myModalComment");
+modal1.style.display = "block";
+
+function closecommentmodel()
+{
+    modal1.style.display = "none";
+    window.history.back();
+}
+
+</script>
+
+
+<script>
+    $(function(){
+      // bind change event to select
+      $('#select_committee_name').on('change', function ()
+      {
+          var url = $(this).val(); // get selected value
+          if (url)
+          {
+              window.location = "{{baseURL}}manageMeeting/?f="+url; // redirect
+          }
+          return false;
+      });
+    });
+</script>
+
+
+<script>
+function Changepublishstatus(id,status)
+{
+    var r = confirm("Are you sure you want to publish/hide the meeting?");
+
+    if(r == true)
+    {
+       var uniqueid = id
+       var status = status
+       $.ajax({
+        type: 'POST',
+        url:'{{baseURL}}Changepublishstatus/',
+        data: { 'uniqueid':uniqueid,
+                'status':status,
+                'dataType': 'json',
+                'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success:function(response)
+        {
+           alert("Meeting successfully published/hid")
+           location.reload();
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+    }
+    else
+    {
+        location.reload()
+    }
+
+}
+
+function CheckCommitte()
+{
+    var forums = document.getElementById('select_committee_name').value;
+    if(forums == "Select Committee")
+    {
+        alert("Please select a committee to add a meeting")
+        var modal1 = document.getElementById("myModal");
+        modal1.style.display = "none";
+    }
+    else
+    {
+         $('#myModal').modal('show');
+         $('#select_committee_name1').val(forums);
+    }
+}
+
+function AddNewMeeting(type)
+{
+        var title = document.getElementById('title').value;
+        
+        var forums = document.getElementById('select_committee_name1').value;
+        var venue = document.getElementById('venue').value;
+        var Select_Date = document.getElementById('meetingdate').value;
+        var hour = document.getElementById('hours').value;
+        var min = document.getElementById('Min').value;
+        var timestatus = document.getElementById('AMPM').value;
+        var totaldays = document.getElementById('days').value;
+
+        var titleflag = true;
+        var venueflag = true;
+        var dayflag = true;
+
+        if( title == "" | venue== "" | Select_Date== "" | totaldays== "")
+        {
+               alert("Please fill all the details")
+        }
+        else
+        {
+            if(title != ""){
+                 patt = /^\w+( \w+)*$/
+                 var result = patt.test(title)
+                 if(!result){
+                            alert("Title contains invalid characters or extra space");
+                            titleflag=false;
+                        }
+            }
+            if(venue != ""){
+                  patt = /^\w+( \w+)*$/
+                 var result = patt.test(venue)
+                 if(!result){
+                            alert("Venue contains invalid characters or extra space");
+                            venueflag=false;
+                        }
+            }
+            if(totaldays != ""){
+                 patt = /^[0-9]*$/
+                 var result = patt.test(totaldays)
+                 if(!result){
+                            alert("Only numbers are allowed");
+                            dayflag=false;
+                        }
+            }
+            if(type == 'add-meeting' && titleflag && venueflag && dayflag){
+                $.ajax({
+                          type: 'POST',
+                          url:'{{baseURL}}AddNewMeeting/',
+                          data: {   'title':title,
+                                    'forums':forums,
+                                    'venue':venue,
+                                    'Select_Date':Select_Date,
+                                    'hour':hour,
+                                    'min':min,
+                                    'timestatus':timestatus,
+                                    'totaldays':totaldays,
+                                    'meet_type':type,
+                                    'dataType': 'json',
+                                    'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                          success:function(response)
+                          {
+                            alert("New Meeting is Successfully Created!")
+                            location.reload()
+                          },
+                          complete:function(){},
+                          error:function (xhr, textStatus, thrownError){}
+                       });
+            }
+            else{
+                    if(type == 'add-agenda' && titleflag && venueflag && dayflag){
+                        $.ajax({
+                          type: 'POST',
+                          url:'{{baseURL}}AddNewMeeting/',
+                          data: {   'title':title,
+                                    'forums':forums,
+                                    'venue':venue,
+                                    'Select_Date':Select_Date,
+                                    'hour':hour,
+                                    'min':min,
+                                    'timestatus':timestatus,
+                                    'totaldays':totaldays,
+                                    'meet_type':type,
+                                    'dataType': 'json',
+                                    'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                          success:function(response)
+                          {
+                            console.log(response)
+                            alert("New Meeting is Successfully Created!")
+                            //location.reload()
+                            window.location = response
+                          },
+                          complete:function(){},
+                          error:function (xhr, textStatus, thrownError){}
+                       });
+                    }
+                }
+        }
+}
+
+
+function RemoveMeeting()
+{
+    var r = confirm("Are you sure you want to delete this record?");
+
+    if (r == true)
+    {
+        var selected=[]
+        $("input:checkbox[name=chk1]:checked").each(function(){
+            selected.push($(this).val());
+        });
+
+
+        $.ajax({
+        type: 'POST',
+        url:'{{baseURL}}Removemeeting/',
+        data: { 'Removemeeting':selected,
+                'dataType': 'json',
+                'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success:function(response)
+        {
+           alert("Record is successfully Deleted")
+           location.reload();
+        },
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+      });
+    }
+}
+
+</script>
+
+<script type="text/javascript">
+$("#meetingdate").datepicker({
+       dateFormat:'dd/mm/yy',
+       autoclose: true,
+       minDate: 0,
+});
+</script>
+
+<script>
+function getoption()
+{
+    $("#select_menu").change(function () {
+         var d = $("#select_menu :selected").attr('value')
+         if(d == "Date")
+         {
+             document.getElementById("from_date").style.display = "inline-block";
+             document.getElementById("To_date").style.display = "inline-block";
+             $( "#from_date" ).datepicker({dateFormat:'dd/mm/yy'});
+             $( "#To_date" ).datepicker({dateFormat:'dd/mm/yy'});
+         }
+         else
+         {
+             document.getElementById("from_date").style.display = "none";
+             document.getElementById("To_date").style.display = "none";
+         }
+
+         if(d == "Meeting_Status")
+         {
+             document.getElementById("select_menu1").style.display = "inline-block";
+         }
+         else
+         {
+             document.getElementById("select_menu1").style.display = "none";
+         }
+
+    });
+}
+
+function Searchcommitteedata()
+{
+   var forums = document.getElementById('select_committee_name').value;
+
+   if(forums == "Select Committee")
+   {
+      alert("Please select the committee")
+      location.reload()
+   }
+   else
+   {
+       var selectboxvalue = document.getElementById('select_menu').value;
+       
+       if(selectboxvalue == "Select")
+       {
+           alert("Please select filter to search");
+<!--           $.ajax({-->
+<!--                type: 'POST',-->
+<!--                url:'{{baseURL}}manageMeeting/',-->
+<!--                data: { 'forums':forums,-->
+<!--                        'selectboxvalue':selectboxvalue,-->
+<!--                        'dataType': 'json',-->
+<!--                        'csrfmiddlewaretoken': '{{ csrf_token }}'},-->
+<!--                success:function(response)-->
+<!--                {-->
+<!--                  -->
+<!--                  $("body").html(response)-->
+<!--                },-->
+<!--                complete:function(){},-->
+<!--                error:function (xhr, textStatus, thrownError){}-->
+<!--              });-->
+       }
+       else
+       {
+          if(selectboxvalue == "Date")
+          {
+             startdate = document.getElementById('from_date').value;
+             enddate = document.getElementById('To_date').value;
+             if(startdate == "")
+             {
+                  alert("Please fill all the fields")
+             }
+             else
+             {
+                if(enddate == "")
+                {
+                    alert("Please fill all the fields")
+                }
+                else
+                {
+                    var eDate = new Date(enddate);
+					var sDate = new Date(startdate);
+					if(sDate > eDate)
+					  {
+						alert("From date should be less than To date")
+					  }
+                     else
+                     {
+
+                            $.ajax({
+                                type: 'POST',
+                                url:'{{baseURL}}manageMeeting/',
+                                data: { 'forums':forums,
+                                        'selectboxvalue':selectboxvalue,
+                                        'startdate':startdate,
+                                        'enddate':enddate,
+                                         'dataType': 'json',
+                                        'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                                success:function(response)
+                                {
+        
+                                    $("body").html(response)
+                                    document.getElementById("from_date").style.display = "inline-block";
+                                    document.getElementById("To_date").style.display = "inline-block";
+                                    document.getElementById('select_menu').value = "Date";
+                                    document.getElementById("from_date").value = startdate;
+                                    document.getElementById("To_date").value = enddate;
+                                    $( "#from_date" ).datepicker({dateFormat:'dd/mm/yy'});
+                                    $( "#To_date" ).datepicker({dateFormat:'dd/mm/yy'});
+                                },
+                                complete:function(){},
+                                error:function (xhr, textStatus, thrownError){}
+                            });
+                      }
+                 }
+             }
+          }
+          else
+          {
+              if(selectboxvalue == "Meeting_Status")
+              {
+                  meet_status = document.getElementById('select_menu1').value;
+				  if(meet_status == "Select")
+                  {
+                     alert("Please select meeting status")
+                  }
+				  else
+                  {
+					  $.ajax({
+						type: 'POST',
+						url:'{{baseURL}}manageMeeting/',
+						data: { 'forums':forums,
+							'selectboxvalue':selectboxvalue,
+							'meet_status':meet_status,
+							'dataType': 'json',
+							'csrfmiddlewaretoken': '{{ csrf_token }}'},
+					success:function(response)
+					{
+					   
+					   $("body").html(response)
+					   document.getElementById("select_menu1").style.display = "inline-block";
+					   document.getElementById('select_menu').value = "Meeting_Status";
+					   document.getElementById("select_menu1").value = meet_status;
+					   $( "#from_date" ).datepicker({dateFormat:'dd/mm/yy'});
+					   $( "#To_date" ).datepicker({dateFormat:'dd/mm/yy'});
+					},
+					complete:function(){},
+					error:function (xhr, textStatus, thrownError){}
+				  });
+				 } 
+              }
+          }
+       }
+   }
+}
+
+
+function downloadmeetingsdata()
+{
+    var forums = document.getElementById('select_committee_name').value;
+    var selectboxvalue = document.getElementById('select_menu').value;
+<!--    download data based on date wise-->
+    if(selectboxvalue == "Date")
+    {
+       startdate1 = document.getElementById('from_date').value;
+       enddate1 = document.getElementById('To_date').value;
+
+       $.ajax({
+                type: 'POST',
+                url:'{{baseURL}}downloadmeetingsdata/',
+                data: { 'forums':forums,
+                        'selectboxvalue':selectboxvalue,
+                        'startdate1':startdate1,
+                        'enddate1':enddate1,
+                        'dataType': 'json',
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                success:function(response)
+                {
+                  
+                },
+                complete:function(){},
+                error:function (xhr, textStatus, thrownError){}
+              });
+    }
+    else
+    {
+       if(selectboxvalue == "Meeting_Status")
+       {
+           meet_status = document.getElementById('select_menu1').value;
+       }
+    }
+}
+</script>
+
+
+<script>
+ function checkAll(ele) {
+     var checkboxes = document.getElementsByName('chk1');
+     if (ele.checked) {
+         for (var i = 0; i < checkboxes.length; i++) {
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = true;
+             }
+         }
+     } else {
+         for (var i = 0; i < checkboxes.length; i++) {
+             console.log(i)
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = false;
+             }
+         }
+     }
+ }
+ 
+ 
+ $('.modal').on('hidden.bs.modal', function (e) {
+  $(this)
+    .find("input[type=text],input[type=email],input[type=date],input[type=file],textarea,select")
+       .val('')
+       .end()
+    .find("input[type=checkbox], input[type=radio]")
+       .prop("checked", "")
+       .end();
+})
+
+</script>
+
+
+
+</body>
+</html>
+

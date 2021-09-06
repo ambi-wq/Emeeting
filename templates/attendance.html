@@ -1,0 +1,357 @@
+{% include "header.html" %}
+
+{% if messages %}
+	{% for message in messages %}
+	   <script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+
+<div id="content_manageuser" style="min-height: 792px;">
+ <div class="committee"  style="height:170px;">
+   <i class='fa fa-briefcase' style='font-size:15px;color:grey;margin-left:15px;margin-top: 14px;'></i>
+   <span style="margin-left: 24px;font-size: initial;">Search Attendance</span>
+
+	 <span style="margin-left: 720px;font-size: initial;">
+		 <input type="button" id="record" value="Download Report" class="sub2button"
+
+                onclick="downloadAttendanceReport()"
+                style="height: 34px;margin-top:10px;">
+	 </span>
+   <hr class="hrborder">
+
+
+    <div style="margin-left: 20px;">
+          Committee<span style="margin-left: 9px;">:</span>
+            <select id="committee" name="committee" style="border-color: darkgray;" onchange="getCommitee()">
+                 <!--<option value="all">Select Committee</option>-->
+               {% for key,value in committee_dict.items %}
+                    <option value="{{key}}">{{value}}</option>
+               {% endfor %}
+         </select>
+
+        <span style="margin-left: 12px;">Search By</span><span style="margin-left: 12px;">:</span>
+
+        <select id="select_menu" name="menu" onclick="getoption();" style="width: 148px;height: 30px;font-size: 14px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;color: #555555;">
+            <option value="Select">Select</option>
+            <option value="Date">Date</option>
+            <option value="Meeting_Title">Meeting Title</option>
+        </select>
+        <input type="date" id="from_date" name="stodate" placeholder="From Date" style="height:30px;width:140px;display:none;" >
+        <input type="date" id="To_date" name="todate" placeholder="To Date" style="height:30px;width:140px;display:none;" >
+
+        <select id="select_menu1" name="meeting_title" style="width: 148px;height: 30px;font-size: 14px;border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;color: #555555;display:none">
+            <option value="0">Select</option>
+            {% for meeting1 in meetings1 %}
+            <option value="{{meeting1.2}}">{{meeting1.0}}</option>
+            {% endfor %}
+
+        </select>
+
+        <input type="button" value="Search" class="sub2button" onclick="SearchAttendancedata()" style="width: 74px;height: 34px;margin-left: 18px;">
+         <span id="dateValidator" style="color:Red;visibility:hidden;"></span>
+    </div>
+     <div id="committeeValidator" style="color:Red;visibility:hidden;margin:5px 20px;"></div>
+</div>
+
+ <div class="box committee1" style="overflow-x:auto;">
+    <i class='fas fa-exchange-alt' style='font-size:15px;color:grey;margin-left:15px;margin-top: 14px;'></i>
+    <span style="margin-left: 24px;font-size: initial;">Manage Attendance</span>
+
+    <hr class="hrborder">
+
+
+
+
+    <span id="span_Id" style="display:none">{{seq}}</span>
+
+     {% if meetings %}
+         <table class="table table-striped bootstrap-datatable datatable dataTable calender-meetings notify-table tdata"
+               cellspacing = "0" cellpadding = "4"
+               style="font-size:14px;border-collapse:collapse;border: 1px solid darkgrey;border-left:none;margin:10px;width:98%;">
+            <thead class="thead-dark" >
+            <tr style="font-size: 14px;color:black;font-weight: bold;font-family: sans-serif;" >
+                <th>UserID</th>
+                <th>User</th>
+                {% for meeting in meetings %}
+                         <th>{{forloop.counter}}.{{meeting.0}} [{{meeting.1|date:"d/m/Y"}}]</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for tb in tbl %}
+            <tr>
+
+                {% for t in tb %}
+
+
+
+                  {% if t == "true" %}
+                           <td><input type="image" src="{{baseURL}}static/images/one.png" style="" onclick="markattendance('{{tb.0}}','{{forloop.counter}}','false')" value=""></td>
+                         {% elif t == "false" %}
+                           <td><input type="image" src="{{baseURL}}static/images/two.png" style="" onclick="markattendance('{{tb.0}}','{{forloop.counter}}','true')" value=""></td>
+
+                        {% elif t == "disabled"  %}
+                           <td><input type="image" src="{{baseURL}}static/images/three.png" style="" onclick="markattendance('{{tb.0}}','{{forloop.counter}}','true')" value=""></td>
+                        {% else  %}
+                            <td>{{t}}</td>
+                       {% endif %}
+
+                {% endfor %}
+
+
+
+
+
+
+             </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+     {% else %}
+            <table  class="table table-striped bootstrap-datatable datatable dataTable calender-meetings notify-table tdata"
+               cellspacing = "0" cellpadding = "4" style="font-size:14px;border:1px solid darkgrey;border-left:none;margin:10px;width:98%;" >
+               <tbody>
+               <tr><td>No record available</td></tr>
+               </tbody>
+            </table>
+     {% endif %}
+
+
+</div>
+</div>
+
+<script>
+function getCommitee(){
+    committee = document.getElementById('committee').value;
+
+        console.log("commitee====>"+committee);
+
+    $.ajax({
+        url:'{{baseURL}}attendance',
+        type:'GET',
+        data:{
+            'committee':committee,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+        success:function(response){
+            //console.log(response);
+            $('#record').replaceWith($("#record",response))
+            $('.tdata').replaceWith($(".tdata",response))
+            $('#tdata1').replaceWith($("#tdata",response))
+            $('#select_menu1').replaceWith($("#select_menu1",response))
+            $('#from_date').replaceWith($("#from_date",response))
+            $('#To_date').replaceWith($("#To_date",response))
+            $('#dateValidator').replaceWith($("#dateValidator",response))
+
+             document.getElementById('select_menu').value = "Select"
+            <!--$("html").html(response)-->
+
+            $('#span_Id').replaceWith($("#span_Id",response))
+
+        },
+        complete:function(){},
+        error:function(xhr,textStatus,thrownError){}
+    });
+}
+
+function markattendance(uid,num,status){
+      var seq = JSON.parse(document.getElementById("span_Id").innerText);
+<!--var seq = {{seq}};-->
+
+var e = document.getElementById("committee");
+var strUser = e.value;
+
+
+id = seq[''+num-2]
+ $.ajax({
+                type: 'POST',
+                url:'{{baseURL}}markattendance',
+                data: { 'fid':strUser,
+                        'mid':id,
+                        'uid':uid,
+                        'status':status,
+
+
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                success:function(response)
+                {
+
+                 document.getElementById('committee').value = response
+                 $('#committee').change();
+                    <!--location.reload();-->
+                },
+                complete:function(){},
+                error:function (xhr, textStatus, thrownError){}
+              });
+
+
+}
+
+function getoption()
+{
+    var committee = $('select[name="committee"]').val()
+    console.log('committee'+committee)
+
+    if(committee == 'all'){
+        //alert('Please select committee')
+        $('#committeeValidator').text('Please select committee');
+        document.getElementById('committeeValidator').style.visibility = 'visible';
+    }
+    else{
+        document.getElementById('committeeValidator').style.visibility = 'hidden';
+        $("#select_menu").change(function () {
+             var d = $("#select_menu :selected").attr('value')
+             console.log(d)
+             if(d == "Date")
+             {
+                    var today = new Date();
+                    var dd = String(today.getDate()).padStart(2, '0');
+                    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                    var yyyy = today.getFullYear();
+                    current = yyyy + '-' + mm + '-' + dd;
+
+                    today.setMonth(today.getMonth() - 1);
+                    var dd = String(today.getDate()+1).padStart(2, '0');
+                    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                    var yyyy = today.getFullYear();
+                    prev = yyyy + '-' + mm + '-' + dd;
+
+                    var today = new Date();
+                    today.setMonth(today.getMonth() + 1);
+                    var dd = String(today.getDate()).padStart(2, '0');
+                    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                    var yyyy = today.getFullYear();
+                    next = yyyy + '-' + mm + '-' + dd;
+
+                    console.log(current+', '+prev+', '+next)
+                    document.getElementById("from_date").value = prev;
+                    document.getElementById("To_date").value = next;
+
+                 document.getElementById("from_date").style.display = "inline-block";
+                 document.getElementById("To_date").style.display = "inline-block";
+             }
+             else
+             {
+                 document.getElementById("from_date").style.display = "none";
+                 document.getElementById("To_date").style.display = "none";
+             }
+
+             if(d == "Meeting_Title")
+             {
+                 document.getElementById('dateValidator').style.visibility = 'hidden';
+                 document.getElementById("select_menu1").style.display = "inline-block";
+
+             }
+             else
+             {
+                 document.getElementById("select_menu1").style.display = "none";
+             }
+
+        });
+    }
+}
+
+function SearchAttendancedata(){
+    var committee = $('select[name="committee"]').val()
+    console.log('committee'+committee)
+
+    if(committee == 'all'){
+        $('#committeeValidator').text('Please select committee');
+        document.getElementById('committeeValidator').style.visibility = 'visible';
+    }
+    else{
+        document.getElementById('committeeValidator').style.visibility = 'hidden';
+         var menu = $('select[name="menu"]').val()
+         console.log('menu'+menu)
+
+         if(menu == "Date") {
+             var from_date = $('#from_date').val()
+             var to_date = $('#To_date').val()
+             console.log(from_date + ', ' + to_date)
+
+             if(from_date > to_date){
+                   // alert("Incorrect dates selected");
+                    $('#dateValidator').text('Incorrect dates selected');
+                    document.getElementById('dateValidator').style.visibility = 'visible';
+             }
+             else{
+
+                document.getElementById('dateValidator').style.visibility = 'hidden';
+                 $.ajax({
+                    type: 'POST',
+                    url:'{{baseURL}}attendance',
+                    data: { 'committee':committee,
+                            'menu':menu,
+                            'startdate':from_date,
+                            'enddate':to_date,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                    success:function(response)
+                    {
+                       //alert("Searching Successfully done base on startdate and Enddate!")
+                       $("body").html(response)
+                       document.getElementById("from_date").style.display = "inline-block";
+                       document.getElementById("To_date").style.display = "inline-block";
+                       document.getElementById('select_menu').value = "Date";
+                       document.getElementById("from_date").value = from_date;
+                       document.getElementById("To_date").value = to_date;
+                       document.getElementById("committee").value = committee;
+                    },
+                    complete:function(){},
+                    error:function (xhr, textStatus, thrownError){}
+                  });
+             }
+          }
+
+
+
+
+         else {
+            if(menu == "Meeting_Title"){
+                 var meeting = $('select[name="meeting_title"]').val()
+                 console.log('title id: '+meeting)
+
+                         $.ajax({
+                        type: 'POST',
+                        url:'{{baseURL}}attendance',
+                        data: { 'committee':committee,
+                                'menu':menu,
+                                'title':meeting,
+                                'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                        success:function(response)
+                        {
+                          // alert("Searching Successfully done base on title")
+                           $("body").html(response)
+                           console.log(response)
+                           document.getElementById("select_menu1").style.display = "inline-block";
+                           document.getElementById('select_menu').value = "Meeting_Title";
+                           document.getElementById("select_menu1").value = meeting;
+                           document.getElementById("committee").value = committee;
+
+                        },
+                        complete:function(){},
+                        error:function (xhr, textStatus, thrownError){}
+                      });
+             }
+         }
+    }
+}
+
+function downloadAttendanceReport(){
+    var committee = $('select[name="committee"]').val()
+    console.log('committee'+committee)
+    if(committee == 'all'){
+        $('#committeeValidator').text('Please select committee');
+        document.getElementById('committeeValidator').style.visibility = 'visible';
+    }
+    else{
+        document.getElementById('committeeValidator').style.visibility = 'hidden';
+       window.location = "downloadAttendanceReport/"+committee
+        //window.location = "https://mgenius.in/emeetingadmin/downloadAttendanceReport/"+committee
+    }
+
+}
+
+
+
+
+</script>

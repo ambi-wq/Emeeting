@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>eMeeting</title>
+     {% load static %}
+
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/themes/base/jquery-ui.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">-->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{baseURL}}static/css/style.css"/>
+
+
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+	 
+</head>
+<body>
+
+<div class="navbarbg">
+            <div class="headnavbar">
+                <div class="container-fluid" style="padding-top:5px;">
+
+                    <a class="brand" href="#"><span>
+                        <span style="color:#569AEB;font-size:XX-Large;">eMeeting</span>
+                        </span></a>
+
+                    <!-- start: Header Menu -->
+                    <div class="nav-no-collapse header-nav">
+                        <ul class="nav pull-right">
+                            <li>
+                                <a id="ctl00_LinkButton2" class="btn" href="{{baseURL}}changePassword" style="margin-left:-3%;"> Change Password</a></li>
+                            <li class="dropdown hidden-phone"></li>
+                            <li>
+                                <a id="ctl00_LinkButton1" class="btn dropdown-toggle" href="{{baseURL}}logout"><i class="icon-off"></i>  Log Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="container-fluid" style="text-align: right; background: #569aeb;color: #fff;padding:5px;">
+                        <span id="ctl00_lblLogin" style="font-weight:bold;font-size: small;">Last Login :- {{ response }}</span>
+                </div>
+
+
+
+                    <!-- end: Header Menu -->
+
+
+            </div>
+
+</div>
+
+
+
+
+<div class="sidemenu" style="width:210px;position:relative;top:0px;left:0;right:0;float:left;" >
+            <div class="row-fluid" style="margin-top:0px;">
+                <!-- start: Main Menu -->
+                <div id="sidebar-left" class="span2">
+                    <div class="nav-collapse sidebar-nav" >
+                        {% with url_name=request.resolver_match.url_name %}
+                        <ul class="nav nav-tabs nav-stacked main-menu" style="height: 130vh;width: 210px;background:#fff;">
+                            <li id="ctl00_m2" class="{% if url_name == 'manageMeeting' %}active{% endif %}">
+                                <a href="{{baseURL}}manageMeeting/"><span class="hidden-tablet"><i class="fa fa-briefcase"></i>&nbsp;&nbsp;Meeting</span></a>
+                            </li>
+                            <li id="ctl00_m1" class="{% if url_name == 'manageUser' %}active{% endif %}"><a href="{{baseURL}}manageUser"><span class="hidden-tablet"><span class="glyphicon glyphicon-tasks"></span></i>&nbsp;&nbsp;User Management</span></a></li>
+                            <li id="ctl00_m3" class="{% if url_name == 'showcommittee' %}active{% endif %}"><a href="{{baseURL}}showcommittee"><span class="hidden-tablet"><i class="fa fa-exchange-alt"></i>&nbsp;&nbsp;Committee</span></a></li>
+                            <li id="ctl00_m8" class="{% if url_name == 'showDirectors' %}active{% endif %}"><a href="{{baseURL}}showDirectors"><span class="hidden-tablet"><i class='fa fa-bookmark' style='font-size:15px;color:grey;margin-right:5px;'></i>&nbsp;&nbsp;Directors</span></a></li>
+                            <li id="ctl00_m5" class="{% if url_name == 'calender' %}active{% endif %}"><a href="{{baseURL}}calender"><span class="hidden-tablet"><i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;Calender</span></a></li>
+							 <li id="ctl00_m11" class="{% if url_name == 'showVotingResolution' %}active{% endif %}"><a href="{{baseURL}}showVotingResolution"><span class="hidden-tablet"><span class="glyphicon glyphicon-check"  style='font-size:15px;color:grey;margin-right:5px;'></span>Voting Resolution</span></a></li>
+                            <li id="ctl00_m6" class="{% if url_name == 'notifications' %}active{% endif %}"><a href="{{baseURL}}notifications"><span class="hidden-tablet"><i class="fa fa-envelope"></i>&nbsp;&nbsp;Notifications</span></a></li>
+                            <li id="ctl00_m4" class="{% if url_name == 'manageActivityLogs' %}active{% endif %}"><a href="{{baseURL}}manageActivityLogs"><span class="hidden-tablet"><i class="fa fa-lock"></i>&nbsp;&nbsp;Activity Logs</span></a></li>
+                           <li id="ctl00_m7" class="{% if url_name == 'attendance' %}active{% endif %}"><a href="{{baseURL}}attendance"><span class="hidden-tablet"><i class="fa fa-check-square"></i>&nbsp;&nbsp;Attendance</span></a></li>
+						    <li id="ctl00_m12"  class="{% if url_name == 'showAudit' %}active{% endif %}"><a href="{{baseURL}}showAudit"><span class="hidden-tablet"><i class='fa fa-chart-bar' style='font-size:15px;color:grey;margin-right:5px;'></i>Audit Trail(Logs)</span></a></li>
+                            <li id="ctl00_m10" class="{% if url_name == 'shareddocs' %}active{% endif %}"><a href="{{baseURL}}sharedDocs"><span class="hidden-tablet"><i class="fa fa-share-square"></i>&nbsp;&nbsp;Shared Documents</span></a></li>
+                            <li id="ctl00_m9" class="{% if url_name == 'aboutus' %}active{% endif %}"><a href="{{baseURL}}aboutus"><span class="hidden-tablet"><i class="fa fa-caret-up"></i>&nbsp;&nbsp;About Us</span></a></li>
+							
+							
+                           
+                          
+
+                        </ul>
+                         {% endwith %}
+                    </div>
+                </div>
+                <!-- end: Main Menu -->
+
+
+
+            </div>
+</div>
+
+            
+

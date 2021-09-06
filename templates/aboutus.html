@@ -1,0 +1,486 @@
+{% include "header.html" %}
+
+{% if messages %}
+	{% for message in messages %}
+	   <script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+
+<div id="content_manageuser" style="min-height: 792px;">
+<div class="committee" style="height:170px;" >
+    <i class="fas fa-upload" style='font-size:15px;color:grey;margin-left:15px;margin-top: 14px;'></i>
+   <span style="margin-left: 25px;margin-top: 14x;font-size: initial;padding-top:10px;">Upload Document</span>
+
+
+    <table style="width:1100px;margin-top:40px;" cellspacing = "0" cellpadding = "4">
+        <tbody>
+        <tr>
+            <td>
+<!--                <div class="aboutus-leftblk" style="float:left;width:30%;margin-left:20px;margin-top:30px;">-->
+
+<!--                   Title<span style="color:red;font-size:larger;">*</span><span style="margin-left: 12px;">:</span>-->
+<!--                   <input type="text" name="title" id="title" style="margin-left: 14px;height: 34px;width: 165px;border-color: darkgray;font-size: 15px;-->
+<!--                                border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;">-->
+<!--                   <span id="titleValidator" style="color:Red;visibility:hidden;width:200px;"></span>-->
+<!--                </div>-->
+<!--                <div class="aboutus-leftblk" style="float:left;width:30%;margin-top:30px;">-->
+<!--                    <span style="margin-right: 0px;">File</span><span style="color:red;font-size:larger;">*</span><span style="margin-left: 12px;">:</span>-->
+<!--                    <input type="file" name="file" id="file" style="display:inline;">-->
+<!--                    <span id="fileValidator" style="color:Red;visibility:hidden;"></span>-->
+<!--                </div>-->
+<!--                <div class="aboutus-rightblk" style="float:left;width:20%;margin-top:30px;">-->
+<!--                    <span style="margin-left: 0px;">Date</span><span style="color:red;font-size:larger;">*</span><span style="margin-left: 12px;">:</span>-->
+<!--                    <input type="date" id="date" name="date" placeholder="Date" style="height:30px;width:140px;" >-->
+<!--                    <span id="dateValidator" style="color:Red;visibility:hidden;"></span>-->
+<!--                </div>-->
+<!--                <div style="float:left;width:10%;margin-top:30px;">-->
+<!--                    <input type="button" value="Submit" class="sub2button" onclick="uploadDocument()"-->
+<!--                           style="font-size: 14px;-->
+<!--                    width: 74px;height: 34px;font-weight: bold;margin-left: 80px;">-->
+<!--                </div>-->
+
+                <div class="aboutus-leftblk" style="float:left;width:30%;margin-left:30px;margin-top:0px;">
+
+           Title<span style="color:red;font-size:larger;">*</span><span style="margin-left: 12px;">:</span>
+           <input type="text" name="title" id="title" style="margin-left: 14px;height: 34px;width: 165px;border-color: darkgray;font-size: 15px;
+                        border: 1px solid #cccccc;font-family: sans-serif;padding: 4px 6px;">
+           <span id="titleValidator" style="color:Red;visibility:hidden;width:200px;"></span>
+        </div>
+        <div class="aboutus-leftblk" style="float:left;width:30%;margin-top:4px;">
+            <span style="margin-right: 0px;">File</span><span style="color:red;font-size:larger;">*</span><span style="margin-left: 12px;">:</span>
+            <input type="file" name="file" id="file" style="display:inline;">
+            <span id="fileValidator" style="color:Red;visibility:hidden;"></span>
+        </div>
+        <div class="aboutus-rightblk" style="float:left;width:20%;margin-top:0px;">
+            <span style="margin-left: 0px;">Date</span><span style="color:red;font-size:larger;">*</span><span style="margin-left: 12px;">:</span>
+            <input type="date" id="date" name="date" placeholder="Date" style="height:34px;width:140px;" >
+            <span id="dateValidator" style="color:Red;visibility:hidden;"></span>
+        </div>
+        <div style="float:left;width:10%;margin-top:0px;">
+            <input type="button" value="Submit" class="sub2button" onclick="uploadDocument()"
+                   style="font-size: 14px;width: 74px;height: 34px;font-weight: bold;margin-left: 80px;margin-top:0;">
+        </div>
+                <div style="clear:left"></div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+
+<div class="box committee1">
+    <i class="fas fa-upload" style='font-size:15px;color:grey;margin-left:15px;margin-top: 14px;'></i>
+    <span style="margin-left: 25px;font-size: initial;">Manage Documents</span>
+
+    <table class="table table-striped bootstrap-datatable datatable dataTable calender-meetings" cellspacing = "0" cellpadding = "4"
+           style="font-size:14px;border-collapse:collapse;border: 1px solid darkgrey;border-left:none;margin:30px 10px 10px 10px;width:98%;">
+    <thead class="thead-dark">
+    <tr style="font-size: 14px;color:black;font-weight: bold;font-family: sans-serif;">
+        <th style="width:80px;text-align:left;">Sr No.</th>
+        <th style="width:180px;text-align:left;">Date</th>
+        <th style="text-align:left;">Title</th>
+        <th style="width:80px;text-align:center;">Links</th>
+        <th style="width:80px;text-align:center;">Edit</th>
+        <th style="width:80px;text-align:center;">Delete</th>
+    </tr>
+    </thead>
+    <tbody id="tdata">
+    {% for data in data_list %}
+    <tr>
+         <td style="width:80px;text-align:left;">{{data_list.start_index|add:forloop.counter0 }}</td>
+        <td style="width:180px;text-align:left;">{{data.3|date:"d/m/Y"}}</td>
+        <td style="text-align:left;">{{data.1}}</td>
+        <td style="width:80px;text-align:center;"><a href="{{pdfurl}}{{data.2}}" target="_blank" style="text-decoration:underline;color:#000;">View</a></td>
+        <td style="width:80px;text-align:center;"> <a data-toggle="modal" onclick="" data-target="#editModal">
+
+
+            <input type="button" class="sub2button" value="Edit" onclick="viewAboutUs('{{data.0}}')"
+            style="font-size:15px;"></a></td>
+
+        <td style="width:80px;text-align:center;"><a href="{{baseURL}}deleteAboutusDocument/{{data.0}}">
+            <input type="image" src="{{baseURL}}static/images/delete.png" style="width:25%;margin-top:10px;"
+                     onclick="return confirm('Are you sure you want to delete?');"value="delete"></a></td>
+     </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+</div>
+<!-- +++++++++++++++++++++++++++++ Pagination start +++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+     {% if datalength < 11 %}
+            <div class="pagination" style="display:none;"></div>
+            {% else %}
+                    <div class="pagination" style="margin:0 0 0 10px;">
+                        <ul class="pagination" style="margin:0 0 0 10px;">
+                        <li class="page-item">
+                             {% if data_list.number != 1 %}
+                             <a class="page-link" href="?page=1">First</a>
+                             {% endif %}
+                         </li>
+                          <li class="page-item">
+                             {% if data_list.has_previous %}
+                             <a class="page-link" href="?page={{ data_list.previous_page_number }}" aria-label="Previous">
+                             <span aria-hidden="true">&laquo;</span>
+                             </a>
+                             {% endif %}
+                          </li>
+                          {% for num in data_list.paginator.page_range %}
+                              {% if data_list.number == num %}
+                              <li class="page-item "><a class="page-link current" href="?page={{ num }}">{{ num }}</a></li>
+                              {% elif num > data_list.number|add:-3 and num < data_list.number|add:3  %}
+                              <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                              {% endif %}
+                          {% endfor %}
+                          <li class="page-item">
+                             {% if data_list.has_next %}
+                             <a class="page-link" href="?page={{ data_list.next_page_number }}" aria-label="Next">
+                             <span aria-hidden="true">&raquo;</span>
+                             </a>
+                             {% endif %}
+                          </li>
+                          </li>
+                          <li class="page-item">
+                             {% if data_list.number != data_list.paginator.num_pages %}
+                             <a class="page-link" href="?page={{ data_list.paginator.num_pages }}">Last</a>
+                             {% endif %}
+                          </li>
+                         </ul>
+
+                    </div>
+
+             {% endif %}
+
+    <!--+++++++++++++++++++++++++++++++Pagination End +++++++++++++++++++++++++++++++++-->
+</div>
+
+<div id="editModal" class="modal fade" role="dialog" >
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" onclick="location.reload();">&times;</button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+         <form method="POST" id="" autocomplete="on" class="form-horizontal">
+              <div class="form-group" style="display:none;">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;">id* :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" >
+                            <input type="text" style="" class="form-control" id="edid" value="" required>
+                        </div>
+<!--                         <span id="titleValidator" style="color:Red;visibility:hidden;"></span>-->
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight:100;">Title<span style="color:red;font-size:larger;">*</span> :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:45%;" >
+                            <input type="text" style="" class="form-control" id="edtitle" value="">
+                        </div>
+                         <span id="edtitleValidator" style="color:Red;visibility:hidden;"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight:100;">Date<span style="color:red;font-size:larger;">*</span> :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" style="width:45%;">
+                            <input type="date" style="" class="form-control" id="eddate"  value=""  >
+                        </div>
+<!--                         <span id="eddateValidator" style="color:Red;visibility:hidden;"></span>-->
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-3" style="text-align:left;font-weight:100;">File<span style="color:red;font-size:larger;">*</span> :</label>
+                        <div class="col-md-8 col-sm-8 col-xs-8" >
+                            <input type="file" name="edfile" id="edfile" style="display:inline;">
+                        </div>
+                         <span id="edfileValidator" style="color:Red;visibility:hidden;"></span>
+                    </div>
+
+             <div style="display:flex;justify-content:center;">
+                <input  type="button"  value="Submit"  class="sub2button" onclick="updateAboutUs()">
+             </div>
+          </form>
+    </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+     $(function(){
+    var dtToday = new Date();
+
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if(month < 10)
+        month = '0' + month.toString();
+    if(day < 10)
+        day = '0' + day.toString();
+
+    var maxDate = year + '-' + month + '-' + day;
+    //alert(maxDate);
+    $('#date').attr('min', maxDate);
+    $('#eddate').attr('min', maxDate);
+
+
+});
+
+function uploadDocument(){
+
+   var form_data = new FormData();
+    var title = $('#title').val()
+    var date = $('#date').val()
+    var zipfileInput = $("#file")[0].files[0];
+
+    console.log(title,date)
+    var titleflag,dateflag,fileflag;
+     if(title == ''){
+        $('#titleValidator').text('*');
+            document.getElementById('titleValidator').style.visibility = 'visible';
+             titleflag = false;
+    }
+    else{
+            if(title != ''){
+                 console.log('title: '+title)
+                 patt = /^\w+( \w+)*$/
+                 var result = patt.test(title)
+                    if(!result){
+                            $('#titleValidator').text('Invalid title');
+                            document.getElementById('titleValidator').style.visibility = 'visible';
+                            titleflag=false;
+                        }
+                    else{
+                            document.getElementById('titleValidator').style.visibility = 'hidden';
+                            titleflag = true;
+
+                    }
+            }
+    }
+    if(date == ''){
+        $('#dateValidator').text('*');
+            document.getElementById('dateValidator').style.visibility = 'visible';
+             dateflag = false;
+    }
+     else{
+            document.getElementById('dateValidator').style.visibility = 'hidden';
+            dateflag = true;
+    }
+    if(zipfileInput)
+    {
+        console.log('file input:---  '+zipfileInput);
+        form_data.append('file', zipfileInput);
+
+
+        var file_extension = (zipfileInput.name).split('.')[1]
+        var file_name = (zipfileInput.name).split('.')[0]
+
+
+            if(file_extension == 'pdf')
+            {
+                fileflag = true;
+            }
+            else
+            {
+                console.log("ext:"+file_extension)
+                alert("Only pdf files are allowed")
+<!--                 $('#fileValidator').text('Only pdf files are allowed');-->
+<!--                document.getElementById('fileValidator').style.visibility = 'visible';-->
+                 fileflag = false;
+                 location.reload();
+
+
+
+            }
+
+        patt= /^[a-z\d\_\s]+$/i
+            var result = file_name.match(patt)
+            if(result){
+                fname = result[0]
+                    fileflag=true;
+                }
+
+                else{
+                   alert("File name contains invalid characters")
+<!--                    $('#fileValidator').text('File name contains invalid characters');-->
+<!--                    document.getElementById('fileValidator').style.visibility = 'visible';-->
+                        location.reload();
+                        fileflag = false;
+
+            }
+    }
+    else{
+            alert("Please choose correct file");
+    }
+
+postdata = JSON.stringify(
+                    {
+                         'title' : title,
+                         'date':date,
+                    })
+    form_data.append('requestData', postdata);
+    form_data.append( 'csrfmiddlewaretoken','{{ csrf_token }}')
+
+    if(titleflag && dateflag && fileflag){
+        $.ajax({
+            type: 'POST',
+            url: '{{baseURL}}uploadDocumentAbtus',
+            data:form_data,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                alert('Success!');
+
+                location.reload();
+            },
+            complete:function(){},
+           error:function (xhr, textStatus, thrownError){}
+        });
+     }
+}
+
+function viewAboutUs(id){
+     $.ajax({
+            type: 'POST',
+            url: '{{baseURL}}viewAboutUs',
+            data : {
+                'id':id,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success:function(response) {
+
+                //console.log(response)
+                var o=JSON.parse(response);
+
+                document.getElementById('edid').value = o.id
+                document.getElementById('edtitle').value = o.title
+
+                var dt = (o.dt).split(' ')
+                var date1 = dt[0]
+                var date = date1.replace(/\//g,'-');
+
+                document.getElementById('eddate').value = date
+
+                var url = (o.link)
+                //document.getElementById('edfile').value = url;
+                var matches = url.match(/\/([^\/?#]+)[^\/]*$/);
+                if (matches.length > 1) {
+                    //alert(matches[1]);
+                    $('#edfile').val(matches[1]);
+                    //document.getElementById('edfile').value = matches[1]
+
+                }
+                else{
+                    document.getElementById('edfile').value = "";
+                }
+
+            },
+            complete:function(){},
+           error:function (xhr, textStatus, thrownError){}
+        });
+}
+
+function updateAboutUs(){
+ var form_data = new FormData();
+   var id = $('#edid').val()
+    var title = $('#edtitle').val()
+    var date = $('#eddate').val()
+    var fileInput = $("#edfile")[0].files[0];
+
+    console.log(title,date)
+    var titleflag,dateflag,fileflag;
+     if(title == ''){
+        $('#edtitleValidator').text('*');
+            document.getElementById('edtitleValidator').style.visibility = 'visible';
+             titleflag = false;
+    }
+     else{
+            if(title != ''){
+                 console.log('title: '+title)
+                 patt = /^\w+( \w+)*$/
+                 var result = patt.test(title)
+                    if(!result){
+                            $('#edtitleValidator').text('Invalid title');
+                            document.getElementById('edtitleValidator').style.visibility = 'visible';
+                            titleflag=false;
+                        }
+                    else{
+                            document.getElementById('edtitleValidator').style.visibility = 'hidden';
+                            titleflag = true;
+
+                    }
+            }
+    }
+
+    if(fileInput)
+    {
+        console.log('file input:---  '+fileInput);
+        form_data.append('file', fileInput);
+
+
+        var file_extension = (fileInput.name).split('.')[1]
+        var file_name = (fileInput.name).split('.')[0]
+
+
+            if(file_extension == 'pdf')
+            {
+                fileflag = true;
+            }
+            else
+            {
+                console.log("ext:"+file_extension)
+                alert("Only pdf files are allowed")
+                 fileflag = false;
+                 location.reload();
+
+
+
+            }
+
+        patt= /^[a-z\d\_\s]+$/i
+            var result = file_name.match(patt)
+            if(result){
+                fname = result[0]
+                    fileflag=true;
+                }
+
+                else{
+                   alert("File name contains invalid characters")
+                        location.reload();
+                        fileflag = false;
+
+            }
+    }
+
+
+    postdata = JSON.stringify(
+                    {
+                         'id':id,
+                         'title' : title,
+                         'date':date,
+                    })
+    form_data.append('requestData', postdata);
+    form_data.append('csrfmiddlewaretoken','{{ csrf_token }}');
+
+    //alert(titleflag)
+    if(titleflag){
+        $.ajax({
+            type: 'POST',
+            url: '{{baseURL}}updateAboutUs',
+            data:form_data,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                alert('Success!');
+                location.reload();
+            },
+            complete:function(){},
+           error:function (xhr, textStatus, thrownError){}
+        });
+     }
+
+
+}
+
+
+</script>
